@@ -62,7 +62,7 @@
         {{-- Bouton bleu (style Karnou) --}}
         <div>
             <button type="submit"
-                    class="inline-flex w-full items-center justify-center rounded bg-brand-blue px-8 py-3 text-sm font-bold text-white transition hover:bg-brand-blue-dark hover:shadow-lg hover:shadow-brand-blue/20 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 sm:w-auto sm:min-w-[170px]">
+                    class="inline-flex w-full items-center justify-center rounded bg-[#009EE0] px-8 py-3.5 text-sm font-bold text-white transition hover:bg-[#0089c4] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#009EE0] focus:ring-offset-2">
                 Me connecter
             </button>
         </div>
