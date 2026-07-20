@@ -9,7 +9,9 @@ use App\Http\Controllers\ColisController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return auth()->check()
+        ? redirect()->route('dashboard')
+        : view('auth.login');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
