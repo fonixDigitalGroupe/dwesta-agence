@@ -34,7 +34,7 @@
             .header-right { flex: none; display: flex; align-items: center; gap: 1.5rem; margin-left: auto; }
             .nav-link { color: #3d4351; text-decoration: none; font-size: 0.92rem; font-weight: 600; transition: color .2s; }
             .nav-link:hover { color: #FF6B00; }
-            .btn-cta { background: #004aad; color: #fff !important; border-radius: 40px; font-weight: 700; padding: 11px 26px; font-size: 0.9rem; text-decoration: none; transition: all .2s; white-space: nowrap; }
+            .btn-cta { background: #004aad; color: #fff !important; border-radius: 8px; font-weight: 700; padding: 11px 26px; font-size: 0.9rem; text-decoration: none; transition: all .2s; white-space: nowrap; }
             .btn-cta:hover { background: #003a8a; transform: translateY(-1px); }
 
             /* Boutons */
