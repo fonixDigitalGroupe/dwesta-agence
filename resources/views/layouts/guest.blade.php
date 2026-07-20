@@ -23,12 +23,12 @@
                 <div class="absolute inset-0 bg-cover bg-center scale-105"
                      style="background-image:url('{{ asset('images/login-bg.jpg') }}');"></div>
 
-                {{-- Bleu de la marque en aplat (couleur unie, pas de dégradé) --}}
-                <div class="absolute inset-0" style="background:#004aad; opacity:0.92;"></div>
+                {{-- Teinte bleu marque en fusion "multiply" : la photo reste visible mais bleutée --}}
+                <div class="absolute inset-0" style="background:#004aad; mix-blend-mode:multiply; opacity:0.82;"></div>
 
-                {{-- Motif géométrique subtil (inspiration textile) --}}
-                <div class="absolute inset-0 opacity-[0.12]"
-                     style="background-image:radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size:22px 22px;"></div>
+                {{-- Assombrissement bas → haut pour garder le texte lisible --}}
+                <div class="absolute inset-0"
+                     style="background:linear-gradient(to top, rgba(0,25,66,0.88) 0%, rgba(0,42,110,0.35) 45%, rgba(0,74,173,0.15) 100%);"></div>
 
                 {{-- Marque --}}
                 <div class="relative z-10 flex items-center gap-3">
