@@ -1,39 +1,33 @@
-name: Deploy (cPanel SSH)
+name: Build assets & publish deploy branch
 
-# Déploiement automatique vers l'hébergement cPanel via SSH.
-# À chaque push sur master : build (Composer + Vite) dans le runner,
-# puis envoi des fichiers en SSH (rsync) et exécution des migrations.
+# Le serveur mutualisé LWS n'a pas Node/npm : il ne peut pas compiler les assets.
+# Ce workflow compile les assets Vite (GitHub a Node) puis publie sur la branche
+# "deploy" le code + les assets compilés (public/build).
+# Le serveur n'a plus qu'à faire "git pull" de la branche deploy (voir deploy.sh).
 on:
   push:
     branches: [master]
   workflow_dispatch:
 
+# Nécessaire pour pouvoir pousser la branche "deploy".
+permissions:
+  contents: write
+
 concurrency:
-  group: deploy-production
+  group: build-publish
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
-    name: Build & Deploy
+  build:
+    name: Compiler les assets & publier
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout du code
         uses: actions/checkout@v4
-
-      # --- PHP / Composer (dépendances de production) ---
-      - name: Installer PHP 8.3
-        uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
-          extensions: mbstring, bcmath, pdo, pdo_mysql, intl, zip, gd
-          tools: composer:v2
-          coverage: none
+          fetch-depth: 0
 
-      - name: composer install (prod)
-        run: composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress
-
-      # --- Node / Vite (compilation des assets) ---
       - name: Installer Node 20
         uses: actions/setup-node@v4
         with:
@@ -46,42 +40,12 @@ jobs:
       - name: Compiler les assets (vite build)
         run: npm run build
 
-      # --- Préparer la connexion SSH ---
-      - name: Configurer la clé SSH
+      # Publie master + public/build sur la branche "deploy" (écrasée à chaque fois).
+      - name: Publier sur la branche deploy
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p "${{ vars.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
-
-      # --- Envoi des fichiers en SSH (rsync) ---
-      # Le chemin cible est relatif au dossier home du compte SSH.
-      # PAS de --delete : les fichiers du serveur absents ici (.env, uploads,
-      # logs) ne sont jamais supprimés.
-      - name: Déploiement rsync
-        run: |
-          rsync -az --no-perms --no-owner --no-group \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='node_modules' \
-            --exclude='tests' \
-            --exclude='.env' \
-            --exclude='.env.*' \
-            --exclude='storage/logs/**' \
-            --exclude='storage/framework/cache/data/**' \
-            --exclude='storage/framework/sessions/**' \
-            --exclude='storage/framework/views/**' \
-            --exclude='storage/app/public/**' \
-            -e "ssh -p ${{ vars.SSH_PORT || 22 }} -i ~/.ssh/id_ed25519" \
-            ./ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ vars.SSH_DEPLOY_PATH || 'agence_app' }}/"
-
-      # --- Migrations + mise en cache de la config ---
-      - name: Migrations & optimisation
-        run: |
-          ssh -p ${{ vars.SSH_PORT || 22 }} -i ~/.ssh/id_ed25519 \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
-            "cd ${{ vars.SSH_DEPLOY_PATH || 'agence_app' }} && \
-             php artisan migrate --force && \
-             php artisan config:cache && \
-             php artisan route:cache && \
-             php artisan view:cache"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B deploy
+          git add -f public/build
+          git commit -m "chore: assets compilés depuis ${GITHUB_SHA::7}" --no-verify
+          git push -f origin deploy
