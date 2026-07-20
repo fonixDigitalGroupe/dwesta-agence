@@ -168,7 +168,7 @@
             <div class="wrap">
                 <div class="section-head">
                     <p class="section-label">Ce que fait Karnou Agence</p>
-                    <h2 class="section-title">Tout votre point relais, au même endroit</h2>
+                    <h2 class="section-title" style="font-size: clamp(1.5rem, 2.6vw, 1.9rem);">Nos services</h2>
                     <p class="section-sub">De la réception du colis jusqu'à sa remise au client, avec le suivi et les paiements intégrés.</p>
                 </div>
                 <div class="cards">
