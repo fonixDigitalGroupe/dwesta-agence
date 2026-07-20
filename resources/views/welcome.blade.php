@@ -144,7 +144,6 @@
             <div class="header-inner">
                 <a href="/" class="brand-logo">
                     <img src="{{ asset('images/logo.png') }}" alt="Karnou Agence">
-                    <span class="txt">Karnou <span>Agence</span></span>
                 </a>
                 <nav class="header-nav">
                     <a href="#services" class="nav-link">Services</a>
