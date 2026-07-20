@@ -38,9 +38,9 @@
             </div>
 
             {{-- Formulaire à droite --}}
-            <div class="flex items-center justify-center bg-gray-50 px-6 py-12">
+            <div class="flex items-center justify-center bg-white px-6 py-12">
                 <div class="w-full max-w-md">
-                    <div class="rounded-lg bg-white p-8 shadow-sm ring-1 ring-gray-100 sm:p-10">
+                    <div class="rounded-lg bg-white p-8 sm:p-10">
                         {{ $slot }}
                     </div>
                 </div>
