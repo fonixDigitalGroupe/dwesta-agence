@@ -67,16 +67,4 @@
             </button>
         </div>
     </form>
-
-    {{-- Nouveau client ? (style Karnou : bloc séparé création de compte) --}}
-    @if (Route::has('register'))
-        <div class="mt-8 border-t border-gray-100 pt-6">
-            <h3 class="text-base font-bold text-gray-900">Nouveau sur la plateforme ?</h3>
-            <p class="mt-1 text-sm text-gray-500">Créez votre compte agence pour accéder à votre espace.</p>
-            <a href="{{ route('register') }}"
-               class="mt-4 inline-flex items-center justify-center rounded border border-brand-blue px-8 py-2.5 text-sm font-bold text-brand-blue transition hover:bg-brand-blue hover:text-white">
-                Créer un compte
-            </a>
-        </div>
-    @endif
 </x-guest-layout>
