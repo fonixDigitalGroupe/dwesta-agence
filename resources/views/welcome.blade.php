@@ -4,8 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#FF6B00">
-        <title>Karnou Agence - Réseau de Points Relais</title>
-        <!-- Fonts — same as Karnou Marketplace -->
+        <title>Karnou Agence — Réseau de points relais & logistique</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -13,330 +12,303 @@
 
         <style>
             * { box-sizing: border-box; margin: 0; padding: 0; }
+            html { scroll-behavior: smooth; }
             body {
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-                background-color: #f9fafb;
-                color: #1a1a1a;
-                overflow-x: hidden;
+                background-color: #ffffff; color: #1a1a1a; overflow-x: hidden;
             }
 
             /* ——— TOP BANNER ——— */
             .top-banner {
-                background-color: #FF6B00;
-                height: 38px; width: 100%;
-                display: flex; align-items: center; justify-content: center;
+                background-color: #FF6B00; min-height: 38px; width: 100%;
+                display: flex; align-items: center; justify-content: center; padding: 6px 1rem;
                 position: relative; z-index: 1001;
             }
-            .top-banner p { color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+            .top-banner p { color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; text-align: center; }
 
             /* ——— HEADER ——— */
             .site-header {
-                background-color: rgba(255, 255, 255, 0);
-                backdrop-filter: blur(0px);
-                -webkit-backdrop-filter: blur(0px);
-                border-top: 3px solid #FF6B00;
-                position: fixed;
-                top: 0;
-                width: 100%;
-                z-index: 1000;
-                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                background-color: rgba(255,255,255,0); border-top: 3px solid #FF6B00;
+                position: fixed; top: 38px; width: 100%; z-index: 1000;
+                transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
             }
             .site-header.scrolled {
-                background-color: rgba(255, 255, 255, 0.97);
-                backdrop-filter: blur(20px) saturate(180%);
-                -webkit-backdrop-filter: blur(20px) saturate(180%);
-                box-shadow: 0 1px 0 rgba(241, 245, 249, 0.9), 0 8px 32px rgba(0,0,0,0.05);
+                top: 0; background-color: rgba(255,255,255,0.97);
+                backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.06);
             }
-            .header-inner {
-                max-width: 1400px;
-                margin: 0 auto;
-                padding: 18px 2rem;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
+            .header-inner { max-width: 1300px; margin: 0 auto; padding: 14px 2rem; display: flex; align-items: center; justify-content: space-between; }
+            .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+            .brand-logo img { height: 40px; width: auto; }
+            .brand-logo .txt { font-weight: 900; font-size: 1.2rem; color: #1a1a1a; letter-spacing: -0.5px; }
+            .brand-logo .txt span { color: #FF6B00; }
             .header-nav { display: flex; align-items: center; gap: 2rem; }
-            .nav-link {
-                color: #475569;
-                text-decoration: none;
-                font-size: 0.9rem;
-                font-weight: 550;
-                transition: color 0.3s;
-            }
+            .nav-link { color: #475569; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.3s; }
             .nav-link:hover { color: #FF6B00; }
             .btn-cta {
-                background: #FF6B00;
-                color: #fff !important;
-                border-radius: 8px;
-                font-weight: 650;
-                padding: 10px 24px;
-                font-size: 0.875rem;
-                text-decoration: none;
-                transition: all 0.3s;
+                background: #FF6B00; color: #fff !important; border-radius: 8px; font-weight: 700;
+                padding: 10px 24px; font-size: 0.875rem; text-decoration: none; transition: all 0.3s;
             }
-            .btn-cta:hover { background: #e66000; transform: translateY(-1px); }
-            .btn-outline {
-                padding: 10px 20px;
-                border-radius: 8px;
-                font-size: 0.9rem;
-                font-weight: 600;
-                color: #334155 !important;
-                text-decoration: none;
-                transition: all 0.3s;
-            }
-            .btn-outline:hover { background: #f8fafc; }
+            .btn-cta:hover { background: #e66000; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255,107,0,0.25); }
 
-            /* ——— HERO ——— */
-            .hero {
-                background: #f9fafb; padding: 180px 2rem 120px; text-align: center;
-                position: relative; overflow: hidden;
+            /* ——— HERO BANNER (avec image) ——— */
+            .hero-banner {
+                position: relative; min-height: 92vh; display: flex; align-items: center;
+                padding: 170px 2rem 110px; overflow: hidden;
             }
-            .hero-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+            .hero-banner .bg {
+                position: absolute; inset: 0;
+                background: url('{{ asset('images/login-bg.jpg') }}') center/cover no-repeat;
+                transform: scale(1.05);
+            }
+            .hero-banner .ov {
+                position: absolute; inset: 0;
+                background: linear-gradient(105deg, rgba(0,33,86,0.95) 0%, rgba(0,74,173,0.86) 45%, rgba(0,74,173,0.55) 100%);
+            }
+            .hero-content { position: relative; z-index: 2; max-width: 720px; margin: 0 auto 0 8%; }
             .hero-eyebrow {
-                display: inline-flex; align-items: center; gap: 8px;
-                background: rgba(255, 107, 0, 0.08); color: #FF6B00; font-size: 0.7rem; font-weight: 800;
-                padding: 6px 16px; border-radius: 4px; margin-bottom: 32px; letter-spacing: 1px;
-                text-transform: uppercase;
+                display: inline-flex; align-items: center; gap: 8px; background: rgba(255,107,0,0.9);
+                color: #fff; font-size: 0.7rem; font-weight: 800; padding: 7px 16px; border-radius: 4px;
+                margin-bottom: 28px; letter-spacing: 1px; text-transform: uppercase;
             }
-            .hero h1 {
-                font-size: clamp(3rem, 7vw, 5.2rem); font-weight: 950; color: #1a1a1a;
-                line-height: 0.95; margin-bottom: 28px; letter-spacing: -3px;
+            .hero-content h1 {
+                font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 900; color: #fff;
+                line-height: 1.02; margin-bottom: 24px; letter-spacing: -2px; text-wrap: balance;
             }
-            .hero h1 span.accent { color: #FF6B00; }
-            .hero p { font-size: 1.15rem; color: #4b5563; max-width: 600px; margin: 0 auto 48px; line-height: 1.6; font-weight: 500; }
-            .hero-actions { display: flex; gap: 16px; justify-content: center; }
-            
-            .btn-primary {
-                background: #111827; color: #fff; font-weight: 800; font-size: 0.95rem;
-                padding: 18px 40px; border-radius: 6px; text-decoration: none;
-                border: 1px solid #FF6B00; cursor: pointer; transition: all 0.2s;
+            .hero-content h1 .accent { color: #FF6B00; }
+            .hero-content p { font-size: 1.15rem; color: rgba(255,255,255,0.88); max-width: 560px; margin-bottom: 40px; line-height: 1.6; font-weight: 500; }
+            .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+            .btn-hero-primary {
+                background: #FF6B00; color: #fff; font-weight: 800; font-size: 0.98rem;
+                padding: 16px 38px; border-radius: 8px; text-decoration: none; transition: all 0.2s;
             }
-            .btn-primary:hover { background: #e66000; }
-            .btn-secondary {
-                background: #fff; color: #1a1a1a; font-weight: 800; font-size: 0.95rem;
-                padding: 18px 40px; border-radius: 6px; text-decoration: none;
-                border: 1px solid rgba(0, 0, 0, 0.1); transition: all 0.2s;
+            .btn-hero-primary:hover { background: #e66000; transform: translateY(-2px); box-shadow: 0 12px 28px rgba(255,107,0,0.35); }
+            .btn-hero-ghost {
+                background: rgba(255,255,255,0.08); color: #fff; font-weight: 700; font-size: 0.98rem;
+                padding: 16px 34px; border-radius: 8px; text-decoration: none; border: 1px solid rgba(255,255,255,0.35);
+                transition: all 0.2s; backdrop-filter: blur(4px);
             }
-            .btn-secondary:hover { background: #f9fafb; border-color: rgba(0, 0, 0, 0.2); }
+            .btn-hero-ghost:hover { background: rgba(255,255,255,0.18); }
 
-            /* ——— STATS BAND ——— */
-            .stats-band { background: #f9fafb; padding: 40px 2rem; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; }
-            .stats-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
-            .stat-item { text-align: left; }
-            .stat-item .num { font-size: 1.8rem; font-weight: 950; color: #1a1a1a; letter-spacing: -1px; margin-bottom: 4px; }
-            .stat-item .lbl { font-size: 0.65rem; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 1.5px; }
+            /* ——— PRÉSENTATION / SERVICES ——— */
+            .features { padding: 110px 2rem; background: #111827; color: #fff; }
+            .section-label { font-size: 0.72rem; font-weight: 800; color: #FF6B00; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; text-align: center; }
+            .section-title { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900; color: #fff; letter-spacing: -1.5px; margin-bottom: 18px; text-align: center; }
+            .section-sub { text-align: center; color: rgba(255,255,255,0.6); max-width: 620px; margin: 0 auto 70px; font-size: 1.05rem; line-height: 1.6; }
+            .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+            .feature-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 40px 34px; transition: all 0.3s; }
+            .feature-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); border-color: rgba(255,107,0,0.4); }
+            .feature-icon { width: 52px; height: 52px; background: rgba(255,107,0,0.15); color: #FF6B00; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 26px; }
+            .feature-card h3 { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+            .feature-card p { font-size: 0.95rem; color: rgba(255,255,255,0.62); line-height: 1.7; }
 
-            /* ——— FEATURES ——— */
-            .features { padding: 120px 2rem; background: #111827; color: #fff; }
-            .section-label { font-size: 0.7rem; font-weight: 800; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; text-align: center; }
-            .section-title { font-size: 2.8rem; font-weight: 950; color: #fff; letter-spacing: -1.5px; margin-bottom: 80px; text-align: center; }
-            .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-            .feature-card { 
-                background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); 
-                border-radius: 4px; padding: 48px 40px; 
-            }
-            .feature-icon { 
-                width: 48px; height: 48px; background: rgba(255, 255, 255, 0.1); 
-                border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 32px; 
-            }
-            .feature-card h3 { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 16px; letter-spacing: -0.5px; }
-            .feature-card p { font-size: 0.95rem; color: rgba(255, 255, 255, 0.6); line-height: 1.7; }
+            /* ——— FONCTIONNEMENT ——— */
+            .process { padding: 110px 2rem; background: #ffffff; }
+            .process-grid { max-width: 1050px; margin: 60px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+            .step .step-number { font-size: 3.4rem; font-weight: 900; color: #FF6B00; line-height: 1; margin-bottom: 14px; opacity: 0.9; }
+            .step h3 { font-size: 1.2rem; font-weight: 800; color: #1a1a1a; margin-bottom: 10px; letter-spacing: -0.5px; }
+            .step p { font-size: 0.98rem; color: #4b5563; line-height: 1.7; }
+            .process .section-title, .process .section-label { color: inherit; }
+            .process .section-title { color: #1a1a1a; }
 
-            /* ——— PROCESS ——— */
-            .process { padding: 120px 2rem; background: #fff; }
-            .process-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
-            .step { position: relative; }
-            .step-number { font-size: 4rem; font-weight: 950; color: #f3f4f6; line-height: 1; margin-bottom: 16px; }
-            .step h3 { font-size: 1.25rem; font-weight: 900; color: #1a1a1a; margin-bottom: 12px; letter-spacing: -0.5px; }
-            .step p { font-size: 1rem; color: #4b5563; line-height: 1.7; }
-
-            /* ——— FAQ ——— */
-            .faq { padding: 120px 2rem; background: #f9fafb; border-top: 1px solid #f3f4f6; }
-            .faq-container { max-width: 800px; margin: 0 auto; }
-            .faq-item { background: #fff; border: 1px solid #f3f4f6; margin-bottom: 12px; border-radius: 4px; overflow: hidden; }
-            .faq-question { 
-                padding: 24px 32px; font-weight: 800; font-size: 1rem; cursor: pointer; 
-                display: flex; justify-content: space-between; align-items: center;
-            }
-            .faq-answer { padding: 0 32px 24px; color: #4b5563; font-size: 0.95rem; line-height: 1.7; display: none; }
-            .faq-item.active .faq-answer { display: block; }
-            .faq-item.active .faq-question { color: #FF6B00; }
+            /* ——— CTA BAND ——— */
+            .cta-band { background: #004aad; color: #fff; padding: 80px 2rem; text-align: center; }
+            .cta-band h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; }
+            .cta-band p { color: rgba(255,255,255,0.85); max-width: 540px; margin: 0 auto 32px; font-size: 1.05rem; }
 
             /* ——— FOOTER ——— */
-            .site-footer { background: #ffffff; color: #1a1a1a; padding: 100px 2rem 50px; border-top: 1px solid #f3f4f6; }
-            .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 80px; }
-            .footer-logo { font-size: 1.6rem; font-weight: 950; letter-spacing: -1px; margin-bottom: 24px; }
-            .footer-desc { font-size: 0.95rem; color: #6b7280; line-height: 1.7; max-width: 320px; }
-            .footer-col h4 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; color: #1a1a1a; }
+            .site-footer { background: #0b1120; color: #fff; padding: 80px 2rem 40px; }
+            .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; }
+            .footer-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 18px; }
+            .footer-logo span { color: #FF6B00; }
+            .footer-desc { font-size: 0.95rem; color: #9aa4b2; line-height: 1.7; max-width: 340px; }
+            .footer-col h4 { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: #fff; }
             .footer-col ul { list-style: none; }
-            .footer-col ul li { margin-bottom: 14px; }
-            .footer-col ul li a { color: #6b7280; text-decoration: none; font-size: 0.95rem; transition: color 0.2s; font-weight: 500; }
+            .footer-col ul li { margin-bottom: 12px; }
+            .footer-col ul li a { color: #9aa4b2; text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
             .footer-col ul li a:hover { color: #FF6B00; }
-            .footer-bottom { 
-                max-width: 1200px; margin: 80px auto 0; padding-top: 40px; 
-                border-top: 1px solid #f3f4f6; display: flex; justify-content: space-between; 
-                font-size: 0.85rem; color: #9ca3af; font-weight: 500;
-            }
+            .footer-bottom { max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.85rem; color: #6b7280; }
 
-            .form-input-box {
-                width: 100%;
-                padding: 1rem 0.6rem 0.25rem 0.6rem;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 1rem;
-                outline: none;
-                transition: border-color 0.2s;
-                background-color: #ffffff;
-            }
-            .form-input-box:focus { border-color: #ff4e00; outline: none; box-shadow: none !important; border-radius: 4px; }
-            .input-container { position: relative; margin-bottom: 1.25rem; }
-            .floating-label {
-                position: absolute;
-                left: 0.6rem;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #999;
-                font-size: 1rem;
-                transition: all 0.2s ease-out;
-                pointer-events: none;
-                z-index: 10;
-            }
-            .form-input-box:focus + .floating-label,
-            .form-input-box:not(:placeholder-shown) + .floating-label {
-                top: 0.35rem;
-                transform: translateY(0);
-                font-size: 0.75rem;
-                color: #888;
-            }
-            .toggle-password {
-                position: absolute;
-                right: 1rem;
-                top: 50%;
-                transform: translateY(-50%);
-                cursor: pointer;
-                color: #666;
-            }
-            .btn-black {
-                width: 100%;
-                background: #004aad;
-                color: white;
-                border: none;
-                padding: 0.5rem 2rem;
-                border-radius: 4px;
-                font-size: 1rem;
-                font-weight: bold;
-                cursor: pointer;
-                margin-top: 1rem;
-                transition: background 0.2s;
-            }
-            .btn-black:hover { background: #003a8a; }
-            .auth-card {
-                background: white;
-                padding: 1.5rem 2.5rem 2.5rem 2.5rem;
-                border: 1px solid #f0f0f0;
-                border-radius: 4px;
-                box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.02);
-                max-width: 450px;
-                margin: 0 auto;
-                text-align: left;
-            }
-            .auth-title {
-                font-size: 1.25rem;
-                font-weight: bold;
-                margin-bottom: 1.5rem;
-                color: #1a1a1a;
-            }
-            .forgot-password {
-                display: block;
-                font-size: 0.9rem;
-                color: #0066cc;
-                text-decoration: none;
-                margin-top: -0.5rem;
-                margin-bottom: 1rem;
-            }
             @media (max-width: 1024px) {
-                .features-grid, .process-grid, .footer-inner { grid-template-columns: 1fr; gap: 40px; }
-                .stats-inner { grid-template-columns: repeat(2, 1fr); }
+                .features-grid, .process-grid, .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+                .hero-content { margin: 0 auto; text-align: center; }
+                .hero-actions { justify-content: center; }
+            }
+            @media (max-width: 640px) {
+                .header-nav .nav-link { display: none; }
+                .hero-banner .ov { background: linear-gradient(160deg, rgba(0,33,86,0.95), rgba(0,74,173,0.85)); }
             }
         </style>
     </head>
     <body>
-        <!-- Header Removed -->
+        <!-- Bandeau haut -->
+        <div class="top-banner"><p>Réseau de points relais Karnou · Livraison du dernier kilomètre en Afrique</p></div>
 
-        <!-- Hero / Access Point -->
-        <section class="hero" style="min-height: 80vh; display: flex; align-items: center; justify-content: center;">
+        <!-- Header -->
+        <header class="site-header" id="header">
+            <div class="header-inner">
+                <a href="/" class="brand-logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="Karnou Agence">
+                    <span class="txt">Karnou <span>Agence</span></span>
+                </a>
+                <nav class="header-nav">
+                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#fonctionnement" class="nav-link">Fonctionnement</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="btn-cta">Mon tableau de bord</a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn-cta">Se connecter</a>
+                    @endauth
+                </nav>
+            </div>
+        </header>
+
+        <!-- Bannière (hero) -->
+        <section class="hero-banner">
+            <div class="bg"></div>
+            <div class="ov"></div>
             <div class="hero-content">
-                @auth
-                    <div class="hero-eyebrow">Terminal Opérationnel Actif</div>
-                    <h1>
-                        Bienvenue,<br>
-                        <span class="accent">{{ Auth::user()->name }}</span>
-                    </h1>
-                    <p>Votre terminal de gestion est prêt pour les opérations de flux.</p>
-                    <div class="hero-actions">
-                        <a href="{{ route('dashboard') }}" class="btn-primary">Entrer dans le Dashboard →</a>
-                    </div>
-                @else
-                    <!-- Professional Enterprise Login Form matching Marketplace -->
-                    <div class="auth-card">
-                        <h2 class="auth-title">Accès Agence</h2>
-                        
-                        @if(session('error'))
-                            <div style="background-color: #fff5f5; color: #bf0000; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
-                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                </svg>
-                                {{ session('error') }}
-                            </div>
-                        @endif
-
-                        <form method="POST" action="{{ route('login') }}" class="login-form">
-                            @csrf
-                            <div class="input-container">
-                                <input type="email" id="email" name="email" placeholder=" " class="form-input-box" required autofocus>
-                                <label class="floating-label">E-mail (Identifiant Agence)</label>
-                            </div>
-                            
-                            <div class="input-container">
-                                <input type="password" id="password" name="password" placeholder=" " class="form-input-box" required>
-                                <label class="floating-label">Mot de passe secret</label>
-                                <span class="toggle-password" onclick="document.getElementById('password').type = document.getElementById('password').type === 'password' ? 'text' : 'password'">
-                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            </div>
-                            
-                            @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}" class="forgot-password">J'ai oublié mon mot de passe</a>
-                            @endif
-                            
-                            <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" name="remember" id="remember" style="cursor: pointer;">
-                                <label for="remember" style="font-size: 0.85rem; color: #4b5563; cursor: pointer;">Mémoriser ce terminal</label>
-                            </div>
-                            
-                            <button type="submit" class="btn-black">
-                                Me connecter
-                            </button>
-                        </form>
-                    </div>
-                @endauth
+                <span class="hero-eyebrow">Portail Agence &amp; Points Relais</span>
+                <h1>La logistique du <span class="accent">dernier kilomètre</span>, simplifiée.</h1>
+                <p>
+                    Karnou Agence connecte vos points relais, vos livreurs et vos clients.
+                    Réceptionnez, suivez et remettez les colis en toute sécurité, depuis une seule plateforme.
+                </p>
+                <div class="hero-actions">
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="btn-hero-primary">Accéder à mon espace →</a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn-hero-primary">Se connecter</a>
+                    @endauth
+                    <a href="#services" class="btn-hero-ghost">Découvrir les services</a>
+                </div>
             </div>
         </section>
 
-        <!-- Footer Removed -->
+        <!-- Présentation / Services -->
+        <section class="features" id="services">
+            <p class="section-label">Ce que fait Karnou Agence</p>
+            <h2 class="section-title">Tout votre point relais, au même endroit</h2>
+            <p class="section-sub">
+                Une plateforme pensée pour les agences et points relais africains : de la réception du colis
+                jusqu'à sa remise au client, avec le suivi et les paiements intégrés.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    </div>
+                    <h3>Réception & remise de colis</h3>
+                    <p>Scannez les colis à l'arrivée et à la remise. Chaque étape est tracée par QR code et token de suivi sécurisé.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    </div>
+                    <h3>Suivi des livraisons</h3>
+                    <p>Visualisez le cycle de vie de chaque commande : payé, prêt, en route, disponible au relais, livré.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    </div>
+                    <h3>Paiements & commissions</h3>
+                    <p>Séquestre sécurisé des fonds, suivi des commissions et des paiements — libérés à la validation de la livraison.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <h3>Gestion des litiges</h3>
+                    <p>Bloquez un paiement en cas de problème et traitez les litiges directement depuis votre espace.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </div>
+                    <h3>Statistiques & journal</h3>
+                    <p>Tableau de bord clair, journal des opérations et statistiques pour piloter l'activité de votre agence.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3>Multi-utilisateurs</h3>
+                    <p>Gérez les membres de votre agence et leurs accès, chacun avec son rôle et ses permissions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fonctionnement -->
+        <section class="process" id="fonctionnement">
+            <p class="section-label">Fonctionnement</p>
+            <h2 class="section-title">Trois étapes, aucun colis perdu</h2>
+            <div class="process-grid">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <h3>Le colis arrive</h3>
+                    <p>À réception au point relais, scannez le colis : il est enregistré et le client est notifié.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <h3>Vous stockez & suivez</h3>
+                    <p>Le colis est en stock, prêt à être retiré. Son statut est visible en temps réel dans votre espace.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <h3>Remise sécurisée</h3>
+                    <p>Le client se présente, vous scannez le QR code : la remise est validée et le paiement libéré.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appel à l'action -->
+        <section class="cta-band" id="contact">
+            <h2>Prêt à gérer votre point relais&nbsp;?</h2>
+            <p>Connectez-vous à votre espace Karnou Agence pour piloter vos colis, vos livraisons et vos paiements.</p>
+            @auth
+                <a href="{{ route('dashboard') }}" class="btn-hero-primary">Accéder à mon espace →</a>
+            @else
+                <a href="{{ route('login') }}" class="btn-hero-primary">Se connecter</a>
+            @endauth
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div>
+                    <div class="footer-logo">Karnou <span>Agence</span></div>
+                    <p class="footer-desc">
+                        Le portail des points relais et agences du réseau Karnou. Réception, suivi et
+                        remise des colis, paiements sécurisés — la logistique du dernier kilomètre, simplifiée.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Plateforme</h4>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#fonctionnement">Fonctionnement</a></li>
+                        <li><a href="{{ route('login') }}">Se connecter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Réseau Karnou</h4>
+                    <ul>
+                        <li><a href="#">Marketplace</a></li>
+                        <li><a href="#">Logistique</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">© {{ date('Y') }} Karnou Agence. Tous droits réservés.</div>
+        </footer>
 
         <script>
-            // Ghost-to-Glass Header
-            window.addEventListener('scroll', function() {
-                const header = document.getElementById('header');
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 30) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
             });
         </script>
     </body>
