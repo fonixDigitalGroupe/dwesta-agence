@@ -23,7 +23,7 @@
             .site-header { background: #fff; position: sticky; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid #ececf0; }
             .header-inner { display: flex; align-items: center; gap: 26px; padding: 13px 0; }
             .brand-logo { flex: none; display: flex; align-items: center; text-decoration: none; }
-            .brand-logo img { height: 40px; width: auto; }
+            .brand-logo img { height: 30px; width: auto; }
             .search { flex: 1; max-width: 540px; display: flex; align-items: center; background: #f2f4f7; border: 1px solid #e6e8ec; border-radius: 40px; padding: 4px 5px 4px 18px; }
             .search input { flex: 1; border: 0; background: transparent; outline: none; font-size: 0.92rem; padding: 9px 6px; color: #12141a; }
             .search input::placeholder { color: #9298a4; }
