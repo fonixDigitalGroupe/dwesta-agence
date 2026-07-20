@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,9 +23,9 @@
                 <div class="absolute inset-0 bg-cover bg-center scale-105"
                      style="background-image:url('{{ asset('images/login-bg.jpg') }}');"></div>
 
-                {{-- Dégradé aux tons africains (vert émeraude → or → terre) pour la lisibilité --}}
+                {{-- Dégradé aux couleurs de la marque (bleu → bleu profond → orange) --}}
                 <div class="absolute inset-0"
-                     style="background:linear-gradient(135deg, rgba(4,47,46,0.92) 0%, rgba(6,78,59,0.80) 45%, rgba(180,83,9,0.78) 100%);"></div>
+                     style="background:linear-gradient(135deg, rgba(0,49,122,0.94) 0%, rgba(0,74,173,0.82) 50%, rgba(255,107,0,0.80) 100%);"></div>
 
                 {{-- Motif géométrique subtil (inspiration textile) --}}
                 <div class="absolute inset-0 opacity-[0.12]"
@@ -49,15 +49,15 @@
 
                     <ul class="mt-8 space-y-3 text-sm text-white/90">
                         <li class="flex items-center gap-3">
-                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-400/20 text-amber-300">✓</span>
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-orange/20 text-brand-orange">✓</span>
                             Gestion centralisée de vos annonces
                         </li>
                         <li class="flex items-center gap-3">
-                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-400/20 text-amber-300">✓</span>
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-orange/20 text-brand-orange">✓</span>
                             Suivi des points relais et livraisons
                         </li>
                         <li class="flex items-center gap-3">
-                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-400/20 text-amber-300">✓</span>
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-orange/20 text-brand-orange">✓</span>
                             Paiements sécurisés & séquestre
                         </li>
                     </ul>
