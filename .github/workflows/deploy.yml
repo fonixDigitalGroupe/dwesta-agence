@@ -1,13 +1,13 @@
-name: Deploy (cPanel FTP)
+name: Deploy (cPanel SSH)
 
-# Déploiement automatique vers l'hébergement mutualisé cPanel.
-# Se déclenche à chaque push sur la branche principale, ou manuellement.
+# Déploiement automatique vers l'hébergement cPanel via SSH.
+# À chaque push sur master : build (Composer + Vite) dans le runner,
+# puis envoi des fichiers en SSH (rsync) et exécution des migrations.
 on:
   push:
     branches: [master]
   workflow_dispatch:
 
-# Un seul déploiement à la fois : un nouveau push annule celui en cours.
 concurrency:
   group: deploy-production
   cancel-in-progress: true
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      # --- PHP / Composer (dépendances de production uniquement) ---
+      # --- PHP / Composer (dépendances de production) ---
       - name: Installer PHP 8.3
         uses: shivammathur/setup-php@v2
         with:
@@ -29,13 +29,6 @@ jobs:
           extensions: mbstring, bcmath, pdo, pdo_mysql, intl, zip, gd
           tools: composer:v2
           coverage: none
-
-      - name: Cache Composer
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
-          restore-keys: composer-
 
       - name: composer install (prod)
         run: composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress
@@ -53,37 +46,42 @@ jobs:
       - name: Compiler les assets (vite build)
         run: npm run build
 
-      # --- Déploiement FTP ---
-      # Les identifiants proviennent des "Secrets" du dépôt GitHub.
-      # dangerous-clean-slate est DÉSACTIVÉ : les fichiers du serveur non
-      # présents ici (ex: .env, storage/logs, uploads) ne sont PAS supprimés.
-      - name: Déploiement FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
-          port: ${{ vars.FTP_PORT || 21 }}
-          # Répertoire de l'application sur le serveur (PAS public_html).
-          # Ex: /dwesta-agence/  (défini via la variable FTP_SERVER_DIR)
-          server-dir: ${{ vars.FTP_SERVER_DIR }}
-          local-dir: ./
-          # Fichiers à NE PAS envoyer / ne pas toucher sur le serveur.
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .github/**
-            tests/**
-            .editorconfig
-            .env
-            .env.*
-            phpunit.xml
-            README.md
-            PROJECT_OVERVIEW.md
-            DEPLOYMENT.md
-            storage/logs/**
-            storage/framework/cache/data/**
-            storage/framework/sessions/**
-            storage/framework/views/**
+      # --- Préparer la connexion SSH ---
+      - name: Configurer la clé SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ vars.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      # --- Envoi des fichiers en SSH (rsync) ---
+      # Le chemin cible est relatif au dossier home du compte SSH.
+      # PAS de --delete : les fichiers du serveur absents ici (.env, uploads,
+      # logs) ne sont jamais supprimés.
+      - name: Déploiement rsync
+        run: |
+          rsync -az --no-perms --no-owner --no-group \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='storage/logs/**' \
+            --exclude='storage/framework/cache/data/**' \
+            --exclude='storage/framework/sessions/**' \
+            --exclude='storage/framework/views/**' \
+            --exclude='storage/app/public/**' \
+            -e "ssh -p ${{ vars.SSH_PORT || 22 }} -i ~/.ssh/id_ed25519" \
+            ./ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ vars.SSH_DEPLOY_PATH || 'agence_app' }}/"
+
+      # --- Migrations + mise en cache de la config ---
+      - name: Migrations & optimisation
+        run: |
+          ssh -p ${{ vars.SSH_PORT || 22 }} -i ~/.ssh/id_ed25519 \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "cd ${{ vars.SSH_DEPLOY_PATH || 'agence_app' }} && \
+             php artisan migrate --force && \
+             php artisan config:cache && \
+             php artisan route:cache && \
+             php artisan view:cache"
