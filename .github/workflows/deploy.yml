@@ -1,0 +1,89 @@
+name: Deploy (cPanel FTP)
+
+# Déploiement automatique vers l'hébergement mutualisé cPanel.
+# Se déclenche à chaque push sur la branche principale, ou manuellement.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Un seul déploiement à la fois : un nouveau push annule celui en cours.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # --- PHP / Composer (dépendances de production uniquement) ---
+      - name: Installer PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, bcmath, pdo, pdo_mysql, intl, zip, gd
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: composer install (prod)
+        run: composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-progress
+
+      # --- Node / Vite (compilation des assets) ---
+      - name: Installer Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: npm ci
+        run: npm ci
+
+      - name: Compiler les assets (vite build)
+        run: npm run build
+
+      # --- Déploiement FTP ---
+      # Les identifiants proviennent des "Secrets" du dépôt GitHub.
+      # dangerous-clean-slate est DÉSACTIVÉ : les fichiers du serveur non
+      # présents ici (ex: .env, storage/logs, uploads) ne sont PAS supprimés.
+      - name: Déploiement FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          port: ${{ vars.FTP_PORT || 21 }}
+          # Répertoire de l'application sur le serveur (PAS public_html).
+          # Ex: /dwesta-agence/  (défini via la variable FTP_SERVER_DIR)
+          server-dir: ${{ vars.FTP_SERVER_DIR }}
+          local-dir: ./
+          # Fichiers à NE PAS envoyer / ne pas toucher sur le serveur.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .github/**
+            tests/**
+            .editorconfig
+            .env
+            .env.*
+            phpunit.xml
+            README.md
+            PROJECT_OVERVIEW.md
+            DEPLOYMENT.md
+            storage/logs/**
+            storage/framework/cache/data/**
+            storage/framework/sessions/**
+            storage/framework/views/**
