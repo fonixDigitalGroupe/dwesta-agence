@@ -9,21 +9,79 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
+        <div class="min-h-screen grid lg:grid-cols-2">
+
+            {{-- ===== Panneau visuel (gauche) : image d'entreprise africaine ===== --}}
+            <div class="relative hidden lg:flex flex-col justify-between p-12 text-white overflow-hidden">
+                {{-- Photo de fond : déposez votre image dans public/images/login-bg.jpg --}}
+                <div class="absolute inset-0 bg-cover bg-center scale-105"
+                     style="background-image:url('{{ asset('images/login-bg.jpg') }}');"></div>
+
+                {{-- Dégradé aux tons africains (vert émeraude → or → terre) pour la lisibilité --}}
+                <div class="absolute inset-0"
+                     style="background:linear-gradient(135deg, rgba(4,47,46,0.92) 0%, rgba(6,78,59,0.80) 45%, rgba(180,83,9,0.78) 100%);"></div>
+
+                {{-- Motif géométrique subtil (inspiration textile) --}}
+                <div class="absolute inset-0 opacity-[0.12]"
+                     style="background-image:radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size:22px 22px;"></div>
+
+                {{-- Marque --}}
+                <div class="relative z-10 flex items-center gap-3">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-11 w-11 rounded-lg object-contain bg-white/10 p-1 backdrop-blur">
+                    <span class="text-xl font-semibold tracking-tight">{{ config('app.name', 'Dwesta') }}</span>
+                </div>
+
+                {{-- Message principal --}}
+                <div class="relative z-10 max-w-md">
+                    <h1 class="text-4xl font-bold leading-tight tracking-tight">
+                        Votre portail agence,<br>en toute confiance.
+                    </h1>
+                    <p class="mt-4 text-white/80 leading-relaxed">
+                        Gérez vos annonces, vos points relais et vos clients depuis une plateforme
+                        pensée pour les professionnels africains.
+                    </p>
+
+                    <ul class="mt-8 space-y-3 text-sm text-white/90">
+                        <li class="flex items-center gap-3">
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-400/20 text-amber-300">✓</span>
+                            Gestion centralisée de vos annonces
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-400/20 text-amber-300">✓</span>
+                            Suivi des points relais et livraisons
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-400/20 text-amber-300">✓</span>
+                            Paiements sécurisés & séquestre
+                        </li>
+                    </ul>
+                </div>
+
+                {{-- Pied --}}
+                <div class="relative z-10 text-xs text-white/60">
+                    © {{ date('Y') }} {{ config('app.name', 'Dwesta') }}. Tous droits réservés.
+                </div>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+            {{-- ===== Formulaire (droite) ===== --}}
+            <div class="flex items-center justify-center bg-gray-50 px-6 py-12 sm:px-12">
+                <div class="w-full max-w-md">
+                    {{-- Logo visible sur mobile (où le panneau de gauche est masqué) --}}
+                    <div class="mb-8 flex items-center gap-3 lg:hidden">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-10 w-10 object-contain">
+                        <span class="text-lg font-semibold text-gray-900">{{ config('app.name', 'Dwesta') }}</span>
+                    </div>
+
+                    <div class="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-100 sm:p-10">
+                        {{ $slot }}
+                    </div>
+                </div>
             </div>
         </div>
     </body>
