@@ -24,11 +24,13 @@
             .header-inner { display: flex; align-items: center; gap: 26px; padding: 13px 0; }
             .brand-logo { flex: none; display: flex; align-items: center; text-decoration: none; }
             .brand-logo img { height: 30px; width: auto; }
-            .search { flex: 1; max-width: 540px; display: flex; align-items: center; background: #f2f4f7; border: 1px solid #e6e8ec; border-radius: 40px; padding: 4px 5px 4px 18px; }
-            .search input { flex: 1; border: 0; background: transparent; outline: none; font-size: 0.92rem; padding: 9px 6px; color: #12141a; }
-            .search input::placeholder { color: #9298a4; }
-            .search button { border: 0; background: #FF6B00; color: #fff; border-radius: 40px; padding: 9px 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background .2s; }
-            .search button:hover { background: #e66000; }
+            /* Barre de recherche — style Karnou Marketplace */
+            .search { flex: 1; max-width: 620px; display: flex; align-items: center; }
+            .search-field { flex: 1; display: flex; border: 1px solid #eeeeee; border-radius: 8px; overflow: hidden; background-color: #eeeeee; }
+            .search-input { flex: 1; padding: 0.75rem 1rem; border: none; font-size: 0.98rem; outline: none; background-color: #eeeeee; color: #12141a; }
+            .search-input::placeholder { color: #8a90a0; }
+            .search-button { background-color: #FF6B00; color: #fff; border: none; border-left: 6px solid #fff; padding: 0 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color .2s; }
+            .search-button:hover { background-color: #e66000; }
             .header-right { flex: none; display: flex; align-items: center; gap: 1.5rem; margin-left: auto; }
             .nav-link { color: #3d4351; text-decoration: none; font-size: 0.92rem; font-weight: 600; transition: color .2s; }
             .nav-link:hover { color: #FF6B00; }
@@ -119,9 +121,14 @@
                 </a>
 
                 <form class="search" action="{{ route('login') }}" method="get" role="search">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9298a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" name="q" placeholder="Suivre un colis, un numéro de suivi…">
-                    <button type="submit">Rechercher</button>
+                    <div class="search-field">
+                        <input type="text" name="q" class="search-input" placeholder="Suivre un colis, un numéro de suivi…" autocomplete="off">
+                        <button type="submit" class="search-button" aria-label="Rechercher">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </form>
 
                 <div class="header-right">
