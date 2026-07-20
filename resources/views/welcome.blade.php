@@ -28,14 +28,9 @@
 
             /* ——— HEADER ——— */
             .site-header {
-                background-color: rgba(255,255,255,0); border-top: 3px solid #FF6B00;
-                position: fixed; top: 38px; width: 100%; z-index: 1000;
-                transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-            }
-            .site-header.scrolled {
-                top: 0; background-color: rgba(255,255,255,0.97);
-                backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
-                box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+                background-color: #ffffff; border-top: 3px solid #FF6B00;
+                position: sticky; top: 0; width: 100%; z-index: 1000;
+                box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 6px 24px rgba(0,0,0,0.05);
             }
             .header-inner { max-width: 1300px; margin: 0 auto; padding: 14px 2rem; display: flex; align-items: center; justify-content: space-between; }
             .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
@@ -53,8 +48,8 @@
 
             /* ——— HERO BANNER (avec image) ——— */
             .hero-banner {
-                position: relative; min-height: 92vh; display: flex; align-items: center;
-                padding: 170px 2rem 110px; overflow: hidden;
+                position: relative; min-height: 88vh; display: flex; align-items: center;
+                padding: 90px 2rem 110px; overflow: hidden;
             }
             .hero-banner .bg {
                 position: absolute; inset: 0;
@@ -303,13 +298,5 @@
             </div>
             <div class="footer-bottom">© {{ date('Y') }} Karnou Agence. Tous droits réservés.</div>
         </footer>
-
-        <script>
-            const header = document.getElementById('header');
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 30) header.classList.add('scrolled');
-                else header.classList.remove('scrolled');
-            });
-        </script>
     </body>
 </html>
