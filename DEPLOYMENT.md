@@ -5,48 +5,51 @@ Déploiement automatique via **GitHub Actions** vers un hébergement mutualisé 
 
 ---
 
-## 1. Structure des dossiers sur le serveur
+## 1. Structure des dossiers sur le serveur (configuration retenue)
+
+Cible : **domaine.com/agence** — Terminal cPanel disponible.
 
 ⚠️ **Ne jamais mettre l'application Laravel entière dans `public_html`** (le `.env`, la base,
-le code seraient exposés publiquement).
-
-Structure recommandée :
+le code seraient exposés publiquement). Le code reste hors de `public_html`, et
+`public_html/agence` est un **lien symbolique** vers le dossier `public/` de Laravel :
 
 ```
 /home/<compte>/
-├── dwesta-agence/        ← l'application Laravel (déployée par GitHub Actions)
+├── agence_app/           ← code Laravel (déployé par FTP, NON public)
 │   ├── app/  bootstrap/  config/  routes/  vendor/  ...
 │   └── public/           ← contient index.php + build des assets
-└── public_html/          ← racine web du domaine
+└── public_html/
+    └── agence  ──►  lien symbolique vers ~/agence_app/public
 ```
 
-Deux options pour que le domaine serve le dossier `public/` :
+Dans le **Terminal cPanel**, créez le lien symbolique (le dossier `public_html/agence`
+que vous aviez créé est remplacé par le lien) :
 
-**Option A — Symlink (préférée, si le terminal cPanel est disponible)**
 ```bash
-rm -rf ~/public_html
-ln -s ~/dwesta-agence/public ~/public_html
+rm -rf ~/public_html/agence          # supprime le dossier vide créé manuellement
+ln -s ~/agence_app/public ~/public_html/agence
+ls -l ~/public_html/agence           # doit afficher: agence -> /home/<compte>/agence_app/public
 ```
 
-**Option B — Sous-domaine / docroot personnalisé**
-Dans cPanel → *Domaines*, faites pointer la racine du domaine (ou sous-domaine)
-vers `/home/<compte>/dwesta-agence/public`.
-
-> Le répertoire cible du déploiement FTP est donc `/dwesta-agence` (voir §3, variable `FTP_SERVER_DIR`).
+> Le répertoire cible du déploiement FTP est `/agence_app/`
+> (déjà défini dans la variable GitHub `FTP_SERVER_DIR`, voir §3).
 
 ---
 
 ## 2. Créer le `.env` de production (une seule fois)
 
 Le fichier `.env` **n'est jamais** envoyé par Git/FTP (il contient des secrets).
-Créez-le manuellement via **cPanel → Gestionnaire de fichiers** dans `~/dwesta-agence/.env` :
+Créez-le manuellement via **cPanel → Gestionnaire de fichiers** dans `~/agence_app/.env` :
 
 ```env
 APP_NAME="Dwesta Agence"
 APP_ENV=production
 APP_KEY=                      # généré à l'étape 4
 APP_DEBUG=false
-APP_URL=https://votre-domaine.com
+APP_URL=https://votre-domaine.com/agence
+# IMPORTANT (site servi dans un sous-dossier /agence) : sans ceci, les assets
+# Vite (CSS/JS) seraient cherchés à la racine du domaine et renverraient 404.
+ASSET_URL=https://votre-domaine.com/agence
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -78,21 +81,22 @@ Dépôt → **Settings → Secrets and variables → Actions**.
 | `FTP_USERNAME` | identifiant FTP cPanel |
 | `FTP_PASSWORD` | mot de passe FTP |
 
-**Variables** (onglet *Variables*) :
-| Nom | Valeur | Défaut |
-|-----|--------|--------|
-| `FTP_SERVER_DIR` | `/dwesta-agence/` (dossier de l'app) | — (requis) |
-| `FTP_PROTOCOL` | `ftps` (recommandé) ou `ftp` | `ftps` |
-| `FTP_PORT` | port FTP | `21` |
+**Variables** (onglet *Variables*) — ✅ **déjà configurées** :
+| Nom | Valeur |
+|-----|--------|
+| `FTP_SERVER_DIR` | `/agence_app/` |
+| `FTP_PROTOCOL` | `ftps` |
+| `FTP_PORT` | `21` |
 
-> Créez un **compte FTP dédié** dans cPanel pointant sur `~/dwesta-agence` plutôt que
-> d'utiliser le compte FTP principal, c'est plus sûr.
+> Si vous créez un **compte FTP dédié** dans cPanel pointant directement sur `~/agence_app`,
+> alors les chemins FTP deviennent relatifs à ce dossier : mettez `FTP_SERVER_DIR` à `/`.
+> Avec le compte FTP principal (home = `/home/<compte>`), gardez `/agence_app/`.
 
 ---
 
 ## 4. Commandes à lancer après le PREMIER déploiement
 
-Via **cPanel → Terminal** (ou SSH si disponible), dans `~/dwesta-agence` :
+Via **cPanel → Terminal** (ou SSH si disponible), dans `~/agence_app` :
 
 ```bash
 php artisan key:generate --force      # génère APP_KEY dans .env
@@ -116,7 +120,7 @@ Le push déclenche GitHub Actions automatiquement. **Après** l'upload FTP,
 si vous avez de nouvelles migrations, relancez dans le Terminal cPanel :
 
 ```bash
-cd ~/dwesta-agence
+cd ~/agence_app
 php artisan migrate --force
 php artisan config:cache && php artisan route:cache && php artisan view:cache
 ```
