@@ -1,9 +1,6 @@
 <x-guest-layout>
-    <!-- En-tête -->
-    <div class="mb-8">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Bon retour 👋</h2>
-        <p class="mt-1 text-sm text-gray-500">Connectez-vous pour accéder à votre espace agence.</p>
-    </div>
+    {{-- Titre de section (style Karnou : titre + filet sous le texte) --}}
+    <h2 class="mb-6 border-b border-gray-100 pb-3 text-lg font-bold text-gray-900">Identification</h2>
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -11,50 +8,75 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
-        <!-- Email Address -->
+        {{-- E-mail (label flottant) --}}
         <div>
-            <x-input-label for="email" :value="__('Adresse e-mail')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="vous@exemple.com" />
+            <div class="relative">
+                <input id="email" name="email" type="email" placeholder=" " required autofocus autocomplete="username" value="{{ old('email') }}"
+                       class="peer w-full rounded border border-gray-300 bg-white px-3 pb-2 pt-5 text-sm text-gray-900 outline-none transition focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10" />
+                <label for="email"
+                       class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all
+                              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:font-semibold peer-focus:text-brand-blue
+                              peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-gray-700">
+                    E-mail
+                </label>
+            </div>
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
+        {{-- Mot de passe (label flottant + œil afficher/masquer) --}}
         <div>
-            <div class="flex items-center justify-between">
-                <x-input-label for="password" :value="__('Mot de passe')" />
-                @if (Route::has('password.request'))
-                    <a class="text-sm font-medium text-brand-blue hover:text-brand-blue-dark" href="{{ route('password.request') }}">
-                        {{ __('Mot de passe oublié ?') }}
-                    </a>
-                @endif
+            <div class="relative">
+                <input id="password" name="password" type="password" placeholder=" " required autocomplete="current-password"
+                       class="peer w-full rounded border border-gray-300 bg-white px-3 pb-2 pt-5 pr-11 text-sm text-gray-900 outline-none transition focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10" />
+                <label for="password"
+                       class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all
+                              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:font-semibold peer-focus:text-brand-blue
+                              peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-gray-700">
+                    Mot de passe
+                </label>
+                <button type="button" title="Afficher / masquer"
+                        onclick="const p=document.getElementById('password'); p.type = p.type==='password' ? 'text' : 'password';"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center rounded p-1.5 text-gray-500 transition hover:bg-brand-blue/5 hover:text-brand-blue">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
             </div>
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password"
-                            placeholder="••••••••" />
-
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Remember Me -->
-        <label for="remember_me" class="inline-flex items-center">
-            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-brand-blue shadow-sm focus:ring-brand-blue" name="remember">
-            <span class="ms-2 text-sm text-gray-600">{{ __('Se souvenir de moi') }}</span>
+        {{-- Mot de passe oublié (orange, style Karnou) --}}
+        @if (Route::has('password.request'))
+            <a href="{{ route('password.request') }}" class="inline-block text-sm font-medium text-brand-orange hover:underline">
+                J'ai oublié mon mot de passe
+            </a>
+        @endif
+
+        {{-- Se souvenir de moi --}}
+        <label for="remember_me" class="flex items-center">
+            <input id="remember_me" type="checkbox" name="remember" class="rounded border-gray-300 text-brand-blue shadow-sm focus:ring-brand-blue">
+            <span class="ms-2 text-sm text-gray-600">Rester connecté</span>
         </label>
 
-        <!-- Bouton pleine largeur -->
-        <button type="submit"
-                class="flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-brand-orange to-brand-orange-dark px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2">
-            {{ __('Se connecter') }}
-        </button>
-
-        @if (Route::has('register'))
-            <p class="text-center text-sm text-gray-500">
-                Pas encore de compte ?
-                <a href="{{ route('register') }}" class="font-semibold text-brand-blue hover:text-brand-blue-dark">Créer un compte</a>
-            </p>
-        @endif
+        {{-- Bouton bleu (style Karnou) --}}
+        <div>
+            <button type="submit"
+                    class="inline-flex w-full items-center justify-center rounded bg-brand-blue px-8 py-3 text-sm font-bold text-white transition hover:bg-brand-blue-dark hover:shadow-lg hover:shadow-brand-blue/20 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 sm:w-auto sm:min-w-[170px]">
+                Me connecter
+            </button>
+        </div>
     </form>
+
+    {{-- Nouveau client ? (style Karnou : bloc séparé création de compte) --}}
+    @if (Route::has('register'))
+        <div class="mt-8 border-t border-gray-100 pt-6">
+            <h3 class="text-base font-bold text-gray-900">Nouveau sur la plateforme ?</h3>
+            <p class="mt-1 text-sm text-gray-500">Créez votre compte agence pour accéder à votre espace.</p>
+            <a href="{{ route('register') }}"
+               class="mt-4 inline-flex items-center justify-center rounded border border-brand-blue px-8 py-2.5 text-sm font-bold text-brand-blue transition hover:bg-brand-blue hover:text-white">
+                Créer un compte
+            </a>
+        </div>
+    @endif
 </x-guest-layout>
