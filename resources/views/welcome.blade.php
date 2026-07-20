@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#0b0d12">
+        <meta name="theme-color" content="#ffffff">
         <title>Karnou Agence — Réseau de points relais & logistique</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,190 +15,149 @@
             html { scroll-behavior: smooth; }
             body {
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-                background: #0b0d12; color: #ffffff; overflow-x: hidden;
+                background: #ffffff; color: #12141a; overflow-x: hidden;
             }
-            .wrap { max-width: 1250px; margin: 0 auto; padding: 0 2rem; }
+            .wrap { max-width: 1260px; margin: 0 auto; padding: 0 2rem; }
 
-            /* ——— HEADER (blanc, épuré) ——— */
-            .site-header {
-                background: #fff; position: sticky; top: 0; width: 100%; z-index: 1000;
-                border-bottom: 1px solid #eef0f3;
-            }
-            .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; }
-            .header-left { display: flex; align-items: center; gap: 16px; }
-            .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+            /* ——— HEADER (blanc, avec recherche centrale — style Kobo) ——— */
+            .site-header { background: #fff; position: sticky; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid #ececf0; }
+            .header-inner { display: flex; align-items: center; gap: 26px; padding: 13px 0; }
+            .brand-logo { flex: none; display: flex; align-items: center; text-decoration: none; }
             .brand-logo img { height: 40px; width: auto; }
-            .loc { display: inline-flex; align-items: center; gap: 6px; padding-left: 16px; border-left: 1px solid #e6e8ec; color: #12141a; font-size: 0.9rem; font-weight: 700; }
-            .loc svg { color: #FF6B00; flex: none; }
-            .header-nav { display: flex; align-items: center; gap: 2.2rem; }
+            .search { flex: 1; max-width: 540px; display: flex; align-items: center; background: #f2f4f7; border: 1px solid #e6e8ec; border-radius: 40px; padding: 4px 5px 4px 18px; }
+            .search input { flex: 1; border: 0; background: transparent; outline: none; font-size: 0.92rem; padding: 9px 6px; color: #12141a; }
+            .search input::placeholder { color: #9298a4; }
+            .search button { border: 0; background: #FF6B00; color: #fff; border-radius: 40px; padding: 9px 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background .2s; }
+            .search button:hover { background: #e66000; }
+            .header-right { flex: none; display: flex; align-items: center; gap: 1.5rem; margin-left: auto; }
             .nav-link { color: #3d4351; text-decoration: none; font-size: 0.92rem; font-weight: 600; transition: color .2s; }
             .nav-link:hover { color: #FF6B00; }
-            .btn-cta {
-                background: #FF6B00; color: #fff !important; border-radius: 40px; font-weight: 700;
-                padding: 11px 28px; font-size: 0.9rem; text-decoration: none; transition: all .2s;
-            }
-            .btn-cta:hover { background: #e66000; transform: translateY(-1px); box-shadow: 0 10px 22px rgba(255,107,0,.28); }
+            .btn-cta { background: #004aad; color: #fff !important; border-radius: 40px; font-weight: 700; padding: 11px 26px; font-size: 0.9rem; text-decoration: none; transition: all .2s; white-space: nowrap; }
+            .btn-cta:hover { background: #003a8a; transform: translateY(-1px); }
 
-            /* Boutons génériques */
-            .btn-primary {
-                background: #FF6B00; color: #fff; font-weight: 800; font-size: 1rem;
-                padding: 16px 36px; border-radius: 12px; text-decoration: none; transition: all .2s; display: inline-block;
-            }
-            .btn-primary:hover { background: #e66000; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255,107,0,.35); }
-            .btn-ghost {
-                color: #fff; font-weight: 700; font-size: 1rem; padding: 15px 28px; border-radius: 12px;
-                text-decoration: none; border: 1.5px solid rgba(255,255,255,.25); transition: all .2s; display: inline-block;
-            }
-            .btn-ghost:hover { border-color: #FF6B00; color: #FF6B00; }
+            /* Boutons */
+            .btn-primary { background: #FF6B00; color: #fff; font-weight: 800; font-size: 1rem; padding: 15px 34px; border-radius: 12px; text-decoration: none; transition: all .2s; display: inline-block; }
+            .btn-primary:hover { background: #e66000; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(255,107,0,.3); }
+            .btn-ghost { color: #12141a; font-weight: 700; font-size: 1rem; padding: 14px 26px; border-radius: 12px; text-decoration: none; border: 1.5px solid #e0e3e8; transition: all .2s; display: inline-block; }
+            .btn-ghost:hover { border-color: #004aad; color: #004aad; }
 
-            /* ——— HERO (noir, 2 colonnes) ——— */
-            .hero { background: #0b0d12; padding: 80px 0 96px; position: relative; overflow: hidden; }
-            .hero::before {
-                content: ''; position: absolute; top: -160px; right: -120px; width: 520px; height: 520px;
-                background: radial-gradient(circle, rgba(255,107,0,.22), transparent 70%); pointer-events: none;
+            /* ——— BANNIÈRE (grande carte claire arrondie — style Kobo) ——— */
+            .hero { padding: 46px 0 72px; background: #fff; }
+            .hero-banner {
+                border-radius: 28px; background: linear-gradient(120deg, #e9f1fc 0%, #f4f8ff 55%, #fff5ec 100%);
+                padding: clamp(40px, 5vw, 72px); display: grid; grid-template-columns: 1.05fr .95fr; gap: 52px;
+                align-items: center; overflow: hidden; position: relative;
             }
-            .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
-            .hero-eyebrow {
-                display: inline-flex; align-items: center; gap: 8px; background: rgba(255,107,0,.14);
-                color: #FF6B00; font-size: 0.72rem; font-weight: 800; padding: 7px 15px; border-radius: 40px;
-                margin-bottom: 26px; letter-spacing: .6px; text-transform: uppercase;
-            }
-            .hero h1 {
-                font-size: clamp(2.6rem, 5.4vw, 4.4rem); font-weight: 900; color: #fff;
-                line-height: 1.02; letter-spacing: -2px; margin-bottom: 22px; text-wrap: balance;
-            }
-            .hero h1 .accent { color: #FF6B00; }
-            .hero .lead { font-size: 1.15rem; color: rgba(255,255,255,.72); line-height: 1.65; margin-bottom: 36px; max-width: 520px; }
+            .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #004aad; font-size: 0.72rem; font-weight: 800; padding: 7px 15px; border-radius: 40px; margin-bottom: 24px; letter-spacing: .5px; text-transform: uppercase; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+            .hero-banner h1 { font-size: clamp(2.3rem, 4.6vw, 3.7rem); font-weight: 900; color: #12141a; line-height: 1.05; letter-spacing: -1.8px; margin-bottom: 20px; text-wrap: balance; }
+            .hero-banner h1 .accent { color: #FF6B00; }
+            .hero-banner .lead { font-size: 1.12rem; color: #4c5462; line-height: 1.65; margin-bottom: 34px; max-width: 500px; }
             .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
-
             .hero-visual { position: relative; }
-            .hero-visual .shot {
-                position: relative; z-index: 2; border-radius: 22px; overflow: hidden; min-height: 470px;
-                background: url('{{ asset('images/login-bg.jpg') }}') center/cover no-repeat;
-                box-shadow: 0 40px 80px -30px rgba(0,0,0,.8); border: 1px solid rgba(255,255,255,.08);
-            }
-            .hero-visual .chip {
-                position: absolute; z-index: 3; left: -22px; bottom: 34px; background: #fff; color: #12141a;
-                border-radius: 14px; padding: 14px 18px; box-shadow: 0 18px 40px rgba(0,0,0,.4);
-                display: flex; align-items: center; gap: 12px;
-            }
-            .hero-visual .chip .dot { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,107,0,.12); color: #FF6B00; display: flex; align-items: center; justify-content: center; }
-            .hero-visual .chip b { font-size: 0.9rem; }
-            .hero-visual .chip span { display: block; font-size: 0.75rem; color: #8a90a0; font-weight: 600; }
+            .hero-visual .shot { border-radius: 20px; overflow: hidden; min-height: 420px; background: url('{{ asset('images/login-bg.jpg') }}') center/cover no-repeat; box-shadow: 0 30px 60px -28px rgba(0,49,122,.4); }
 
-            /* ——— BANDE VALEURS ——— */
-            .trust { background: #0b0d12; border-top: 1px solid rgba(255,255,255,.08); border-bottom: 1px solid rgba(255,255,255,.08); padding: 24px 0; }
+            /* Bande de valeurs */
+            .trust { background: #fff; padding: 30px 0 6px; }
             .trust-inner { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 44px; }
-            .trust-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.75); font-size: 0.92rem; font-weight: 600; }
+            .trust-item { display: flex; align-items: center; gap: 10px; color: #4c5462; font-size: 0.92rem; font-weight: 600; }
             .trust-item svg { color: #FF6B00; flex: none; }
 
-            /* ——— SECTIONS ——— */
-            .section { padding: 100px 0; }
-            .section-head { text-align: center; max-width: 660px; margin: 0 auto 60px; }
+            /* Sections */
+            .section { padding: 92px 0; }
+            .section-head { text-align: center; max-width: 660px; margin: 0 auto 56px; }
             .section-label { font-size: 0.72rem; font-weight: 800; color: #FF6B00; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; }
-            .section-title { font-size: clamp(1.9rem, 3.6vw, 2.7rem); font-weight: 900; letter-spacing: -1.4px; margin-bottom: 16px; text-wrap: balance; }
-            .section-sub { color: rgba(255,255,255,.6); font-size: 1.08rem; line-height: 1.6; }
+            .section-title { font-size: clamp(1.9rem, 3.6vw, 2.6rem); font-weight: 900; color: #12141a; letter-spacing: -1.3px; margin-bottom: 15px; text-wrap: balance; }
+            .section-sub { color: #4c5462; font-size: 1.06rem; line-height: 1.6; }
 
-            /* Cartes (sombres, arrondies) */
             .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-            .card {
-                background: #14171f; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 34px 30px; transition: all .25s;
-            }
-            .card:hover { transform: translateY(-4px); border-color: rgba(255,107,0,.45); box-shadow: 0 26px 50px -28px rgba(0,0,0,.8); }
-            .card .ic { width: 52px; height: 52px; border-radius: 14px; background: rgba(255,107,0,.12); color: #FF6B00; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
-            .card h3 { font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: -.4px; }
-            .card p { font-size: 0.96rem; color: rgba(255,255,255,.6); line-height: 1.65; }
+            .card { background: #fff; border: 1px solid #ececf0; border-radius: 18px; padding: 32px 28px; transition: all .25s; }
+            .card:hover { transform: translateY(-4px); box-shadow: 0 22px 46px -26px rgba(0,0,0,.2); border-color: #e0e3e8; }
+            .card .ic { width: 50px; height: 50px; border-radius: 13px; background: rgba(255,107,0,.1); color: #FF6B00; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+            .card h3 { font-size: 1.12rem; font-weight: 800; color: #12141a; margin-bottom: 9px; letter-spacing: -.3px; }
+            .card p { font-size: 0.95rem; color: #4c5462; line-height: 1.6; }
 
-            /* Étapes (fond légèrement plus clair) */
-            .steps { background: #12141b; border-top: 1px solid rgba(255,255,255,.06); }
+            .steps { background: #f7f8fa; border-top: 1px solid #ececf0; border-bottom: 1px solid #ececf0; }
             .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-            .step .n { font-size: 2.6rem; font-weight: 900; color: #FF6B00; line-height: 1; margin-bottom: 12px; }
-            .step h3 { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
-            .step p { font-size: 1rem; color: rgba(255,255,255,.6); line-height: 1.65; }
+            .step .n { font-size: 2.5rem; font-weight: 900; color: #FF6B00; line-height: 1; margin-bottom: 12px; }
+            .step h3 { font-size: 1.18rem; font-weight: 800; color: #12141a; margin-bottom: 9px; }
+            .step p { font-size: 1rem; color: #4c5462; line-height: 1.6; }
 
-            /* CTA (orange, pop) */
-            .cta { background: #FF6B00; color: #fff; text-align: center; padding: 84px 2rem; }
-            .cta h2 { font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
-            .cta p { color: rgba(255,255,255,.9); max-width: 540px; margin: 0 auto 30px; font-size: 1.08rem; }
-            .cta .btn-primary { background: #0b0d12; }
-            .cta .btn-primary:hover { background: #000; box-shadow: 0 14px 30px rgba(0,0,0,.35); }
+            .cta { background: #004aad; color: #fff; text-align: center; padding: 80px 2rem; }
+            .cta h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
+            .cta p { color: rgba(255,255,255,.9); max-width: 540px; margin: 0 auto 28px; font-size: 1.06rem; }
 
-            /* Footer */
-            .site-footer { background: #07090d; color: #fff; padding: 76px 0 38px; }
-            .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; }
+            /* Footer clair */
+            .site-footer { background: #f7f8fa; color: #12141a; padding: 70px 0 36px; border-top: 1px solid #ececf0; }
+            .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 56px; }
             .footer-logo img { height: 40px; }
-            .footer-desc { font-size: 0.95rem; color: #9aa4b2; line-height: 1.7; max-width: 340px; margin-top: 18px; }
-            .footer-col h4 { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: #fff; }
+            .footer-desc { font-size: 0.95rem; color: #6b7280; line-height: 1.7; max-width: 340px; margin-top: 18px; }
+            .footer-col h4 { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px; color: #12141a; }
             .footer-col ul { list-style: none; }
             .footer-col ul li { margin-bottom: 12px; }
-            .footer-col ul li a { color: #9aa4b2; text-decoration: none; font-size: 0.95rem; transition: color .2s; }
+            .footer-col ul li a { color: #6b7280; text-decoration: none; font-size: 0.95rem; transition: color .2s; }
             .footer-col ul li a:hover { color: #FF6B00; }
-            .footer-bottom { margin-top: 56px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.08); text-align: center; font-size: 0.85rem; color: #6b7280; }
+            .footer-bottom { margin-top: 52px; padding-top: 26px; border-top: 1px solid #e6e8ec; text-align: center; font-size: 0.85rem; color: #9298a4; }
 
-            @media (max-width: 960px) {
-                .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+            @media (max-width: 900px) {
+                .search { display: none; }
+                .hero-banner { grid-template-columns: 1fr; gap: 40px; }
                 .hero-visual { order: -1; }
                 .cards, .steps-grid, .footer-inner { grid-template-columns: 1fr; gap: 26px; }
             }
-            @media (max-width: 640px) {
-                .header-nav .nav-link { display: none; }
-                .hero-visual .shot { min-height: 320px; }
+            @media (max-width: 560px) {
+                .header-right .nav-link { display: none; }
+                .hero-visual .shot { min-height: 300px; }
             }
         </style>
     </head>
     <body>
-        <!-- Header (blanc) -->
+        <!-- Header (blanc, recherche centrale — style Kobo) -->
         <header class="site-header">
             <div class="wrap header-inner">
-                <div class="header-left">
-                    <a href="/" class="brand-logo">
-                        <img src="{{ asset('images/logo.png') }}" alt="Karnou Agence">
-                    </a>
-                    <span class="loc">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        Sénégal
-                    </span>
-                </div>
-                <nav class="header-nav">
+                <a href="/" class="brand-logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="Karnou Agence">
+                </a>
+
+                <form class="search" action="{{ route('login') }}" method="get" role="search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9298a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" name="q" placeholder="Suivre un colis, un numéro de suivi…">
+                    <button type="submit">Rechercher</button>
+                </form>
+
+                <div class="header-right">
                     <a href="#services" class="nav-link">Services</a>
                     <a href="#fonctionnement" class="nav-link">Fonctionnement</a>
-                    <a href="#contact" class="nav-link">Contact</a>
                     @auth
                         <a href="{{ route('dashboard') }}" class="btn-cta">Mon tableau de bord</a>
                     @else
                         <a href="{{ route('login') }}" class="btn-cta">Se connecter</a>
                     @endauth
-                </nav>
+                </div>
             </div>
         </header>
 
-        <!-- Bannière (hero noir, 2 colonnes) -->
+        <!-- Bannière (grande carte claire — style Kobo) -->
         <section class="hero">
-            <div class="wrap hero-grid">
-                <div class="hero-text">
-                    <span class="hero-eyebrow">Portail Agence &amp; Points Relais</span>
-                    <h1>Gérez votre point relais, <span class="accent">sans effort</span>.</h1>
-                    <p class="lead">
-                        Réception, suivi et remise des colis, paiements sécurisés et statistiques —
-                        toute la logistique du dernier kilomètre dans une seule plateforme.
-                    </p>
-                    <div class="hero-actions">
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="btn-primary">Accéder à mon espace →</a>
-                        @else
-                            <a href="{{ route('login') }}" class="btn-primary">Se connecter</a>
-                        @endauth
-                        <a href="#services" class="btn-ghost">Découvrir les services</a>
+            <div class="wrap">
+                <div class="hero-banner">
+                    <div class="hero-text">
+                        <span class="hero-eyebrow">Portail Agence &amp; Points Relais</span>
+                        <h1>Gérez votre point relais, <span class="accent">sans effort</span>.</h1>
+                        <p class="lead">
+                            Réception, suivi et remise des colis, paiements sécurisés et statistiques —
+                            toute la logistique du dernier kilomètre dans une seule plateforme.
+                        </p>
+                        <div class="hero-actions">
+                            @auth
+                                <a href="{{ route('dashboard') }}" class="btn-primary">Accéder à mon espace →</a>
+                            @else
+                                <a href="{{ route('login') }}" class="btn-primary">Se connecter</a>
+                            @endauth
+                            <a href="#services" class="btn-ghost">Découvrir les services</a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="hero-visual">
-                    <div class="shot"></div>
-                    <div class="chip">
-                        <span class="dot">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                        </span>
-                        <div><b>Suivi en temps réel</b><span>De la réception à la remise</span></div>
+                    <div class="hero-visual">
+                        <div class="shot"></div>
                     </div>
                 </div>
             </div>
