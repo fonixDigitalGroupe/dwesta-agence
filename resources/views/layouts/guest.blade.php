@@ -17,20 +17,24 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="grid min-h-screen lg:grid-cols-2">
 
-            {{-- Image à gauche (masquée sur mobile) --}}
+            {{-- Image à gauche + texte (masquée sur mobile) --}}
             <div class="relative hidden lg:block">
                 <div class="absolute inset-0 bg-cover bg-center"
                      style="background-image:url('{{ asset('images/login-bg.jpg') }}');"></div>
+                {{-- Voile sombre pour la lisibilité du texte --}}
+                <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.05) 100%);"></div>
+                {{-- Texte --}}
+                <div class="absolute inset-x-0 bottom-0 p-12">
+                    <h2 class="text-4xl font-bold leading-tight text-white" style="text-wrap:balance;">
+                        Gérez votre agence<br>en toute simplicité
+                    </h2>
+                </div>
             </div>
 
             {{-- Formulaire à droite --}}
             <div class="flex items-center justify-center bg-gray-50 px-6 py-12">
                 <div class="w-full max-w-md">
-                    <div class="mb-8 flex justify-center">
-                        <a href="/"><img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Karnou Agence') }}" class="h-10 w-auto"></a>
-                    </div>
-
-                    <div class="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-100 sm:p-10">
+                    <div class="rounded-lg bg-white p-8 shadow-sm ring-1 ring-gray-100 sm:p-10">
                         {{ $slot }}
                     </div>
                 </div>
