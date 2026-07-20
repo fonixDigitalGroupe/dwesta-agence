@@ -12,7 +12,8 @@ set -euo pipefail
 # Binaires (le Cron cPanel a un PATH minimal : on le complète)
 export PATH="/usr/local/bin:/usr/local/cpanel/3rdparty/lib/path-bin:$PATH"
 
-APP_DIR="$HOME/agence_app"
+# Se place dans le dossier du script, où qu'il soit (ex: ~/public_html/agence)
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BRANCH="deploy"
 
 cd "$APP_DIR"
