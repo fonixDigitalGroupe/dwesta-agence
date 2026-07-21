@@ -35,7 +35,7 @@
                             Gérez votre agence en toute simplicité
                         </h2>
                         <p class="mt-4 text-lg leading-relaxed text-white/80">
-                            Réception, suivi et remise de vos colis, paiements sécurisés — tout au même endroit.
+                            Réception, suivi et remise de vos colis, paiements sécurisés, tout au même endroit.
                         </p>
                     </div>
                 </div>
