@@ -22,9 +22,9 @@
                 <div class="absolute inset-0 bg-cover bg-center"
                      style="background-image:url('{{ asset('images/login-bg.jpg') }}');"></div>
                 {{-- Voile sombre pour la lisibilité du texte --}}
-                <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.05) 100%);"></div>
-                {{-- Texte --}}
-                <div class="absolute inset-x-0 bottom-0 p-12 pb-28">
+                <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.40) 50%, rgba(0,0,0,0.30) 100%);"></div>
+                {{-- Texte (centré verticalement) --}}
+                <div class="absolute inset-0 flex flex-col justify-center p-12">
                     <div class="max-w-md">
                         <span class="text-xs font-semibold uppercase tracking-widest text-white/70">Portail Agence &amp; Points Relais</span>
                         <h2 class="mt-4 text-4xl font-bold leading-tight text-white" style="text-wrap:balance;">
