@@ -12,7 +12,7 @@
         <div>
             <div class="relative">
                 <input id="email" name="email" type="email" placeholder=" " required autofocus autocomplete="username" value="{{ old('email') }}"
-                       class="peer w-full rounded border border-gray-300 bg-white px-3 pb-2 pt-5 text-sm text-gray-900 outline-none transition focus:border-gray-800" />
+                       class="peer w-full rounded border border-gray-300 bg-white px-3 pb-2 pt-5 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:ring-0" />
                 <label for="email"
                        class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all
                               peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:font-semibold peer-focus:text-gray-800
@@ -27,7 +27,7 @@
         <div>
             <div class="relative">
                 <input id="password" name="password" type="password" placeholder=" " required autocomplete="current-password"
-                       class="peer w-full rounded border border-gray-300 bg-white px-3 pb-2 pt-5 pr-11 text-sm text-gray-900 outline-none transition focus:border-gray-800" />
+                       class="peer w-full rounded border border-gray-300 bg-white px-3 pb-2 pt-5 pr-11 text-sm text-gray-900 outline-none transition focus:border-gray-400 focus:ring-0" />
                 <label for="password"
                        class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 transition-all
                               peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:font-semibold peer-focus:text-gray-800
