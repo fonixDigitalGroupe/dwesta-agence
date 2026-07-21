@@ -23,6 +23,10 @@
                      style="background-image:url('{{ asset('images/login-bg.jpg') }}');"></div>
                 {{-- Voile sombre pour la lisibilité du texte --}}
                 <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.40) 50%, rgba(0,0,0,0.30) 100%);"></div>
+                {{-- Marque en haut à gauche --}}
+                <div class="absolute left-0 top-0 p-12">
+                    <span class="text-xl font-bold tracking-tight text-white">Karnou <span style="color:#FF6B00;">Agence</span></span>
+                </div>
                 {{-- Texte (centré verticalement) --}}
                 <div class="absolute inset-0 flex flex-col justify-center p-12">
                     <div class="max-w-md">
