@@ -24,8 +24,9 @@
                 {{-- Voile sombre pour la lisibilité du texte --}}
                 <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.40) 50%, rgba(0,0,0,0.30) 100%);"></div>
                 {{-- Marque en haut à gauche --}}
-                <div class="absolute left-0 top-0 p-12">
-                    <span class="text-xl font-bold tracking-tight text-white">Karnou <span style="color:#FF6B00;">Agence</span></span>
+                <div class="absolute left-0 top-0 flex items-center gap-3 p-10">
+                    <img src="{{ asset('images/logo.png') }}" alt="" class="h-12 w-12 rounded-xl bg-white/10 p-1.5 object-contain ring-1 ring-white/20 backdrop-blur">
+                    <span class="text-2xl font-extrabold uppercase tracking-wide text-white">Karnou <span style="color:#FF6B00;">Agence</span></span>
                 </div>
                 {{-- Texte (centré verticalement) --}}
                 <div class="absolute inset-0 flex flex-col justify-center p-12">
