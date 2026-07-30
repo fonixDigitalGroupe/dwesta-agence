@@ -131,6 +131,22 @@
         padding: 5px 12px;
         font-size: 0.78rem;
     }
+
+    /* ─── Responsive mobile ─── */
+    @media (max-width: 768px) {
+        /* Empiler tous les champs en 2 colonnes */
+        [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+        /* Cartes : moins de marge interne = plus large */
+        .amazon-card { padding: 16px !important; }
+        /* Barre "Afficher / Rechercher" : passe à la ligne, recherche pleine largeur */
+        .table-controls { flex-wrap: wrap; gap: 10px 14px; justify-content: flex-start !important; }
+        .table-controls form { width: 100%; }
+        .table-controls input[type="text"] { width: 100% !important; box-sizing: border-box; }
+        /* Tableaux : défilables à l'intérieur (pas la page) */
+        table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        /* Modales adaptées à l'écran */
+        [style*="max-width:480px"], [style*="max-width: 480px"] { max-width: 94% !important; }
+    }
 </style>
 {{-- Leaflet CSS --}}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -182,7 +198,7 @@
             @endif
 
             <!-- Barre de recherche & Filtres Style Admin/Amazon -->
-            <div style="background: #fbfbfc; border: 1px solid #e7e7e7; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 4px;">
+            <div class="table-controls" style="background: #fbfbfc; border: 1px solid #e7e7e7; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 4px;">
                 <div style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #111;">
                     <span>Afficher</span>
                     <select onchange="window.location.href = '{{ route('profile.edit', ['tab' => 'utilisateur']) }}&per_page=' + this.value + '&search={{ urlencode($search) }}'"
