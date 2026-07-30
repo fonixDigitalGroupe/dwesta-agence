@@ -136,10 +136,10 @@
     @media (max-width: 768px) {
         /* Empiler tous les champs en 2 colonnes */
         [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
-        /* Cartes : moins de marge interne = plus large */
-        .amazon-card { padding: 16px !important; }
-        /* Barre "Afficher / Rechercher" : passe à la ligne, recherche pleine largeur */
-        .table-controls { flex-wrap: wrap; gap: 10px 14px; justify-content: flex-start !important; }
+        /* Supprimer l'effet "carte" : fond blanc, pleine largeur */
+        .amazon-card { padding: 4px 0 !important; border: none !important; box-shadow: none !important; background: #fff !important; margin-bottom: 10px !important; }
+        /* Barre "Afficher / Rechercher" : sans cadre, passe à la ligne, recherche pleine largeur */
+        .table-controls { border: none !important; background: transparent !important; padding: 0 0 8px !important; flex-wrap: wrap; gap: 10px 14px; justify-content: flex-start !important; }
         .table-controls form { width: 100%; }
         .table-controls input[type="text"] { width: 100% !important; box-sizing: border-box; }
         /* Tableaux : défilables à l'intérieur (pas la page) */

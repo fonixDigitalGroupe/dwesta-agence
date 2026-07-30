@@ -397,7 +397,7 @@
             }
             .agence-sidebar.open { transform: translateX(0); }
             .agence-main { height: auto; overflow-x: hidden; overflow-y: visible; max-width: 100vw; min-width: 0; }
-            .agence-content { overflow-x: hidden; overflow-y: visible; padding: 1rem; max-width: 100vw; }
+            .agence-content { overflow-x: hidden; overflow-y: visible; padding: 0.6rem; max-width: 100vw; background: #ffffff; }
             .agence-header { height: 60px; min-height: 60px; padding: 0 1rem; gap: 0.75rem; }
             .sidebar-toggle { display: inline-flex; align-items: center; }
             .header-logo-mobile { display: flex; align-items: center; }
