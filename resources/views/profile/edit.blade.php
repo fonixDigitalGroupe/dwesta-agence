@@ -508,6 +508,10 @@
                             </button>
                         </div>
                         <p id="addr-search-msg" style="font-size:0.75rem;color:#888;margin-top:5px;"></p>
+                        <button type="button" onclick="locateByIP()"
+                                style="margin-top:4px;background:none;border:none;color:#0071BC;font-size:0.8rem;cursor:pointer;padding:0;text-decoration:underline;">
+                            <i class="fas fa-location-crosshairs"></i> Me localiser automatiquement (approximatif, via ma connexion)
+                        </button>
                     </div>
 
                     {{-- Lien Google Maps --}}
@@ -758,6 +762,30 @@
             msg.style.color = '#c40000';
             msg.textContent = "Erreur de recherche. Réessayez, ou cliquez sur la carte.";
         });
+    }
+
+    function locateByIP() {
+        const msg = document.getElementById('addr-search-msg');
+        msg.style.color = '#888';
+        msg.textContent = 'Localisation approximative en cours…';
+        fetch('https://ipapi.co/json/')
+            .then(r => r.json())
+            .then(d => {
+                const lat = parseFloat(d.latitude);
+                const lng = parseFloat(d.longitude);
+                if (isNaN(lat) || isNaN(lng)) throw new Error('no-coords');
+                const p = new L.LatLng(lat, lng);
+                if (marker && map) { marker.setLatLng(p); map.setView(p, 13); }
+                document.getElementById('latitude').value = lat.toFixed(6);
+                document.getElementById('longitude').value = lng.toFixed(6);
+                document.getElementById('google_maps_url').value = 'https://www.google.com/maps?q=' + lat.toFixed(6) + ',' + lng.toFixed(6);
+                msg.style.color = '#8a6d00';
+                msg.textContent = 'Position approximative' + (d.city ? ' (' + d.city + ')' : '') + '. Déplacez le marqueur pour l\'ajuster exactement.';
+            })
+            .catch(() => {
+                msg.style.color = '#c40000';
+                msg.textContent = "Localisation automatique indisponible. Utilisez la recherche d'adresse ou cliquez sur la carte.";
+            });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
