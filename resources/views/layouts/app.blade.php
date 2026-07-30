@@ -372,13 +372,45 @@
             background: #f9fafb;
             color: var(--mady-blue);
         }
+
+        /* ─── Mobile (hamburger + sidebar coulissante) ─── */
+        .sidebar-toggle {
+            display: none;
+            background: none; border: none; cursor: pointer;
+            font-size: 1.35rem; color: #111827; padding: 4px 6px;
+        }
+        .header-logo-mobile img { height: 26px; width: auto; }
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); z-index: 99;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        @media (max-width: 768px) {
+            body { overflow: auto; height: auto; }
+            .agence-wrapper { height: auto; min-height: 100vh; width: 100%; }
+            .agence-sidebar {
+                position: fixed; top: 0; left: 0; height: 100vh;
+                transform: translateX(-100%); transition: transform 0.25s ease;
+                box-shadow: 2px 0 12px rgba(0,0,0,0.2);
+            }
+            .agence-sidebar.open { transform: translateX(0); }
+            .agence-main { height: auto; overflow: visible; }
+            .agence-content { overflow: visible; padding: 1rem; }
+            .agence-header { height: 60px; min-height: 60px; padding: 0 1rem; gap: 0.75rem; }
+            .sidebar-toggle { display: inline-flex; align-items: center; }
+            .header-logo-mobile { display: flex; align-items: center; }
+            .search-container { display: none; }
+            .header-actions { gap: 0.85rem; }
+            .header-link span, .user-header-name { display: none; }
+        }
     </style>
 </head>
 <body>
 <div class="agence-wrapper">
 
     {{-- ─── Sidebar ─── --}}
-    <aside class="agence-sidebar">
+    <aside class="agence-sidebar" id="agenceSidebar">
 
         {{-- Brand --}}
         <div class="sidebar-brand">
@@ -464,6 +496,16 @@
 
         {{-- Header --}}
         <header class="agence-header">
+            {{-- Hamburger (mobile) --}}
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            {{-- Logo (mobile) --}}
+            <a href="{{ route('dashboard') }}" class="header-logo-mobile">
+                <img src="{{ asset('images/logo.png') }}" alt="Karnou">
+            </a>
+
             {{-- Search Bar --}}
             <div class="search-container">
                 <input type="text" class="search-input" placeholder="Rechercher...">
@@ -530,6 +572,9 @@
         </main>
     </div>
 
+    {{-- Voile pour fermer la sidebar sur mobile --}}
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 </div>
 
 <script>
@@ -548,6 +593,21 @@
                     menu.classList.remove('show');
                 }
             });
+        }
+
+        // Sidebar mobile (hamburger)
+        const sbToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('agenceSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); };
+        if (sbToggle && sidebar && overlay) {
+            sbToggle.addEventListener('click', function () {
+                const isOpen = sidebar.classList.toggle('open');
+                overlay.classList.toggle('show', isOpen);
+            });
+            overlay.addEventListener('click', closeSidebar);
+            // Fermer après avoir cliqué un lien du menu
+            sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', closeSidebar));
         }
     });
 </script>
