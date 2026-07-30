@@ -492,9 +492,24 @@
                     <h3 class="section-title">Localisation exacte</h3>
 
                     <p style="font-size:0.82rem;color:#555;margin-bottom:14px;line-height:1.5;">
-                        Cliquez sur la carte ou déplacez le marqueur pour placer précisément votre agence.
+                        Recherchez une adresse, cliquez sur la carte, ou déplacez le marqueur pour placer précisément votre agence.
                         Vous pouvez aussi saisir les coordonnées à la main, ou coller un lien Google Maps.
+                        <br><em style="color:#8a6d00;">Sur ordinateur, le bouton « Ma position » est approximatif (pas de GPS) : préférez la recherche d'adresse ou le clic sur la carte.</em>
                     </p>
+
+                    {{-- Recherche d'adresse (précis, idéal sur PC) --}}
+                    <div style="margin-bottom: 14px;">
+                        <label for="addr-search" class="form-label">Rechercher une adresse ou un lieu</label>
+                        <div style="display:flex;gap:8px;">
+                            <input id="addr-search" type="text" class="form-input" style="flex:1;"
+                                   placeholder="Ex : Marché Sandaga, Dakar"
+                                   onkeydown="if(event.key==='Enter'){event.preventDefault();searchAddress();}">
+                            <button type="button" class="btn-amazon-secondary" style="white-space:nowrap;" onclick="searchAddress()">
+                                <i class="fas fa-search"></i> Rechercher
+                            </button>
+                        </div>
+                        <p id="addr-search-msg" style="font-size:0.75rem;color:#888;margin-top:5px;"></p>
+                    </div>
 
                     {{-- Lien Google Maps --}}
                     <div style="margin-bottom: 14px;">
@@ -716,6 +731,39 @@
         }
     }
     
+    function searchAddress() {
+        const input = document.getElementById('addr-search');
+        const msg = document.getElementById('addr-search-msg');
+        const q = (input.value || '').trim();
+        if (!q) return;
+        msg.style.color = '#888';
+        msg.textContent = 'Recherche en cours…';
+        fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q), {
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (!data || !data.length) {
+                msg.style.color = '#c40000';
+                msg.textContent = "Adresse introuvable. Soyez plus précis, ou cliquez directement sur la carte.";
+                return;
+            }
+            const lat = parseFloat(data[0].lat);
+            const lng = parseFloat(data[0].lon);
+            const p = new L.LatLng(lat, lng);
+            if (marker && map) { marker.setLatLng(p); map.setView(p, 17); }
+            document.getElementById('latitude').value = lat.toFixed(6);
+            document.getElementById('longitude').value = lng.toFixed(6);
+            document.getElementById('google_maps_url').value = 'https://www.google.com/maps?q=' + lat.toFixed(6) + ',' + lng.toFixed(6);
+            msg.style.color = '#067d00';
+            msg.textContent = '📍 ' + data[0].display_name + ' — ajustez au besoin en déplaçant le marqueur.';
+        })
+        .catch(() => {
+            msg.style.color = '#c40000';
+            msg.textContent = "Erreur de recherche. Réessayez, ou cliquez sur la carte.";
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         setTimeout(initMap, 500);
         
