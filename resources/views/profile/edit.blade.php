@@ -489,69 +489,60 @@
 
                 {{-- Localisation Card --}}
                 <div class="amazon-card">
-                    <h3 class="section-title">Localisation exacte</h3>
+                    <h3 class="section-title">Localisation</h3>
 
-                    <p style="font-size:0.82rem;color:#555;margin-bottom:14px;line-height:1.5;">
-                        Recherchez une adresse, cliquez sur la carte, ou déplacez le marqueur pour placer précisément votre agence.
-                        Vous pouvez aussi saisir les coordonnées à la main, ou coller un lien Google Maps.
-                    </p>
+                    {{-- Champs soumis avec le formulaire (renseignés via la fenêtre) --}}
+                    <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $agence->latitude ?? '') }}">
+                    <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude', $agence->longitude ?? '') }}">
+                    <input type="hidden" name="google_maps_url" id="google_maps_url" value="{{ old('google_maps_url', $agence->google_maps_url ?? '') }}">
 
-                    {{-- Recherche d'adresse (précis, idéal sur PC) --}}
-                    <div style="margin-bottom: 14px;">
-                        <label for="addr-search" class="form-label">Rechercher une adresse ou un lieu</label>
-                        <div style="display:flex;gap:8px;">
-                            <input id="addr-search" type="text" class="form-input" style="flex:1;"
-                                   placeholder="Ex : Marché Sandaga, Dakar"
-                                   onkeydown="if(event.key==='Enter'){event.preventDefault();searchAddress();}">
-                            <button type="button" class="btn-amazon-secondary" style="white-space:nowrap;" onclick="searchAddress()">
-                                <i class="fas fa-search"></i> Rechercher
-                            </button>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+                        <div style="min-width:0;">
+                            <p id="loc-summary" style="font-size:0.9rem;color:#111;margin:0;font-weight:500;">Aucune localisation définie</p>
+                            <p style="font-size:0.78rem;color:#888;margin:3px 0 0;">Définissez l'emplacement exact de votre agence sur la carte.</p>
                         </div>
-                        <p id="addr-search-msg" style="font-size:0.75rem;color:#888;margin-top:5px;"></p>
-                        <button type="button" onclick="getLocation(event)" class="btn-amazon-secondary btn-sm" style="margin-top:6px;">
-                            <i class="fas fa-location-crosshairs"></i> Ma position (GPS — précis sur téléphone)
-                        </button>
-                        <br>
-                        <button type="button" onclick="locateByIP()"
-                                style="margin-top:4px;background:none;border:none;color:#0071BC;font-size:0.8rem;cursor:pointer;padding:0;text-decoration:underline;">
-                            <i class="fas fa-location-crosshairs"></i> Me localiser automatiquement (approximatif, via ma connexion)
+                        <button type="button" class="btn-amazon-secondary" style="white-space:nowrap;" onclick="openLocModal()">
+                            <i class="fas fa-map-marker-alt"></i> Définir la localisation
                         </button>
                     </div>
+                    @error('latitude')<p style="color:#c40000;font-size:0.78rem;margin-top:6px;">{{ $message }}</p>@enderror
+                    @error('longitude')<p style="color:#c40000;font-size:0.78rem;margin-top:2px;">{{ $message }}</p>@enderror
+                </div>
 
-                    {{-- Lien Google Maps --}}
-                    <div style="margin-bottom: 14px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                            <label for="google_maps_url" class="form-label" style="margin-bottom: 0;">Lien Google Maps (optionnel)</label>
-                            @if(!empty($agence->google_maps_url))
-                            <a href="{{ $agence->google_maps_url }}" target="_blank" class="btn-amazon-secondary btn-sm" style="text-decoration: none;">
-                                <i class="fas fa-external-link-alt"></i> Voir sur Google Maps
-                            </a>
-                            @endif
+                {{-- Fenêtre (modale) de localisation --}}
+                <div id="loc-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:16px;">
+                    <div style="background:#fff;width:100%;max-width:820px;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;max-height:92vh;">
+                        <div style="padding:14px 18px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+                            <strong style="font-size:1rem;">Définir la localisation</strong>
+                            <button type="button" onclick="closeLocModal()" style="background:none;border:none;font-size:26px;line-height:1;cursor:pointer;color:#666;">&times;</button>
                         </div>
-                        <input id="google_maps_url" name="google_maps_url" type="url" class="form-input"
-                               value="{{ old('google_maps_url', $agence->google_maps_url ?? '') }}"
-                               placeholder="https://goo.gl/maps/...">
-                        @error('google_maps_url')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
+                        <div style="padding:16px 18px;overflow:auto;">
+                            <div style="display:flex;gap:8px;margin-bottom:10px;">
+                                <input id="addr-search" type="text" class="form-input" style="flex:1;"
+                                       placeholder="Rechercher une adresse ou un lieu…"
+                                       onkeydown="if(event.key==='Enter'){event.preventDefault();searchAddress();}">
+                                <button type="button" class="btn-amazon-secondary" style="white-space:nowrap;" onclick="searchAddress()">
+                                    <i class="fas fa-search"></i> Rechercher
+                                </button>
+                            </div>
+                            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
+                                <button type="button" onclick="getLocation(event)" class="btn-amazon-secondary btn-sm">
+                                    <i class="fas fa-location-crosshairs"></i> Ma position (GPS — précis sur téléphone)
+                                </button>
+                                <button type="button" onclick="locateByIP()"
+                                        style="background:none;border:none;color:#0071BC;font-size:0.8rem;cursor:pointer;padding:0;text-decoration:underline;">
+                                    Me localiser via ma connexion (approximatif)
+                                </button>
+                            </div>
+                            <p id="addr-search-msg" style="font-size:0.75rem;color:#888;margin:0 0 10px;"></p>
+                            <div id="map"></div>
+                            <p style="font-size:0.78rem;color:#888;margin-top:8px;">Cliquez sur la carte ou déplacez le marqueur pour ajuster au point exact.</p>
+                        </div>
+                        <div style="padding:12px 18px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px;">
+                            <button type="button" class="btn-amazon-secondary" onclick="closeLocModal()">Annuler</button>
+                            <button type="button" class="btn-amazon-primary" onclick="confirmLoc()">Valider</button>
+                        </div>
                     </div>
-
-                    {{-- Coordonnées exactes (modifiables au clavier) --}}
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end;">
-                        <div>
-                            <label for="latitude" class="form-label">Latitude</label>
-                            <input id="latitude" name="latitude" type="text" inputmode="decimal" class="form-input"
-                                   value="{{ old('latitude', $agence->latitude ?? '') }}" placeholder="14.716700">
-                            @error('latitude')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        </div>
-                        <div>
-                            <label for="longitude" class="form-label">Longitude</label>
-                            <input id="longitude" name="longitude" type="text" inputmode="decimal" class="form-input"
-                                   value="{{ old('longitude', $agence->longitude ?? '') }}" placeholder="-17.467700">
-                            @error('longitude')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        </div>
-                    </div>
-
-                    {{-- Carte interactive --}}
-                    <div id="map"></div>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 20px;">
@@ -792,27 +783,34 @@
             });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(initMap, 500);
-        
-        // Auto-populate if empty (logic from before)
-        const mapsInput = document.getElementById('google_maps_url');
-        if (mapsInput && mapsInput.value === '') {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((pos) => {
-                    if (mapsInput.value === '') {
-                        const lat = pos.coords.latitude.toFixed(6);
-                        const lng = pos.coords.longitude.toFixed(6);
-                        mapsInput.value = `https://www.google.com/maps?q=${lat},${lng}`;
-                        if (marker) {
-                            marker.setLatLng([lat, lng]);
-                            map.setView([lat, lng], 15);
-                        }
-                    }
-                });
-            }
+    let locMapInited = false;
+
+    function updateSummary() {
+        const el = document.getElementById('loc-summary');
+        if (!el) return;
+        const lat = parseFloat(document.getElementById('latitude').value);
+        const lng = parseFloat(document.getElementById('longitude').value);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            el.innerHTML = '📍 Localisation définie <span style="color:#888;font-weight:400;">(' + lat.toFixed(5) + ', ' + lng.toFixed(5) + ')</span>';
+        } else {
+            el.textContent = 'Aucune localisation définie';
         }
-    });
+    }
+
+    function openLocModal() {
+        document.getElementById('loc-modal').style.display = 'flex';
+        if (!locMapInited) { initMap(); locMapInited = true; }
+        setTimeout(() => { if (map) map.invalidateSize(); }, 200);
+    }
+    function closeLocModal() {
+        document.getElementById('loc-modal').style.display = 'none';
+    }
+    function confirmLoc() {
+        updateSummary();
+        closeLocModal();
+    }
+
+    document.addEventListener('DOMContentLoaded', updateSummary);
 
     // ─── Address Search (Nominatim) ───────────────────────────────────────────
     let searchTimeout = null;
