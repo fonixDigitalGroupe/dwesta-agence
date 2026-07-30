@@ -487,14 +487,19 @@
                     </div>
                 </div>
 
-                {{-- Schedule & Maps Card --}}
+                {{-- Localisation Card --}}
                 <div class="amazon-card">
-                    <h3 class="section-title">Localisation</h3>
+                    <h3 class="section-title">Localisation exacte</h3>
 
+                    <p style="font-size:0.82rem;color:#555;margin-bottom:14px;line-height:1.5;">
+                        Cliquez sur la carte ou déplacez le marqueur pour placer précisément votre agence.
+                        Vous pouvez aussi saisir les coordonnées à la main, ou coller un lien Google Maps.
+                    </p>
 
-                    <div style="margin-bottom: 20px;">
+                    {{-- Lien Google Maps --}}
+                    <div style="margin-bottom: 14px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                            <label for="google_maps_url" class="form-label" style="margin-bottom: 0;">Lien Google Maps</label>
+                            <label for="google_maps_url" class="form-label" style="margin-bottom: 0;">Lien Google Maps (optionnel)</label>
                             @if(!empty($agence->google_maps_url))
                             <a href="{{ $agence->google_maps_url }}" target="_blank" class="btn-amazon-secondary btn-sm" style="text-decoration: none;">
                                 <i class="fas fa-external-link-alt"></i> Voir sur Google Maps
@@ -505,10 +510,29 @@
                                value="{{ old('google_maps_url', $agence->google_maps_url ?? '') }}"
                                placeholder="https://goo.gl/maps/...">
                         @error('google_maps_url')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        {{-- lat/lng hidden for backend compat --}}
-                        <input type="hidden" name="latitude" value="{{ $agence->latitude ?? '' }}">
-                        <input type="hidden" name="longitude" value="{{ $agence->longitude ?? '' }}">
                     </div>
+
+                    {{-- Coordonnées exactes (modifiables au clavier) --}}
+                    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;">
+                        <div>
+                            <label for="latitude" class="form-label">Latitude</label>
+                            <input id="latitude" name="latitude" type="text" inputmode="decimal" class="form-input"
+                                   value="{{ old('latitude', $agence->latitude ?? '') }}" placeholder="14.716700">
+                            @error('latitude')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
+                        </div>
+                        <div>
+                            <label for="longitude" class="form-label">Longitude</label>
+                            <input id="longitude" name="longitude" type="text" inputmode="decimal" class="form-input"
+                                   value="{{ old('longitude', $agence->longitude ?? '') }}" placeholder="-17.467700">
+                            @error('longitude')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
+                        </div>
+                        <button type="button" class="btn-amazon-secondary" style="height:40px;white-space:nowrap;" onclick="getLocation()">
+                            <i class="fas fa-location-crosshairs"></i> Ma position
+                        </button>
+                    </div>
+
+                    {{-- Carte interactive --}}
+                    <div id="map"></div>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 20px;">
@@ -575,6 +599,7 @@
     let map, marker;
     
     function initMap() {
+        if (!document.getElementById('map')) return; // onglet sans carte
         const mapsInput = document.getElementById('google_maps_url');
         const latHidden = document.getElementById('latitude');
         const lngHidden = document.getElementById('longitude');
@@ -617,7 +642,7 @@
             updateInput(e.latlng);
         });
 
-        // Sync Input -> Map
+        // Sync Input -> Map (lien Google Maps)
         mapsInput.addEventListener('input', () => {
             const coords = parseGoogleMapsUrl(mapsInput.value);
             if (coords) {
@@ -628,6 +653,20 @@
                 lngHidden.value = coords.lng;
             }
         });
+
+        // Sync champs Latitude / Longitude -> carte (saisie manuelle)
+        const syncFromFields = () => {
+            const la = parseFloat(latHidden.value);
+            const ln = parseFloat(lngHidden.value);
+            if (!isNaN(la) && !isNaN(ln)) {
+                const p = new L.LatLng(la, ln);
+                marker.setLatLng(p);
+                map.panTo(p);
+                mapsInput.value = `https://www.google.com/maps?q=${la},${ln}`;
+            }
+        };
+        latHidden.addEventListener('change', syncFromFields);
+        lngHidden.addEventListener('change', syncFromFields);
     }
 
     function parseGoogleMapsUrl(url) {
