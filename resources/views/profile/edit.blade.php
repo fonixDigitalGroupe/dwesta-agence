@@ -162,6 +162,8 @@
         /* Filtre recherche : "Rechercher :" au-dessus, champ pleine largeur */
         .table-controls form { flex-direction: column !important; align-items: stretch !important; gap: 6px !important; }
         .table-controls form label { font-weight: 600; }
+        /* Masquer "Afficher X résultats" sur mobile */
+        .table-controls > div:first-child { display: none; }
     }
 </style>
 {{-- Leaflet CSS --}}
