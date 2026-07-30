@@ -494,7 +494,6 @@
                     <p style="font-size:0.82rem;color:#555;margin-bottom:14px;line-height:1.5;">
                         Recherchez une adresse, cliquez sur la carte, ou déplacez le marqueur pour placer précisément votre agence.
                         Vous pouvez aussi saisir les coordonnées à la main, ou coller un lien Google Maps.
-                        <br><em style="color:#8a6d00;">Sur ordinateur, le bouton « Ma position » est approximatif (pas de GPS) : préférez la recherche d'adresse ou le clic sur la carte.</em>
                     </p>
 
                     {{-- Recherche d'adresse (précis, idéal sur PC) --}}
@@ -528,7 +527,7 @@
                     </div>
 
                     {{-- Coordonnées exactes (modifiables au clavier) --}}
-                    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end;">
                         <div>
                             <label for="latitude" class="form-label">Latitude</label>
                             <input id="latitude" name="latitude" type="text" inputmode="decimal" class="form-input"
@@ -541,9 +540,6 @@
                                    value="{{ old('longitude', $agence->longitude ?? '') }}" placeholder="-17.467700">
                             @error('longitude')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                         </div>
-                        <button type="button" class="btn-amazon-secondary" style="height:40px;white-space:nowrap;" onclick="getLocation()">
-                            <i class="fas fa-location-crosshairs"></i> Ma position
-                        </button>
                     </div>
 
                     {{-- Carte interactive --}}
