@@ -387,16 +387,17 @@
         .sidebar-overlay.show { display: block; }
 
         @media (max-width: 768px) {
-            body { overflow: auto; height: auto; }
-            .agence-wrapper { height: auto; min-height: 100vh; width: 100%; }
+            html, body { overflow-x: hidden; max-width: 100%; }
+            body { overflow-y: auto; height: auto; width: 100%; }
+            .agence-wrapper { height: auto; min-height: 100vh; width: 100%; max-width: 100vw; overflow-x: hidden; }
             .agence-sidebar {
                 position: fixed; top: 0; left: 0; height: 100vh;
                 transform: translateX(-100%); transition: transform 0.25s ease;
                 box-shadow: 2px 0 12px rgba(0,0,0,0.2);
             }
             .agence-sidebar.open { transform: translateX(0); }
-            .agence-main { height: auto; overflow: visible; }
-            .agence-content { overflow: visible; padding: 1rem; }
+            .agence-main { height: auto; overflow-x: hidden; overflow-y: visible; max-width: 100vw; min-width: 0; }
+            .agence-content { overflow-x: hidden; overflow-y: visible; padding: 1rem; max-width: 100vw; }
             .agence-header { height: 60px; min-height: 60px; padding: 0 1rem; gap: 0.75rem; }
             .sidebar-toggle { display: inline-flex; align-items: center; }
             .header-logo-mobile { display: flex; align-items: center; }
