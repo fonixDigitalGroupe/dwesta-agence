@@ -508,6 +508,10 @@
                             </button>
                         </div>
                         <p id="addr-search-msg" style="font-size:0.75rem;color:#888;margin-top:5px;"></p>
+                        <button type="button" onclick="getLocation(event)" class="btn-amazon-secondary btn-sm" style="margin-top:6px;">
+                            <i class="fas fa-location-crosshairs"></i> Ma position (GPS — précis sur téléphone)
+                        </button>
+                        <br>
                         <button type="button" onclick="locateByIP()"
                                 style="margin-top:4px;background:none;border:none;color:#0071BC;font-size:0.8rem;cursor:pointer;padding:0;text-decoration:underline;">
                             <i class="fas fa-location-crosshairs"></i> Me localiser automatiquement (approximatif, via ma connexion)
@@ -701,11 +705,11 @@
         window.open(url || 'https://www.google.com/maps', '_blank');
     }
 
-    function getLocation() {
+    function getLocation(e) {
         if (navigator.geolocation) {
-            const btn = event.currentTarget;
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
+            const btn = e ? e.currentTarget : null;
+            const originalHtml = btn ? btn.innerHTML : '';
+            if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
             
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
@@ -720,11 +724,11 @@
                     document.getElementById('longitude').value = lng.toFixed(6);
                     document.getElementById('google_maps_url').value = `https://www.google.com/maps?q=${lat.toFixed(6)},${lng.toFixed(6)}`;
                     
-                    btn.innerHTML = originalHtml;
+                    if (btn) btn.innerHTML = originalHtml;
                 },
                 (err) => {
                     alert("Géolocalisation échouée : " + err.message);
-                    btn.innerHTML = originalHtml;
+                    if (btn) btn.innerHTML = originalHtml;
                 },
                 { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
             );
