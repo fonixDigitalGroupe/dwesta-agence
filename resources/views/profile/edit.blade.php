@@ -132,6 +132,8 @@
         font-size: 0.78rem;
     }
 
+    .pg-short { display: none; }
+
     /* ─── Responsive mobile ─── */
     @media (max-width: 768px) {
         /* Empiler tous les champs en 2 colonnes */
@@ -154,6 +156,12 @@
         /* Pagination : passe à la ligne, centrée */
         .pagination-bar { flex-wrap: wrap; gap: 10px; justify-content: center !important; }
         .pagination-bar > div:first-child { width: 100%; text-align: center; }
+        /* Libellés pagination compacts (Préc / Suiv) */
+        .pg-full { display: none; }
+        .pg-short { display: inline; }
+        /* Filtre recherche : "Rechercher :" au-dessus, champ pleine largeur */
+        .table-controls form { flex-direction: column !important; align-items: stretch !important; gap: 6px !important; }
+        .table-controls form label { font-weight: 600; }
     }
 </style>
 {{-- Leaflet CSS --}}
@@ -290,9 +298,9 @@
                 </div>
                 <div style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
                     @if($users->onFirstPage())
-                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
+                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;"><span class="pg-full">Précédent</span><span class="pg-short">Préc</span></span>
                     @else
-                        <a href="{{ $users->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
+                        <a href="{{ $users->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;"><span class="pg-full">Précédent</span><span class="pg-short">Préc</span></a>
                     @endif
 
                     @php
@@ -309,9 +317,9 @@
                     @endfor
 
                     @if($users->hasMorePages())
-                        <a href="{{ $users->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                        <a href="{{ $users->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;"><span class="pg-full">Suivant</span><span class="pg-short">Suiv</span></a>
                     @else
-                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;"><span class="pg-full">Suivant</span><span class="pg-short">Suiv</span></span>
                     @endif
                 </div>
             </div>
