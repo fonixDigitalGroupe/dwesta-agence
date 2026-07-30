@@ -403,6 +403,14 @@
             .search-container { display: none; }
             .header-actions { gap: 0.85rem; }
             .header-link span, .user-header-name { display: none; }
+            /* Tableaux défilables horizontalement */
+            .agence-content table {
+                display: block; width: 100%; max-width: 100%;
+                overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;
+            }
+            /* Médias qui ne débordent pas */
+            .agence-content img, .agence-content video, .agence-content iframe { max-width: 100%; height: auto; }
+            .agence-content { word-wrap: break-word; }
         }
     </style>
 </head>
