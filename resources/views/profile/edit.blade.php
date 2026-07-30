@@ -146,6 +146,14 @@
         table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
         /* Modales adaptées à l'écran */
         [style*="max-width:480px"], [style*="max-width: 480px"] { max-width: 94% !important; }
+        /* Bouton "Ajouter" : icône bleue seule */
+        .btn-add-user .btn-label { display: none; }
+        .btn-add-user { padding: 9px 13px !important; flex-shrink: 0; }
+        /* Filtres : chaque groupe sur toute la largeur */
+        .table-controls > div, .table-controls form { width: 100%; }
+        /* Pagination : passe à la ligne, centrée */
+        .pagination-bar { flex-wrap: wrap; gap: 10px; justify-content: center !important; }
+        .pagination-bar > div:first-child { width: 100%; text-align: center; }
     }
 </style>
 {{-- Leaflet CSS --}}
@@ -174,8 +182,8 @@
         <div class="amazon-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #e7e7e7;">
                 <h3 style="font-size: 1rem; font-weight: 600; color: #111; margin: 0;">Utilisateurs de l'agence</h3>
-                <button type="button" class="btn-amazon-primary" onclick="document.getElementById('addUserModal').style.display='flex'">
-                    <i class="fas fa-plus"></i> Ajouter un utilisateur
+                <button type="button" class="btn-amazon-primary btn-add-user" onclick="document.getElementById('addUserModal').style.display='flex'" title="Ajouter un utilisateur">
+                    <i class="fas fa-plus"></i> <span class="btn-label">Ajouter un utilisateur</span>
                 </button>
             </div>
 
@@ -276,7 +284,7 @@
             </table>
 
             {{-- Pagination Harmonisée --}}
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
+            <div class="pagination-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
                 <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
                     Affichage de {{ $users->firstItem() ?? 0 }} à {{ $users->lastItem() ?? 0 }} sur {{ $users->total() }} résultats
                 </div>
