@@ -70,8 +70,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
+            background: var(--sidebar-bg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             flex-shrink: 0;
             padding: 0 1rem;
         }
@@ -461,18 +461,6 @@
 
             <div class="sidebar-divider"></div>
 
-            {{-- Groupe 3 : Finances --}}
-            <ul class="sidebar-menu">
-                <li>
-                    <a href="{{ route('finances.paiements') }}" class="{{ request()->routeIs('finances.paiements') ? 'active' : '' }}">
-                        <i class="fas fa-receipt"></i>
-                        <span>Paiements</span>
-                    </a>
-                </li>
-            </ul>
-
-            <div class="sidebar-divider"></div>
-
             {{-- Groupe 4 : Analyse --}}
             <ul class="sidebar-menu">
                 <li>
@@ -563,8 +551,7 @@
                 </div>
             @endif
             @if(session('success'))
-                <div class="flash-success">
-                    <i class="fas fa-check-circle"></i>
+                <div class="flash-success auto-hide-msg">
                     {{ session('success') }}
                 </div>
             @endif
@@ -618,6 +605,15 @@
             // Fermer après avoir cliqué un lien du menu
             sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', closeSidebar));
         }
+
+        // Faire disparaître les messages de succès après 4s
+        document.querySelectorAll('.auto-hide-msg, .flash-success').forEach(function (el) {
+            setTimeout(function () {
+                el.style.transition = 'opacity 0.5s';
+                el.style.opacity = '0';
+                setTimeout(function () { el.style.display = 'none'; }, 500);
+            }, 4000);
+        });
     });
 </script>
 

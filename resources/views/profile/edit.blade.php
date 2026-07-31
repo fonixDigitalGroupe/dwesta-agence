@@ -199,19 +199,19 @@
 
             @if(session('status') === 'user-added')
                 <div style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;" class="auto-hide-msg">
-                    <i class="fas fa-check-circle"></i> Utilisateur ajouté avec succès.
+                    Utilisateur ajouté avec succès.
                 </div>
             @endif
 
             @if(session('status') === 'user-updated')
                 <div style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;" class="auto-hide-msg">
-                    <i class="fas fa-check-circle"></i> Utilisateur mis à jour avec succès.
+                    Utilisateur mis à jour avec succès.
                 </div>
             @endif
 
             @if(session('status') === 'user-deleted')
                 <div style="background: #fff8f8; border: 1px solid #fecaca; color: #b91c1c; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;" class="auto-hide-msg">
-                    <i class="fas fa-trash-alt"></i> Utilisateur supprimé avec succès.
+                    Utilisateur supprimé avec succès.
                 </div>
             @endif
 
@@ -484,8 +484,8 @@
             @endif
 
             @if(session('status') === 'agence-updated')
-                <div style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.85rem; margin-bottom: 20px;">
-                    <i class="fas fa-check-circle"></i> Les paramètres de l'agence ont été mis à jour avec succès.
+                <div class="auto-hide-msg" style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.85rem; margin-bottom: 20px;">
+                    Les paramètres de l'agence ont été mis à jour avec succès.
                 </div>
             @endif
 
