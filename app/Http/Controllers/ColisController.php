@@ -103,6 +103,21 @@ class ColisController extends Controller
     }
 
     /**
+     * Page de détails du colis.
+     */
+    public function show(Request $request, Order $order)
+    {
+        $agence = $request->user()->pointRelais()->first();
+        if (!$agence || $order->destination_point_relais_id !== $agence->id) {
+            abort(403);
+        }
+
+        $order->load(['buyer', 'seller.user', 'items.annonce.medias']);
+
+        return view('colis.show', ['order' => $order, 'agence' => $agence]);
+    }
+
+    /**
      * Fiche détaillée du colis en PDF.
      */
     public function detailsPdf(Request $request, Order $order)

@@ -244,7 +244,7 @@
                                 </td>
                             @endif
                             <td style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
-                                <a href="{{ route('colis.pdf', $order->id) }}" target="_blank" class="mirror-link" style="color: #666;">Détails</a>
+                                <a href="{{ route('colis.show', $order->id) }}" class="mirror-link" style="color: #666;">Détails</a>
 
                                 @if($activeTab == 'incoming')
                                     <span class="mirror-sep">|</span>
