@@ -470,12 +470,6 @@
                         @endif
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('operations.litiges') }}" class="{{ request()->routeIs('operations.litiges') ? 'active' : '' }}">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>Litiges</span>
-                    </a>
-                </li>
             </ul>
 
             <div class="sidebar-divider"></div>
