@@ -33,12 +33,18 @@ class ProfileController extends Controller
             });
         }
 
+        $countries = \App\Models\Country::where('is_active', true)
+            ->with(['regions' => fn ($q) => $q->orderBy('name')])
+            ->orderBy('name')
+            ->get();
+
         return view('profile.edit', [
             'user'    => $user,
             'agence'  => $agence,
             'users'   => $usersQuery->paginate($perPage)->withQueryString(),
             'search'  => $search,
             'perPage' => $perPage,
+            'countries' => $countries,
         ]);
     }
 

@@ -512,9 +512,12 @@
                             @error('email')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                         </div>
                         <div>
-                            <label for="telephone" class="form-label">Téléphone de l'agence</label>
-                            <input id="telephone" name="telephone" type="text" class="form-input"
-                                   value="{{ old('telephone', $agence->telephone ?? '') }}">
+                            <label for="telephone_number" class="form-label">Téléphone de l'agence</label>
+                            <div style="display:flex; border:1px solid #adb1b8; border-radius:4px; overflow:hidden; background:#fff;">
+                                <span id="tel-indicatif" style="padding:0 12px; display:flex; align-items:center; background:#f3f4f6; color:#374151; font-size:0.9rem; border-right:1px solid #adb1b8; white-space:nowrap;">+---</span>
+                                <input id="telephone_number" type="tel" placeholder="Numéro" style="flex:1; border:none; outline:none; padding:0.6rem 0.75rem; font-size:0.9rem; min-width:0;">
+                            </div>
+                            <input type="hidden" id="telephone" name="telephone" value="{{ old('telephone', $agence->telephone ?? '') }}">
                             @error('telephone')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                         </div>
                     </div>
@@ -531,37 +534,19 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div>
                             <label for="region" class="form-label">Région / Ville</label>
-                            <input id="region" name="region" type="text" class="form-input"
-                                   value="{{ old('region', $agence->region ?? '') }}">
+                            <select id="region" name="region" class="form-input">
+                                <option value="">Sélectionner une région</option>
+                            </select>
                             @error('region')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                         </div>
                         <div>
                             <label for="pays" class="form-label">Pays</label>
                             <select id="pays" name="pays" class="form-input" required>
                                 <option value="">Sélectionner un pays</option>
-                                @php
-                                    $africanCountries = [
-                                        'sn' => 'Sénégal', 'ci' => 'Côte d\'Ivoire', 'ma' => 'Maroc', 'dz' => 'Algérie', 
-                                        'tn' => 'Tunisie', 'cm' => 'Cameroun', 'ga' => 'Gabon', 'ml' => 'Mali', 
-                                        'bf' => 'Burkina Faso', 'bj' => 'Bénin', 'tg' => 'Togo', 'ne' => 'Niger', 
-                                        'td' => 'Tchad', 'gn' => 'Guinée', 'mg' => 'Madagascar', 'mr' => 'Mauritanie', 
-                                        'cg' => 'Congo-Brazzaville', 'cd' => 'Congo-Kinshasa', 'cf' => 'Centrafrique', 
-                                        'dj' => 'Djibouti', 'km' => 'Comores', 'sc' => 'Seychelles', 'mu' => 'Maurice', 
-                                        'bi' => 'Burundi', 'rw' => 'Rwanda', 'za' => 'Afrique du Sud', 'ao' => 'Angola', 
-                                        'bw' => 'Botswana', 'cv' => 'Cap-Vert', 'eg' => 'Égypte', 'er' => 'Érythrée', 
-                                        'sz' => 'Eswatini', 'et' => 'Éthiopie', 'gm' => 'Gambie', 'gh' => 'Ghana', 
-                                        'gw' => 'Guinée-Bissau', 'gq' => 'Guinée équatoriale', 'ke' => 'Kenya', 'ls' => 'Lesotho', 
-                                        'lr' => 'Liberia', 'ly' => 'Libye', 'mw' => 'Malawi', 'mz' => 'Mozambique', 
-                                        'na' => 'Namibie', 'ng' => 'Nigeria', 'ug' => 'Ouganda', 'st' => 'Sao Tomé-et-Principe', 
-                                        'sl' => 'Sierra Leone', 'so' => 'Somalie', 'sd' => 'Soudan', 'ss' => 'Soudan du Sud', 
-                                        'tz' => 'Tanzanie', 'zm' => 'Zambie', 'zw' => 'Zimbabwe'
-                                    ];
-                                    // Sort by name (the value in the array)
-                                    asort($africanCountries);
-                                @endphp
-                                @foreach($africanCountries as $iso => $name)
-                                    <option value="{{ $name }}" data-iso="{{ $iso }}" {{ old('pays', $agence->pays ?? '') == $name ? 'selected' : '' }}>
-                                        {{ $name }}
+                                @foreach($countries as $c)
+                                    <option value="{{ $c->name }}" data-id="{{ $c->id }}" data-phone="{{ $c->phone_code }}"
+                                        {{ old('pays', $agence->pays ?? '') == $c->name ? 'selected' : '' }}>
+                                        {{ $c->flag }} {{ $c->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -874,7 +859,7 @@
         const lat = parseFloat(document.getElementById('latitude').value);
         const lng = parseFloat(document.getElementById('longitude').value);
         if (!isNaN(lat) && !isNaN(lng)) {
-            el.innerHTML = '📍 Localisation définie <span style="color:#888;font-weight:400;">(' + lat.toFixed(5) + ', ' + lng.toFixed(5) + ')</span>';
+            el.innerHTML = 'Localisation définie <span style="color:#888;font-weight:400;">(' + lat.toFixed(5) + ', ' + lng.toFixed(5) + ')</span>';
         } else {
             el.textContent = 'Aucune localisation définie';
         }
@@ -963,10 +948,65 @@
         document.getElementById('search_suggestions').style.display = 'none';
     }
 
+    // ─── Pays → Régions + indicatif téléphone ───
+    const REGIONS_BY_COUNTRY = @json($countries->mapWithKeys(fn($c) => [$c->id => $c->regions->pluck('name')->values()]));
+    const CURRENT_REGION = @json(old('region', $agence->region ?? ''));
+
+    function paysData() {
+        const sel = document.getElementById('pays');
+        const opt = sel ? sel.options[sel.selectedIndex] : null;
+        return {
+            id: opt ? opt.getAttribute('data-id') : null,
+            phone: opt ? (opt.getAttribute('data-phone') || '') : ''
+        };
+    }
+
+    function populateRegions(selectedName) {
+        const regionSel = document.getElementById('region');
+        if (!regionSel) return;
+        const { id } = paysData();
+        const list = (id && REGIONS_BY_COUNTRY[id]) ? REGIONS_BY_COUNTRY[id] : [];
+        regionSel.innerHTML = '<option value="">Sélectionner une région</option>';
+        list.forEach(function (name) {
+            const o = document.createElement('option');
+            o.value = name; o.textContent = name;
+            if (name === selectedName) o.selected = true;
+            regionSel.appendChild(o);
+        });
+    }
+
+    function rebuildTelephone() {
+        const ind = (paysData().phone || '').trim();
+        const num = (document.getElementById('telephone_number').value || '').trim();
+        document.getElementById('telephone').value = num ? (ind + ' ' + num).trim() : '';
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        const phoneInput = document.querySelector("#telephone");
-        if (phoneInput) window.initPhoneField(phoneInput);
         setupAddressSearch();
+
+        const paysSel = document.getElementById('pays');
+        if (paysSel) {
+            // Régions du pays courant
+            populateRegions(CURRENT_REGION);
+
+            // Indicatif + découpage du numéro existant
+            const ind = (paysData().phone || '');
+            document.getElementById('tel-indicatif').textContent = ind || '+---';
+            const full = (document.getElementById('telephone').value || '').trim();
+            if (full && ind && full.startsWith(ind)) {
+                document.getElementById('telephone_number').value = full.substring(ind.length).trim();
+            } else {
+                document.getElementById('telephone_number').value = full;
+            }
+            rebuildTelephone();
+
+            paysSel.addEventListener('change', function () {
+                populateRegions('');
+                document.getElementById('tel-indicatif').textContent = (paysData().phone || '+---');
+                rebuildTelephone();
+            });
+            document.getElementById('telephone_number').addEventListener('input', rebuildTelephone);
+        }
     });
 </script>
 </x-app-layout>
