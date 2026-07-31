@@ -122,6 +122,22 @@
             color: #fff;
         }
 
+        .sidebar-badge {
+            margin-left: auto;
+            background: var(--sidebar-accent);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
         /* Line separator in sidebar */
         .sidebar-divider {
             height: 1px;
@@ -449,6 +465,9 @@
                     <a href="{{ route('operations.stock') }}" class="{{ request()->routeIs('operations.stock') ? 'active' : '' }}">
                         <i class="fas fa-warehouse"></i>
                         <span>Stock</span>
+                        @if(($sidebarIncomingCount ?? 0) > 0)
+                            <span class="sidebar-badge">{{ $sidebarIncomingCount }}</span>
+                        @endif
                     </a>
                 </li>
                 <li>

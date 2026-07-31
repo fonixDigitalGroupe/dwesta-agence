@@ -151,15 +151,6 @@
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                 <h1 class="mirror-title">Gestion du Stock & Colis</h1>
-
-                <div style="display: flex; gap: 8px;">
-                    <button type="button" onclick="openScanModal()" class="sync-btn-blue">
-                        <i class="fas fa-barcode"></i> Scanner un colis
-                    </button>
-                    <a href="javascript:window.print()" class="sync-btn-gray">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
-                </div>
             </div>
 
             <!-- Barre de filtres (1:1 with Categories) -->
