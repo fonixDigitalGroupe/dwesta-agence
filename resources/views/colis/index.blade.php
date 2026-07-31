@@ -196,7 +196,7 @@
                         <th>client</th>
                         <th>vendeur</th>
                         <th style="width: 120px; text-align: center;">statut</th>
-                        <th style="width: 180px;">date de commande</th>
+                        <th style="width: 180px;">Date</th>
                         <th style="width: 100px; text-align: right;">actions</th>
                     </tr>
                 </thead>
@@ -226,27 +226,33 @@
                             </td>
                             <td style="text-align: center;">
                                 @php
-                                    $pillColor = match($order->statut) {
-                                        'en_route' => '#0066c0',
-                                        'disponible' => '#569b00',
-                                        'livre' => '#c45500',
-                                        default => '#555'
+                                    $badge = match($order->statut) {
+                                        'en_route'   => ['bg' => '#e8f1fb', 'txt' => '#0b62c4', 'label' => 'En route'],
+                                        'disponible' => ['bg' => '#eaf6e4', 'txt' => '#3f7d18', 'label' => 'Disponible'],
+                                        'livre'      => ['bg' => '#fdefe3', 'txt' => '#b8560f', 'label' => 'Livré'],
+                                        default      => ['bg' => '#eef0f2', 'txt' => '#556', 'label' => $order->statut_label],
                                     };
-                                    $label = match($order->statut) {
-                                        'en_route' => 'En Route',
-                                        'disponible' => 'Active',
-                                        'livre' => 'Livré',
-                                        default => $order->statut_label
-                                    };
+                                    $label = $badge['label'];
                                 @endphp
-                                <span style="display:inline-block; padding:3px 11px; border-radius:999px; font-size:0.7rem; font-weight:600; color:#fff; background:{{ $pillColor }};">{{ $label }}</span>
+                                <span style="display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border-radius:6px; font-size:0.68rem; font-weight:700; letter-spacing:0.2px; background:{{ $badge['bg'] }}; color:{{ $badge['txt'] }};">
+                                    <span style="width:6px; height:6px; border-radius:50%; background:{{ $badge['txt'] }};"></span>{{ $label }}
+                                </span>
                             </td>
                             <td style="color: #666;">
                                 <div style="font-weight: 500;">{{ $order->created_at->format('d/m/Y') }}</div>
                                 <div style="font-size: 0.72rem; color: #999; margin-top: 2px;">à {{ $order->created_at->format('H:i') }}</div>
                             </td>
                             <td style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
-                                <a href="#" onclick="alert('Fonctionnalité Détails en cours de développement.'); return false;" class="mirror-link" style="color: #666;">Détails</a>
+                                <a href="#" class="mirror-link" style="color: #666;"
+                                   data-ref="{{ $order->reference }}"
+                                   data-client="{{ trim(($order->buyer->prenom ?? '') . ' ' . ($order->buyer->nom ?? $order->buyer->name ?? '')) ?: 'Inconnu' }}"
+                                   data-clientphone="{{ $order->buyer->telephone ?? '—' }}"
+                                   data-clientemail="{{ $order->buyer->email ?? '—' }}"
+                                   data-seller="{{ $sellerName ?: 'Inconnu' }}"
+                                   data-sellerphone="{{ $sellerPhone ?: '—' }}"
+                                   data-statut="{{ $label }}"
+                                   data-date="{{ $order->created_at->format('d/m/Y à H:i') }}"
+                                   onclick="openDetails(this); return false;">Détails</a>
 
                                 @if($activeTab == 'incoming')
                                     <span class="mirror-sep">|</span>
@@ -330,6 +336,31 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function openDetails(el) {
+            const g = (k) => el.getAttribute('data-' + k) || '—';
+            const row = (label, val) =>
+                `<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid #f0f0f0;">
+                    <span style="color:#8a90a0;">${label}</span>
+                    <span style="font-weight:600;color:#111;text-align:right;">${val}</span>
+                 </div>`;
+            Swal.fire({
+                title: 'Détails du colis',
+                html: `<div style="text-align:left;font-size:0.9rem;">
+                    ${row('Référence', g('ref'))}
+                    ${row('Client', g('client'))}
+                    ${row('Téléphone client', g('clientphone'))}
+                    ${row('Email client', g('clientemail'))}
+                    ${row('Vendeur', g('seller'))}
+                    ${row('Téléphone vendeur', g('sellerphone'))}
+                    ${row('Statut', g('statut'))}
+                    ${row('Date de commande', g('date'))}
+                </div>`,
+                confirmButtonText: 'Fermer',
+                confirmButtonColor: '#004aad',
+                width: 480
+            });
+        }
+
         function confirmReceive(id, ref) {
             Swal.fire({
                 title: 'Réceptionner ?',
