@@ -216,11 +216,13 @@
                                         : ($order->seller->identite ?? 'Vendeur Inconnu');
                                     $sellerPhone = $sellerUser->telephone ?? '';
                                 @endphp
-                                <span class="item-main" style="color: #333; font-weight: 500;">{{ $sellerName ?: 'Vendeur Inconnu' }}</span>
-                                @if($order->seller && $order->seller->type === 'professionnel')
-                                    <span style="font-size: 0.65rem; background: #eee; padding: 1px 4px; border-radius: 3px; font-weight: bold; color: #666;">PRO</span>
-                                @endif
-                                <div class="item-sub">{{ $sellerPhone }}</div>
+                                <div class="item-main" style="color: #333; font-weight: 500;">{{ $sellerName ?: 'Vendeur Inconnu' }}</div>
+                                <div class="item-sub" style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                                    @if($order->seller && $order->seller->type === 'professionnel')
+                                        <span style="font-size: 0.6rem; background: #eee; padding: 1px 5px; border-radius: 3px; font-weight: bold; color: #666;">PRO</span>
+                                    @endif
+                                    <span>{{ $sellerPhone }}</span>
+                                </div>
                             </td>
                             @php
                                 $label = match($order->statut) {
