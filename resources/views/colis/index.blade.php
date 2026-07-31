@@ -210,6 +210,7 @@
                         @if($activeTab == 'stock')
                             <th style="width: 120px;">réception</th>
                             <th style="width: 140px;">échéance</th>
+                            <th style="width: 170px;">statut</th>
                         @endif
                         <th style="width: 100px; text-align: right;">actions</th>
                     </tr>
@@ -249,6 +250,7 @@
                                     'livre'      => 'Livré',
                                     default      => $order->statut_label,
                                 };
+                                $openLitige = $order->litiges->firstWhere('statut', 'en_cours');
                             @endphp
                             @if($activeTab == 'stock')
                                 @php
@@ -265,6 +267,15 @@
                                         <div style="margin-top:3px;"><span style="font-size:0.64rem; font-weight:700; background:#fdecea; color:#c0392b; padding:1px 6px; border-radius:4px;">à retourner</span></div>
                                     @endif
                                 </td>
+                                <td>
+                                    @if($openLitige)
+                                        <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:0.68rem;font-weight:700;background:#fdecea;color:#c0392b;"><span style="width:6px;height:6px;border-radius:50%;background:#c0392b;"></span>Litige signalé</span>
+                                    @elseif(($order->gestion_paiement ?? 'commande') === 'commande')
+                                        <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:0.68rem;font-weight:700;background:#eaf6e4;color:#3f7d18;"><span style="width:6px;height:6px;border-radius:50%;background:#3f7d18;"></span>Payé</span>
+                                    @else
+                                        <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:0.68rem;font-weight:700;background:#fff3e6;color:#b8560f;"><span style="width:6px;height:6px;border-radius:50%;background:#b8560f;"></span>Paiement à la livraison</span>
+                                    @endif
+                                </td>
                             @endif
                             <td style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                                 <a href="{{ route('colis.show', $order->id) }}" class="mirror-link" style="color: #666;">Détails</a>
@@ -276,19 +287,24 @@
                                         @csrf
                                     </form>
                                 @elseif($activeTab == 'stock')
-                                    <span class="mirror-sep">|</span>
-                                    <button type="button" onclick="confirmDeliver('{{ $order->id }}', '{{ $order->reference }}')" class="mirror-link" style="background: none; border: none; font-weight: bold; color: #569b00;">Remettre au client</button>
-                                    <form id="deliver-form-{{ $order->id }}" action="{{ route('colis.deliver', $order->id) }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                    <span class="mirror-sep">|</span>
-                                    <button type="button" onclick="signalLitige('{{ $order->id }}', '{{ $order->reference }}')" class="mirror-link-red" style="background: none; border: none; font-weight: bold;">Signaler un litige</button>
+                                    @if($openLitige)
+                                        <span class="mirror-sep">|</span>
+                                        <span style="color:#c0392b; font-weight:600; font-size:0.82rem;" title="Remise impossible : litige signalé">Litige signalé</span>
+                                    @else
+                                        <span class="mirror-sep">|</span>
+                                        <button type="button" onclick="confirmDeliver('{{ $order->id }}', '{{ $order->reference }}')" class="mirror-link" style="background: none; border: none; font-weight: bold; color: #569b00;">Remettre au client</button>
+                                        <form id="deliver-form-{{ $order->id }}" action="{{ route('colis.deliver', $order->id) }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                        <span class="mirror-sep">|</span>
+                                        <button type="button" onclick="signalLitige('{{ $order->id }}', '{{ $order->reference }}')" class="mirror-link-red" style="background: none; border: none; font-weight: bold;">Signaler un litige</button>
+                                    @endif
                                 @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
+                            <td colspan="{{ $activeTab == 'stock' ? 5 : 4 }}" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>

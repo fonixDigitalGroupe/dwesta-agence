@@ -55,7 +55,7 @@ class ColisController extends Controller
             $query->where('reference', 'like', "%{$search}%");
         }
 
-        $orders = $query->with(['buyer', 'seller.user', 'seller.pagePro'])->latest()->paginate($perPage)->withQueryString();
+        $orders = $query->with(['buyer', 'seller.user', 'seller.pagePro', 'litiges'])->latest()->paginate($perPage)->withQueryString();
 
         return view('colis.index', compact('agence', 'orders', 'counts', 'activeTab', 'search', 'perPage'));
     }
@@ -89,6 +89,10 @@ class ColisController extends Controller
 
         if ($order->statut !== Order::STATUT_DISPONIBLE) {
             return Redirect::back()->with('error', 'Seuls les colis en stock peuvent être livrés.');
+        }
+
+        if ($order->litiges()->where('statut', 'en_cours')->exists()) {
+            return Redirect::back()->with('error', 'Remise impossible : un litige a été signalé sur cette commande.');
         }
 
         $order->update(['statut' => Order::STATUT_LIVRE]);
@@ -125,8 +129,6 @@ class ColisController extends Controller
             'description' => $data['description'] ?: ('Colis à retourner — ' . ($labels[$data['motif']] ?? '')),
             'statut'      => 'en_cours',
         ]);
-
-        $order->update(['statut' => Order::STATUT_LITIGE]);
 
         return Redirect::route('operations.stock', ['tab' => 'stock'])
             ->with('success', "Litige signalé. La commande est transmise à l'administration Karnou pour retour.");

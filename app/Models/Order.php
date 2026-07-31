@@ -68,6 +68,11 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function litiges()
+    {
+        return $this->hasMany(Litige::class, 'commande_id');
+    }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
