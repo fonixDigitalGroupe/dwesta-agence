@@ -495,63 +495,71 @@
                 {{-- General Info Card --}}
                 <div class="amazon-card">
                     <h3 class="section-title">Informations Générales</h3>
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px;">
-                        <div>
-                            <label for="nom" class="form-label">Nom de l'agence</label>
-                            <input id="nom" name="nom" type="text" class="form-input"
-                                   value="{{ old('nom', $agence->nom ?? '') }}" required>
-                            @error('nom')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        </div>
+                    {{-- Nom --}}
+                    <div style="margin-bottom: 20px;">
+                        <label for="nom" class="form-label">Nom de l'agence</label>
+                        <input id="nom" name="nom" type="text" class="form-input"
+                               value="{{ old('nom', $agence->nom ?? '') }}" required>
+                        @error('nom')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                        <div>
-                            <label for="email" class="form-label">Email de l'agence</label>
-                            <input id="email" name="email" type="email" class="form-input"
-                                   value="{{ old('email', $agence->email ?? '') }}">
-                            @error('email')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        </div>
-                        <div>
-                            <label for="telephone_number" class="form-label">Téléphone de l'agence</label>
-                            <div style="display:flex; border:1px solid #adb1b8; border-radius:4px; overflow:hidden; background:#fff;">
-                                <span id="tel-indicatif" style="padding:0 12px; display:flex; align-items:center; background:#f3f4f6; color:#374151; font-size:0.9rem; border-right:1px solid #adb1b8; white-space:nowrap;">+---</span>
-                                <input id="telephone_number" type="tel" placeholder="Numéro" style="flex:1; border:none; outline:none; padding:0.6rem 0.75rem; font-size:0.9rem; min-width:0;">
-                            </div>
-                            <input type="hidden" id="telephone" name="telephone" value="{{ old('telephone', $agence->telephone ?? '') }}">
-                            @error('telephone')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        </div>
+                    {{-- Description --}}
+                    <div style="margin-bottom: 20px;">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="description" name="description" rows="3" class="form-input"
+                                  placeholder="Décrivez votre agence (services, particularités…)">{{ old('description', $agence->description ?? '') }}</textarea>
+                        @error('description')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px;">
-                        <div>
-                            <label for="adresse" class="form-label">Adresse physique</label>
-                            <input id="adresse" name="adresse" type="text" class="form-input"
-                                   value="{{ old('adresse', $agence->adresse ?? '') }}" required>
-                            @error('adresse')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        </div>
+                    {{-- Pays --}}
+                    <div style="margin-bottom: 20px;">
+                        <label for="pays" class="form-label">Pays</label>
+                        <select id="pays" name="pays" class="form-input" required>
+                            <option value="">Sélectionner un pays</option>
+                            @foreach($countries as $c)
+                                <option value="{{ $c->name }}" data-id="{{ $c->id }}" data-phone="{{ $c->phone_code }}"
+                                    {{ old('pays', $agence->pays ?? '') == $c->name ? 'selected' : '' }}>
+                                    {{ $c->flag }} {{ $c->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('pays')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <label for="region" class="form-label">Région / Ville</label>
-                            <select id="region" name="region" class="form-input">
-                                <option value="">Sélectionner une région</option>
-                            </select>
-                            @error('region')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
+                    {{-- Région --}}
+                    <div style="margin-bottom: 20px;">
+                        <label for="region" class="form-label">Région / Ville</label>
+                        <select id="region" name="region" class="form-input">
+                            <option value="">Sélectionner une région</option>
+                        </select>
+                        @error('region')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
+                    </div>
+
+                    {{-- Téléphone --}}
+                    <div style="margin-bottom: 20px;">
+                        <label for="telephone_number" class="form-label">Téléphone de l'agence</label>
+                        <div style="display:flex; border:1px solid #adb1b8; border-radius:4px; overflow:hidden; background:#fff;">
+                            <span id="tel-indicatif" style="padding:0 12px; display:flex; align-items:center; background:#f3f4f6; color:#374151; font-size:0.9rem; border-right:1px solid #adb1b8; white-space:nowrap;">+---</span>
+                            <input id="telephone_number" type="tel" placeholder="Numéro" style="flex:1; border:none; outline:none; padding:0.6rem 0.75rem; font-size:0.9rem; min-width:0;">
                         </div>
-                        <div>
-                            <label for="pays" class="form-label">Pays</label>
-                            <select id="pays" name="pays" class="form-input" required>
-                                <option value="">Sélectionner un pays</option>
-                                @foreach($countries as $c)
-                                    <option value="{{ $c->name }}" data-id="{{ $c->id }}" data-phone="{{ $c->phone_code }}"
-                                        {{ old('pays', $agence->pays ?? '') == $c->name ? 'selected' : '' }}>
-                                        {{ $c->flag }} {{ $c->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('pays')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
-                        </div>
+                        <input type="hidden" id="telephone" name="telephone" value="{{ old('telephone', $agence->telephone ?? '') }}">
+                        @error('telephone')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
+                    </div>
+
+                    {{-- Adresse --}}
+                    <div style="margin-bottom: 20px;">
+                        <label for="adresse" class="form-label">Adresse physique</label>
+                        <input id="adresse" name="adresse" type="text" class="form-input"
+                               value="{{ old('adresse', $agence->adresse ?? '') }}" required>
+                        @error('adresse')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
+                    </div>
+
+                    {{-- Email --}}
+                    <div style="margin-bottom: 20px;">
+                        <label for="email" class="form-label">Email de l'agence</label>
+                        <input id="email" name="email" type="email" class="form-input"
+                               value="{{ old('email', $agence->email ?? '') }}">
+                        @error('email')<p style="color:#c40000;font-size:0.78rem;margin-top:4px;">{{ $message }}</p>@enderror
                     </div>
                 </div>
 

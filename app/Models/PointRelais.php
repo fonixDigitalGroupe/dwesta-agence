@@ -10,6 +10,7 @@ class PointRelais extends Model
 
     protected $fillable = [
         'nom',
+        'description',
         'email',
         'adresse',
         'pays',
