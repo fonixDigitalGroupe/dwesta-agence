@@ -210,7 +210,7 @@
                         @if($activeTab == 'stock')
                             <th style="width: 120px;">réception</th>
                             <th style="width: 140px;">échéance</th>
-                            <th style="width: 170px;">statut</th>
+                            <th style="width: 115px;">statut</th>
                         @endif
                         <th style="width: 100px; text-align: right;">actions</th>
                     </tr>
@@ -269,11 +269,11 @@
                                 </td>
                                 <td>
                                     @if($openLitige)
-                                        <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:0.68rem;font-weight:700;background:#fdecea;color:#c0392b;"><span style="width:6px;height:6px;border-radius:50%;background:#c0392b;"></span>Litige signalé</span>
+                                        <span style="display:inline-block;padding:3px 9px;border-radius:6px;font-size:0.66rem;font-weight:700;background:#fdecea;color:#c0392b;">Litige signalé</span>
                                     @elseif(($order->gestion_paiement ?? 'commande') === 'commande')
-                                        <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:0.68rem;font-weight:700;background:#eaf6e4;color:#3f7d18;"><span style="width:6px;height:6px;border-radius:50%;background:#3f7d18;"></span>Payé</span>
+                                        <span style="display:inline-block;padding:3px 9px;border-radius:6px;font-size:0.66rem;font-weight:700;background:#eaf6e4;color:#3f7d18;">Payé</span>
                                     @else
-                                        <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:0.68rem;font-weight:700;background:#fff3e6;color:#b8560f;"><span style="width:6px;height:6px;border-radius:50%;background:#b8560f;"></span>Paiement à la livraison</span>
+                                        <span style="display:inline-block;padding:3px 9px;border-radius:6px;font-size:0.66rem;font-weight:700;background:#fff3e6;color:#b8560f;">Paiement à la livraison</span>
                                     @endif
                                 </td>
                             @endif
