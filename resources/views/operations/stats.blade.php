@@ -76,6 +76,7 @@
                             <th class="text-left font-semibold px-4 py-3">Référence</th>
                             <th class="text-left font-semibold px-4 py-3">Client</th>
                             <th class="text-left font-semibold px-4 py-3">Statut</th>
+                            <th class="text-left font-semibold px-4 py-3">Traité par</th>
                             <th class="text-left font-semibold px-4 py-3">Date</th>
                         </tr>
                     </thead>
@@ -94,6 +95,13 @@
                                     'autre'    => [ucfirst(str_replace('_',' ',$order->statut)), 'bg-slate-100 text-slate-600'],
                                 ];
                                 [$bLabel, $bClass] = $badges[$cat];
+                                $agentUser = match($cat) {
+                                    'stock'  => $order->receivedBy,
+                                    'livre'  => $order->deliveredBy,
+                                    'litige' => optional($order->litiges->firstWhere('statut', 'en_cours'))->reporter,
+                                    default  => null,
+                                };
+                                $agentName = $agentUser ? (trim(($agentUser->prenom ?? '').' '.($agentUser->nom ?? $agentUser->name ?? '')) ?: '—') : '—';
                             @endphp
                             <tr class="hover:bg-slate-50">
                                 <td class="px-4 py-3 font-medium text-slate-800">{{ $order->reference }}</td>
@@ -102,10 +110,11 @@
                                     <div class="text-xs text-slate-400">{{ $order->buyer->telephone ?? '' }}</div>
                                 </td>
                                 <td class="px-4 py-3"><span class="{{ $bClass }} px-2.5 py-1 rounded-md text-xs font-semibold">{{ $bLabel }}</span></td>
+                                <td class="px-4 py-3 text-slate-600">{{ $agentName }}</td>
                                 <td class="px-4 py-3 text-slate-500 whitespace-nowrap">{{ $order->created_at->format('d/m/Y') }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="4" class="px-4 py-12 text-center text-slate-400">Aucun colis sur cette période.</td></tr>
+                            <tr><td colspan="5" class="px-4 py-12 text-center text-slate-400">Aucun colis sur cette période.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

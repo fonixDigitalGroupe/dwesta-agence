@@ -61,7 +61,8 @@ class OperationController extends Controller
             default    => $query,
         };
 
-        $orders = $query->with('buyer')->latest()->paginate(20)->withQueryString();
+        $orders = $query->with(['buyer', 'receivedBy', 'deliveredBy', 'litiges.reporter'])
+            ->latest()->paginate(20)->withQueryString();
 
         return view('operations.stats', compact('agence', 'orders', 'counts', 'start', 'end', 'statut'));
     }

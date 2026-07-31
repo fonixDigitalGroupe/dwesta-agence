@@ -22,6 +22,8 @@ class Order extends Model
         'qr_code_path',
         'notes_vendeur',
         'received_at',
+        'received_by',
+        'delivered_by',
     ];
 
     protected $casts = [
@@ -71,6 +73,16 @@ class Order extends Model
     public function litiges()
     {
         return $this->hasMany(Litige::class, 'commande_id');
+    }
+
+    public function receivedBy()
+    {
+        return $this->belongsTo(User::class, 'received_by');
+    }
+
+    public function deliveredBy()
+    {
+        return $this->belongsTo(User::class, 'delivered_by');
     }
 
     public function transactions()

@@ -71,7 +71,7 @@ class ColisController extends Controller
             return Redirect::back()->with('error', 'Action non autorisée.');
         }
 
-        $order->update(['statut' => Order::STATUT_DISPONIBLE, 'received_at' => now()]);
+        $order->update(['statut' => Order::STATUT_DISPONIBLE, 'received_at' => now(), 'received_by' => $request->user()->id]);
 
         return Redirect::route('operations.stock', ['tab' => 'stock'])->with('status', 'colis-reçu');
     }
@@ -95,7 +95,7 @@ class ColisController extends Controller
             return Redirect::back()->with('error', 'Remise impossible : un litige a été signalé sur cette commande.');
         }
 
-        $order->update(['statut' => Order::STATUT_LIVRE]);
+        $order->update(['statut' => Order::STATUT_LIVRE, 'delivered_by' => $request->user()->id]);
 
         return Redirect::route('operations.stock', ['tab' => 'history'])->with('status', 'colis-livré');
     }
@@ -207,7 +207,7 @@ class ColisController extends Controller
         $action = "";
 
         if (in_array($oldStatut, [Order::STATUT_EN_ATTENTE, Order::STATUT_PAYE, Order::STATUT_PRET, Order::STATUT_EN_ROUTE])) {
-            $order->update(['statut' => Order::STATUT_DISPONIBLE, 'received_at' => now()]);
+            $order->update(['statut' => Order::STATUT_DISPONIBLE, 'received_at' => now(), 'received_by' => $request->user()->id]);
             $message = "Colis {$order->reference} réceptionné avec succès.";
             $action = "received";
         } elseif ($oldStatut === Order::STATUT_DISPONIBLE) {
