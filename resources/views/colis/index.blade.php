@@ -236,7 +236,7 @@
                                 <td style="color:#555; font-size:0.82rem;">
                                     <strong>{{ $recDate ? $recDate->format('d/m/Y') : '—' }}</strong>
                                 </td>
-                                <td style="font-size:0.82rem; color: {{ $overdue ? '#c0392b' : '#b8560f' }};">
+                                <td style="font-size:0.82rem; color: {{ $overdue ? '#c0392b' : '#1e7d32' }};">
                                     <strong>{{ $echeance ? $echeance->format('d/m/Y') : '—' }}</strong>
                                     @if($overdue)
                                         <div style="margin-top:3px;"><span style="font-size:0.64rem; font-weight:700; background:#fdecea; color:#c0392b; padding:1px 6px; border-radius:4px;">à retourner</span></div>
