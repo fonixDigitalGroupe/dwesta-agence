@@ -195,8 +195,6 @@
                         <th style="width: 150px;">référence</th>
                         <th>client</th>
                         <th>vendeur</th>
-                        <th style="width: 120px; text-align: center;">statut</th>
-                        <th style="width: 180px;">Date</th>
                         <th style="width: 100px; text-align: right;">actions</th>
                     </tr>
                 </thead>
@@ -224,24 +222,14 @@
                                 @endif
                                 <div class="item-sub">{{ $sellerPhone }}</div>
                             </td>
-                            <td style="text-align: center;">
-                                @php
-                                    $badge = match($order->statut) {
-                                        'en_route'   => ['bg' => '#e8f1fb', 'txt' => '#0b62c4', 'label' => 'En route'],
-                                        'disponible' => ['bg' => '#eaf6e4', 'txt' => '#3f7d18', 'label' => 'Disponible'],
-                                        'livre'      => ['bg' => '#fdefe3', 'txt' => '#b8560f', 'label' => 'Livré'],
-                                        default      => ['bg' => '#eef0f2', 'txt' => '#556', 'label' => $order->statut_label],
-                                    };
-                                    $label = $badge['label'];
-                                @endphp
-                                <span style="display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border-radius:6px; font-size:0.68rem; font-weight:700; letter-spacing:0.2px; background:{{ $badge['bg'] }}; color:{{ $badge['txt'] }};">
-                                    <span style="width:6px; height:6px; border-radius:50%; background:{{ $badge['txt'] }};"></span>{{ $label }}
-                                </span>
-                            </td>
-                            <td style="color: #666;">
-                                <div style="font-weight: 500;">{{ $order->created_at->format('d/m/Y') }}</div>
-                                <div style="font-size: 0.72rem; color: #999; margin-top: 2px;">à {{ $order->created_at->format('H:i') }}</div>
-                            </td>
+                            @php
+                                $label = match($order->statut) {
+                                    'en_route'   => 'En route',
+                                    'disponible' => 'Disponible',
+                                    'livre'      => 'Livré',
+                                    default      => $order->statut_label,
+                                };
+                            @endphp
                             <td style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                                 <a href="#" class="mirror-link" style="color: #666;"
                                    data-ref="{{ $order->reference }}"
@@ -271,7 +259,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
+                            <td colspan="4" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>
