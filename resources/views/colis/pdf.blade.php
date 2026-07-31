@@ -4,44 +4,45 @@
     <meta charset="utf-8">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        @page { margin: 0; }
-        body { font-family: DejaVu Sans, sans-serif; color: #2a2f3a; font-size: 12px; line-height: 1.5; }
-        .page { padding: 0 34px 34px; }
+        body { font-family: DejaVu Sans, sans-serif; color: #222; font-size: 12px; line-height: 1.55; }
+        .page { padding: 40px 44px; }
 
-        /* Bandeau haut bleu */
-        .banner { background: #004aad; color: #fff; padding: 24px 34px; margin: 0 -34px 22px; }
-        .banner table { width: 100%; }
-        .banner .name { font-size: 22px; font-weight: bold; }
-        .banner .sub { font-size: 10px; color: #bcd3f5; margin-top: 3px; }
-        .banner .ref { font-size: 16px; font-weight: bold; text-align: right; }
-        .banner .badge { display: inline-block; margin-top: 6px; padding: 3px 12px; border-radius: 20px; font-size: 9px; font-weight: bold; text-transform: uppercase; background: #FF6B00; color: #fff; }
+        /* En-tête */
+        .head { width: 100%; border-bottom: 2px solid #222; padding-bottom: 16px; margin-bottom: 22px; }
+        .head td { vertical-align: top; }
+        .brand { font-size: 20px; font-weight: bold; color: #111; letter-spacing: .5px; }
+        .brand-sub { font-size: 10px; color: #777; margin-top: 3px; }
+        .doc { text-align: right; }
+        .doc .title { font-size: 15px; font-weight: bold; color: #111; letter-spacing: 2px; }
+        .doc .meta { font-size: 10.5px; color: #555; margin-top: 5px; }
+        .doc .meta b { color: #111; }
+        .status { display: inline-block; margin-top: 6px; padding: 2px 10px; border: 1px solid #ccc; border-radius: 3px; font-size: 9px; font-weight: bold; text-transform: uppercase; color: #444; }
 
-        /* Titres de section */
-        .section { background: #eef3fb; color: #004aad; border-left: 4px solid #FF6B00; padding: 6px 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: .5px; margin: 18px 0 10px; }
+        /* Sections */
+        .section { font-size: 10.5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #111; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin: 20px 0 10px; }
 
         .cols { width: 100%; }
-        .cols td { vertical-align: top; width: 50%; padding-right: 16px; }
-        .info td { padding: 3px 0; vertical-align: top; }
-        .info .lbl { color: #8a90a0; width: 44%; }
-        .info .val { color: #14181f; font-weight: bold; }
+        .cols td { vertical-align: top; width: 50%; padding-right: 20px; }
+        .info td { padding: 2px 0; vertical-align: top; }
+        .info .lbl { color: #888; width: 42%; }
+        .info .val { color: #111; font-weight: bold; }
 
         /* Produits */
         .items { width: 100%; border-collapse: collapse; margin-top: 4px; }
-        .items th { background: #004aad; color: #fff; font-size: 9.5px; text-transform: uppercase; text-align: left; padding: 8px 10px; }
-        .items td { padding: 9px 10px; border-bottom: 1px solid #eceff3; vertical-align: middle; }
-        .items tr:nth-child(even) td { background: #f9fbfd; }
-        .prod-img { width: 44px; height: 44px; object-fit: cover; border: 1px solid #e5e9f0; border-radius: 4px; }
-        .prod-title { font-weight: bold; color: #14181f; }
-        .prod-desc { color: #98a0af; font-size: 9.5px; margin-top: 2px; }
+        .items th { background: #f4f4f4; color: #333; font-size: 9.5px; text-transform: uppercase; text-align: left; padding: 8px 10px; border-bottom: 1px solid #ccc; }
+        .items td { padding: 9px 10px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        .prod-img { width: 44px; height: 44px; object-fit: cover; border: 1px solid #e5e5e5; border-radius: 3px; }
+        .prod-title { font-weight: bold; color: #111; }
+        .prod-desc { color: #999; font-size: 9.5px; margin-top: 2px; }
         .right { text-align: right; } .center { text-align: center; }
 
         /* Totaux */
-        .totals { width: 46%; float: right; margin-top: 14px; border: 1px solid #e5e9f0; border-radius: 6px; overflow: hidden; }
-        .totals td { padding: 7px 14px; font-size: 12px; }
-        .totals .lbl { color: #6b7280; } .totals .val { text-align: right; font-weight: bold; color: #14181f; }
-        .totals .grand td { background: #004aad; color: #fff; font-size: 14px; font-weight: bold; }
+        .totals { width: 44%; float: right; margin-top: 14px; }
+        .totals td { padding: 6px 4px; font-size: 12px; }
+        .totals .lbl { color: #666; } .totals .val { text-align: right; color: #111; }
+        .totals .grand td { border-top: 2px solid #222; font-weight: bold; font-size: 14px; padding-top: 9px; }
 
-        .foot { clear: both; margin-top: 46px; border-top: 2px solid #004aad; padding-top: 10px; color: #98a0af; font-size: 9.5px; text-align: center; }
+        .foot { clear: both; margin-top: 48px; border-top: 1px solid #ddd; padding-top: 10px; color: #999; font-size: 9.5px; text-align: center; }
     </style>
 </head>
 <body>
@@ -54,23 +55,23 @@
     $mediaBase = rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/';
 @endphp
 
-    {{-- Bandeau --}}
-    <div class="banner">
-        <table>
+    <div class="page">
+
+        {{-- En-tête --}}
+        <table class="head">
             <tr>
                 <td>
-                    <div class="name">{{ $agence->nom ?? 'Point Relais' }}</div>
-                    <div class="sub">Fiche colis · {{ $order->created_at->format('d/m/Y à H:i') }}</div>
+                    <div class="brand">{{ $agence->nom ?? 'Point Relais' }}</div>
+                    <div class="brand-sub">{{ $agence->adresse ?? '' }}@if($agence->telephone ?? false) · {{ $agence->telephone }} @endif</div>
                 </td>
-                <td>
-                    <div class="ref">{{ $order->reference }}</div>
-                    <div style="text-align:right;"><span class="badge">{{ $order->statut_label }}</span></div>
+                <td class="doc">
+                    <div class="title">FICHE COLIS</div>
+                    <div class="meta">Référence : <b>{{ $order->reference }}</b></div>
+                    <div class="meta">Date : <b>{{ $order->created_at->format('d/m/Y') }}</b></div>
+                    <div><span class="status">{{ $order->statut_label }}</span></div>
                 </td>
             </tr>
         </table>
-    </div>
-
-    <div class="page">
 
         {{-- Client / Vendeur --}}
         <table class="cols">
@@ -100,7 +101,7 @@
             <tr><td class="lbl">Adresse</td><td class="val">{{ $order->adresse_livraison ?? '—' }}</td></tr>
             <tr><td class="lbl">Point relais</td><td class="val">{{ $agence->nom ?? '' }} — {{ $agence->adresse ?? '' }}</td></tr>
             <tr><td class="lbl">Réception</td><td class="val">{{ $recDate ? $recDate->format('d/m/Y') : '—' }}</td></tr>
-            <tr><td class="lbl">Échéance</td><td class="val" style="color: {{ ($echeance && now()->greaterThan($echeance)) ? '#c0392b' : '#3f7d18' }};">{{ $echeance ? $echeance->format('d/m/Y') : '—' }}</td></tr>
+            <tr><td class="lbl">Échéance</td><td class="val">{{ $echeance ? $echeance->format('d/m/Y') : '—' }}</td></tr>
         </table>
 
         {{-- Produits --}}
@@ -153,11 +154,11 @@
             @if(!is_null($order->commission_plateforme))
                 <tr><td class="lbl">Commission</td><td class="val">{{ $money($order->commission_plateforme) }}</td></tr>
             @endif
-            <tr class="grand"><td>TOTAL</td><td style="text-align:right;">{{ $money($order->total_final) }}</td></tr>
+            <tr class="grand"><td>TOTAL</td><td class="right">{{ $money($order->total_final) }}</td></tr>
         </table>
 
         <div class="foot">
-            Document généré le {{ now()->format('d/m/Y à H:i') }} · {{ $agence->nom ?? 'Karnou Agence' }} · Réseau Karnou
+            Document généré le {{ now()->format('d/m/Y à H:i') }} · {{ $agence->nom ?? 'Point Relais' }}
         </div>
     </div>
 </body>
