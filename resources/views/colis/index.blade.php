@@ -187,7 +187,8 @@
                         <th>client</th>
                         <th>vendeur</th>
                         @if($activeTab == 'stock')
-                            <th style="width: 200px;">réception / échéance</th>
+                            <th style="width: 120px;">réception</th>
+                            <th style="width: 140px;">échéance</th>
                         @endif
                         <th style="width: 100px; text-align: right;">actions</th>
                     </tr>
@@ -232,14 +233,14 @@
                                     $echeance = $recDate ? $recDate->copy()->addDays(7) : null;
                                     $overdue  = $echeance && now()->greaterThan($echeance);
                                 @endphp
-                                <td style="color:#555; font-size:0.8rem;">
-                                    <div>Reçu&nbsp;: <strong>{{ $recDate ? $recDate->format('d/m/Y') : '—' }}</strong></div>
-                                    <div style="margin-top:2px; color: {{ $overdue ? '#c0392b' : '#b8560f' }};">
-                                        Échéance&nbsp;: <strong>{{ $echeance ? $echeance->format('d/m/Y') : '—' }}</strong>
-                                        @if($overdue)
-                                            <span style="display:inline-block; margin-left:4px; font-size:0.66rem; font-weight:700; background:#fdecea; color:#c0392b; padding:1px 6px; border-radius:4px;">à retourner</span>
-                                        @endif
-                                    </div>
+                                <td style="color:#555; font-size:0.82rem;">
+                                    <strong>{{ $recDate ? $recDate->format('d/m/Y') : '—' }}</strong>
+                                </td>
+                                <td style="font-size:0.82rem; color: {{ $overdue ? '#c0392b' : '#b8560f' }};">
+                                    <strong>{{ $echeance ? $echeance->format('d/m/Y') : '—' }}</strong>
+                                    @if($overdue)
+                                        <div style="margin-top:3px;"><span style="font-size:0.64rem; font-weight:700; background:#fdecea; color:#c0392b; padding:1px 6px; border-radius:4px;">à retourner</span></div>
+                                    @endif
                                 </td>
                             @endif
                             <td style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
@@ -271,7 +272,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $activeTab == 'stock' ? 5 : 4 }}" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
+                            <td colspan="{{ $activeTab == 'stock' ? 6 : 4 }}" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>
