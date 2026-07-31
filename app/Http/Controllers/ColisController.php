@@ -50,15 +50,9 @@ class ColisController extends Controller
             $query->where('statut', Order::STATUT_DISPONIBLE);
         }
 
-        // Search
+        // Recherche par référence uniquement
         if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('reference', 'like', "%{$search}%")
-                  ->orWhere('tracking_token', 'like', "%{$search}%")
-                  ->orWhereHas('buyer', function($bq) use ($search) {
-                      $bq->where('name', 'like', "%{$search}%");
-                  });
-            });
+            $query->where('reference', 'like', "%{$search}%");
         }
 
         $orders = $query->with(['buyer', 'seller.user', 'seller.pagePro'])->latest()->paginate($perPage)->withQueryString();

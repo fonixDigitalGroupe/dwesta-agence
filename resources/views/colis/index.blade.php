@@ -169,7 +169,7 @@
                     <div style="display: flex; gap: 8px; align-items: center;">
                         <span style="font-size: 0.8rem; color: #555; font-weight: 500;">Rechercher :</span>
                         <input type="text" name="search" value="{{ $search }}"
-                               placeholder="Réf, Nom client..."
+                               placeholder="Référence..."
                                class="filter-input">
                     </div>
                 </form>
@@ -180,8 +180,10 @@
                 <thead>
                     <tr>
                         <th style="width: 150px;">référence</th>
-                        <th>client</th>
-                        <th>vendeur</th>
+                        @if($activeTab != 'stock')
+                            <th>client</th>
+                            <th>vendeur</th>
+                        @endif
                         @if($activeTab == 'stock')
                             <th style="width: 120px;">réception</th>
                             <th style="width: 140px;">échéance</th>
@@ -193,28 +195,30 @@
                     @forelse($orders as $order)
                         <tr>
                             <td style="font-weight: 400; font-size: 0.65rem; color: #555;">{{ $order->reference }}</td>
-                            <td>
-                                <a href="#" class="item-main">
-                                    {{ $order->buyer->prenom ?? '' }} {{ $order->buyer->nom ?? $order->buyer->name ?? 'Inconnu' }}
-                                </a>
-                                <div class="item-sub">{{ $order->buyer->telephone ?? '' }}</div>
-                            </td>
-                            <td>
-                                @php
-                                    $sellerUser = ($order->seller && $order->seller->user) ? $order->seller->user : null;
-                                    $sellerName = $sellerUser
-                                        ? trim(($sellerUser->prenom ?? '') . ' ' . ($sellerUser->nom ?? ''))
-                                        : ($order->seller->identite ?? 'Vendeur Inconnu');
-                                    $sellerPhone = $sellerUser->telephone ?? '';
-                                @endphp
-                                <div class="item-main" style="color: #333; font-weight: 500;">{{ $sellerName ?: 'Vendeur Inconnu' }}</div>
-                                <div class="item-sub" style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
-                                    @if($order->seller && $order->seller->type === 'professionnel')
-                                        <span style="font-size: 0.6rem; background: #eee; padding: 1px 5px; border-radius: 3px; font-weight: bold; color: #666;">PRO</span>
-                                    @endif
-                                    <span>{{ $sellerPhone }}</span>
-                                </div>
-                            </td>
+                            @if($activeTab != 'stock')
+                                <td>
+                                    <a href="#" class="item-main">
+                                        {{ $order->buyer->prenom ?? '' }} {{ $order->buyer->nom ?? $order->buyer->name ?? 'Inconnu' }}
+                                    </a>
+                                    <div class="item-sub">{{ $order->buyer->telephone ?? '' }}</div>
+                                </td>
+                                <td>
+                                    @php
+                                        $sellerUser = ($order->seller && $order->seller->user) ? $order->seller->user : null;
+                                        $sellerName = $sellerUser
+                                            ? trim(($sellerUser->prenom ?? '') . ' ' . ($sellerUser->nom ?? ''))
+                                            : ($order->seller->identite ?? 'Vendeur Inconnu');
+                                        $sellerPhone = $sellerUser->telephone ?? '';
+                                    @endphp
+                                    <div class="item-main" style="color: #333; font-weight: 500;">{{ $sellerName ?: 'Vendeur Inconnu' }}</div>
+                                    <div class="item-sub" style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                                        @if($order->seller && $order->seller->type === 'professionnel')
+                                            <span style="font-size: 0.6rem; background: #eee; padding: 1px 5px; border-radius: 3px; font-weight: bold; color: #666;">PRO</span>
+                                        @endif
+                                        <span>{{ $sellerPhone }}</span>
+                                    </div>
+                                </td>
+                            @endif
                             @php
                                 $label = match($order->statut) {
                                     'en_route'   => 'En route',
@@ -259,7 +263,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $activeTab == 'stock' ? 6 : 4 }}" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
+                            <td colspan="4" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>
