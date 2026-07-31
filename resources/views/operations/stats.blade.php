@@ -3,20 +3,20 @@
 
         <h1 class="text-xl font-bold text-slate-900 mb-5">Statistiques</h1>
 
-        {{-- Filtres --}}
+        {{-- Filtres (automatiques) --}}
         <form method="GET" class="bg-white border border-slate-200 rounded-xl p-4 mb-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Date de début</label>
-                    <input type="date" name="date_debut" value="{{ $start }}" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
+                    <input type="date" name="date_debut" value="{{ $start }}" onchange="this.form.submit()" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Date de fin</label>
-                    <input type="date" name="date_fin" value="{{ $end }}" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
+                    <input type="date" name="date_fin" value="{{ $end }}" onchange="this.form.submit()" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Statut</label>
-                    <select name="statut" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
+                    <select name="statut" onchange="this.form.submit()" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
                         <option value="tous" {{ $statut == 'tous' ? 'selected' : '' }}>Tous</option>
                         <option value="approche" {{ $statut == 'approche' ? 'selected' : '' }}>En approche</option>
                         <option value="stock" {{ $statut == 'stock' ? 'selected' : '' }}>En stock</option>
@@ -24,30 +24,46 @@
                         <option value="litige" {{ $statut == 'litige' ? 'selected' : '' }}>Signalés</option>
                     </select>
                 </div>
-                <div class="flex gap-2">
-                    <button type="submit" class="flex-1 rounded-lg bg-[#004aad] text-white text-sm font-semibold px-4 py-2.5 hover:bg-[#003a8a]">Filtrer</button>
-                    <a href="{{ route('operations.stats') }}" class="rounded-lg border border-slate-300 text-slate-600 text-sm font-semibold px-4 py-2.5 hover:bg-slate-50">Réinit.</a>
-                </div>
             </div>
         </form>
 
-        {{-- Cartes récap --}}
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white border border-slate-200 rounded-xl p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">En approche</p>
-                <p class="mt-1 text-2xl font-black text-blue-700">{{ $counts['approche'] }}</p>
+        {{-- Cartes récap (style dashboard) --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">En approche</p>
+                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['approche'] }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-blue-50 text-[#004aad] flex items-center justify-center text-xl"><i class="fas fa-truck"></i></div>
+                </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-xl p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">En stock</p>
-                <p class="mt-1 text-2xl font-black text-[#b8560f]">{{ $counts['stock'] }}</p>
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">En stock</p>
+                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['stock'] }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-orange-50 text-[#FF6B00] flex items-center justify-center text-xl"><i class="fas fa-boxes-stacked"></i></div>
+                </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-xl p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Livrés</p>
-                <p class="mt-1 text-2xl font-black text-green-700">{{ $counts['livre'] }}</p>
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Livrés</p>
+                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['livre'] }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-green-50 text-green-600 flex items-center justify-center text-xl"><i class="fas fa-circle-check"></i></div>
+                </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-xl p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Signalés</p>
-                <p class="mt-1 text-2xl font-black text-red-600">{{ $counts['litige'] }}</p>
+            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Signalés</p>
+                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['litige'] }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-red-50 text-red-600 flex items-center justify-center text-xl"><i class="fas fa-triangle-exclamation"></i></div>
+                </div>
             </div>
         </div>
 
