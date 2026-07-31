@@ -11,10 +11,6 @@
                 En stock
                 <span class="badge" style="background: #eee; color: #333; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem;">{{ $counts['stock'] }}</span>
             </a>
-            <a href="?tab=history" style="text-decoration: none; padding: 15px 0; color: {{ $activeTab == 'history' ? '#0066c0' : '#555' }}; font-weight: {{ $activeTab == 'history' ? '700' : '500' }}; border-bottom: 3px solid {{ $activeTab == 'history' ? '#0066c0' : 'transparent' }};">
-                Historique (Livrés)
-                <span style="color: #999; font-size: 0.7rem; margin-left: 5px;">{{ $counts['history'] }}</span>
-            </a>
         </div>
     </x-slot>
 
