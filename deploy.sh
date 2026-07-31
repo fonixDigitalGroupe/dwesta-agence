@@ -38,10 +38,6 @@ composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 echo "==> Migrations de la base…"
 php artisan migrate --force
 
-echo "==> Données de référence (pays / régions)…"
-php artisan db:seed --class=CountrySeeder --force
-php artisan db:seed --class=RegionSeeder --force
-
 echo "==> Lien symbolique du storage…"
 php artisan storage:link || true
 

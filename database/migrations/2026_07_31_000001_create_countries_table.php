@@ -8,6 +8,9 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('countries')) {
+            return; // table déjà présente (base partagée Karnou)
+        }
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
