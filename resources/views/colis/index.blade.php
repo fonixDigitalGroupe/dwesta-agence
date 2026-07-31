@@ -138,6 +138,29 @@
             cursor: pointer;
             outline: none;
         }
+
+        /* Sélecteur de motif du litige (centré + chevron) */
+        .litige-select {
+            display: block;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto 10px;
+            padding: 10px 36px 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #111;
+            cursor: pointer;
+            text-align: center;
+            text-align-last: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: #fff;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
     </style>
     @endpush
 
@@ -360,10 +383,11 @@
                 title: 'Signaler un litige',
                 html: `
                     <p style="font-size:0.85rem;color:#555;margin:0 0 12px;">Colis <b>${ref}</b> — à retourner</p>
-                    <select id="litige-motif" class="swal2-select" style="display:block;width:100%;padding:8px;margin-bottom:10px;border:1px solid #ccc;border-radius:6px;">
+                    <select id="litige-motif" class="litige-select">
                         <option value="non_recu">Client non venu (non récupéré)</option>
                         <option value="autre">Le client n'en veut plus</option>
                         <option value="non_conforme">Colis non conforme / abîmé</option>
+                        <option value="autre">Autre</option>
                     </select>
                     <textarea id="litige-desc" class="swal2-textarea" style="margin:0;width:100%;" placeholder="Précision (facultatif)"></textarea>
                 `,
