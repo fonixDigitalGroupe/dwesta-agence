@@ -53,6 +53,18 @@
     $sellerUser = $order->seller && $order->seller->user ? $order->seller->user : null;
     $sellerName = $sellerUser ? trim(($sellerUser->prenom ?? '') . ' ' . ($sellerUser->nom ?? '')) : ($order->seller->identite ?? 'Inconnu');
     $mediaBase = rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/';
+
+    // Informations Karnou (configuration admin, base partagée)
+    $karnouName = 'Karnou';
+    $karnouAddress = \App\Models\Setting::get('contact_address', '');
+    $karnouPhones = json_decode(\App\Models\Setting::get('contact_phones', '[]'), true) ?: [];
+    $karnouPhone = implode(' · ', array_filter($karnouPhones));
+    $logoRel = \App\Models\Setting::get('logo');
+    $logoData = null;
+    if ($logoRel) {
+        $lb = @file_get_contents($mediaBase . ltrim($logoRel, '/'));
+        if ($lb !== false) { $logoData = 'data:image/png;base64,' . base64_encode($lb); }
+    }
 @endphp
 
     <div class="page">
@@ -61,8 +73,9 @@
         <table class="head">
             <tr>
                 <td>
-                    <div class="brand">{{ $agence->nom ?? 'Point Relais' }}</div>
-                    <div class="brand-sub">{{ $agence->adresse ?? '' }}@if($agence->telephone ?? false) · {{ $agence->telephone }} @endif</div>
+                    @if($logoData)<img src="{{ $logoData }}" style="height:32px; margin-bottom:6px;"><br>@endif
+                    <div class="brand">{{ $karnouName }}</div>
+                    <div class="brand-sub">{{ $karnouAddress }}@if($karnouPhone) · {{ $karnouPhone }}@endif</div>
                 </td>
                 <td class="doc">
                     <div class="title">FICHE COLIS</div>
@@ -158,7 +171,7 @@
         </table>
 
         <div class="foot">
-            Document généré le {{ now()->format('d/m/Y à H:i') }} · {{ $agence->nom ?? 'Point Relais' }}
+            Document généré le {{ now()->format('d/m/Y à H:i') }} · {{ $karnouName }}
         </div>
     </div>
 </body>
