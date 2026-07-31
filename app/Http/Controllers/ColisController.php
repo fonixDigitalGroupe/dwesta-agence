@@ -103,6 +103,26 @@ class ColisController extends Controller
     }
 
     /**
+     * Fiche détaillée du colis en PDF.
+     */
+    public function detailsPdf(Request $request, Order $order)
+    {
+        $agence = $request->user()->pointRelais()->first();
+        if (!$agence || $order->destination_point_relais_id !== $agence->id) {
+            abort(403);
+        }
+
+        $order->load(['buyer', 'seller.user', 'items.annonce.medias']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('colis.pdf', [
+            'order'  => $order,
+            'agence' => $agence,
+        ])->setPaper('a4');
+
+        return $pdf->stream('colis-' . $order->reference . '.pdf');
+    }
+
+    /**
      * Handle barcode scan for receiving or delivering.
      */
     public function scan(Request $request): \Illuminate\Http\JsonResponse

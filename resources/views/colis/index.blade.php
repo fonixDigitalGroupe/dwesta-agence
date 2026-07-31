@@ -244,16 +244,7 @@
                                 </td>
                             @endif
                             <td style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
-                                <a href="#" class="mirror-link" style="color: #666;"
-                                   data-ref="{{ $order->reference }}"
-                                   data-client="{{ trim(($order->buyer->prenom ?? '') . ' ' . ($order->buyer->nom ?? $order->buyer->name ?? '')) ?: 'Inconnu' }}"
-                                   data-clientphone="{{ $order->buyer->telephone ?? '—' }}"
-                                   data-clientemail="{{ $order->buyer->email ?? '—' }}"
-                                   data-seller="{{ $sellerName ?: 'Inconnu' }}"
-                                   data-sellerphone="{{ $sellerPhone ?: '—' }}"
-                                   data-statut="{{ $label }}"
-                                   data-date="{{ $order->created_at->format('d/m/Y à H:i') }}"
-                                   onclick="openDetails(this); return false;">Détails</a>
+                                <a href="{{ route('colis.pdf', $order->id) }}" target="_blank" class="mirror-link" style="color: #666;">Détails</a>
 
                                 @if($activeTab == 'incoming')
                                     <span class="mirror-sep">|</span>
