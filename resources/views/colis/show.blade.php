@@ -36,6 +36,7 @@
 
 @php
     $money = fn ($v) => number_format((float) $v, 0, ',', ' ') . ' FCFA';
+    $mediaBase = rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/';
     $recDate = $order->received_at ?? $order->updated_at;
     $echeance = $recDate ? $recDate->copy()->addDays(7) : null;
     $sellerUser = $order->seller && $order->seller->user ? $order->seller->user : null;
@@ -139,7 +140,7 @@
                         @forelse($order->items as $item)
                             @php $photo = $item->annonce ? $item->annonce->medias->first() : null; @endphp
                             <tr>
-                                <td>@if($photo)<img src="{{ $photo->url }}" class="article-img" alt="">@endif</td>
+                                <td>@if($photo)<img src="{{ $mediaBase . ltrim($photo->chemin, '/') }}" class="article-img" alt="">@endif</td>
                                 <td>
                                     <div style="font-weight:700; color:#111;">{{ $item->annonce->titre ?? 'Produit retiré' }}</div>
                                     @if($item->annonce && $item->annonce->description)

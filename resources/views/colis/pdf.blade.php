@@ -108,8 +108,12 @@
                     $annonce = $item->annonce;
                     $media = $annonce ? $annonce->medias->first() : null;
                     $imgData = null;
-                    if ($media && $media->chemin && \Illuminate\Support\Facades\Storage::disk('public')->exists($media->chemin)) {
-                        $imgData = 'data:' . ($media->mime_type ?: 'image/jpeg') . ';base64,' . base64_encode(\Illuminate\Support\Facades\Storage::disk('public')->get($media->chemin));
+                    if ($media && $media->chemin) {
+                        $mediaBase = rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/';
+                        $bin = @file_get_contents($mediaBase . ltrim($media->chemin, '/'));
+                        if ($bin !== false) {
+                            $imgData = 'data:' . ($media->mime_type ?: 'image/jpeg') . ';base64,' . base64_encode($bin);
+                        }
                     }
                     $ligne = (float) $item->prix_unitaire * (int) $item->quantite;
                 @endphp
