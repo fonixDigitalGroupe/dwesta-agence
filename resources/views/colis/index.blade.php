@@ -258,6 +258,8 @@
                                     <form id="deliver-form-{{ $order->id }}" action="{{ route('colis.deliver', $order->id) }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <span class="mirror-sep">|</span>
+                                    <button type="button" onclick="signalLitige('{{ $order->id }}', '{{ $order->reference }}')" class="mirror-link-red" style="background: none; border: none; font-weight: bold;">Signaler un litige</button>
                                 @endif
                             </td>
                         </tr>
@@ -350,6 +352,41 @@
                 confirmButtonText: 'Fermer',
                 confirmButtonColor: '#004aad',
                 width: 480
+            });
+        }
+
+        function signalLitige(id, ref) {
+            Swal.fire({
+                title: 'Signaler un litige',
+                html: `
+                    <p style="font-size:0.85rem;color:#555;margin:0 0 12px;">Colis <b>${ref}</b> — à retourner</p>
+                    <select id="litige-motif" class="swal2-select" style="display:block;width:100%;padding:8px;margin-bottom:10px;border:1px solid #ccc;border-radius:6px;">
+                        <option value="non_recu">Client non venu (non récupéré)</option>
+                        <option value="autre">Le client n'en veut plus</option>
+                        <option value="non_conforme">Colis non conforme / abîmé</option>
+                    </select>
+                    <textarea id="litige-desc" class="swal2-textarea" style="margin:0;width:100%;" placeholder="Précision (facultatif)"></textarea>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Signaler',
+                confirmButtonColor: '#c0392b',
+                cancelButtonText: 'Annuler',
+                preConfirm: () => ({
+                    motif: document.getElementById('litige-motif').value,
+                    description: document.getElementById('litige-desc').value
+                })
+            }).then((res) => {
+                if (!res.isConfirmed) return;
+                const f = document.createElement('form');
+                f.method = 'POST';
+                f.action = '{{ url('/stock') }}/' + id + '/litige';
+                f.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}">'
+                    + '<input type="hidden" name="motif">'
+                    + '<input type="hidden" name="description">';
+                f.querySelector('[name=motif]').value = res.value.motif;
+                f.querySelector('[name=description]').value = res.value.description || '';
+                document.body.appendChild(f);
+                f.submit();
             });
         }
 

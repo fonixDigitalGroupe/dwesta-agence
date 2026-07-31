@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/stock/{order}/receive', [ColisController::class, 'receive'])->name('colis.receive');
     Route::post('/stock/{order}/deliver', [ColisController::class, 'deliver'])->name('colis.deliver');
     Route::get('/stock/{order}/details', [ColisController::class, 'show'])->name('colis.show');
+    Route::post('/stock/{order}/litige', [ColisController::class, 'signalLitige'])->name('colis.litige');
     Route::get('/stock/{order}/pdf', [ColisController::class, 'detailsPdf'])->name('colis.pdf');
 });
 

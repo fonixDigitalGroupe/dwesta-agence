@@ -97,6 +97,42 @@ class ColisController extends Controller
     }
 
     /**
+     * Signaler un litige (colis à retourner) — géré par l'admin Karnou.
+     */
+    public function signalLitige(Request $request, Order $order): RedirectResponse
+    {
+        $agence = $request->user()->pointRelais()->first();
+        if (!$agence || $order->destination_point_relais_id !== $agence->id) {
+            return Redirect::back()->with('error', 'Action non autorisée.');
+        }
+
+        $data = $request->validate([
+            'motif'       => 'required|in:non_recu,non_conforme,autre',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        $labels = [
+            'non_recu'     => 'Client non venu (colis non récupéré)',
+            'non_conforme' => 'Colis non conforme',
+            'autre'        => "Le client n'en veut plus",
+        ];
+
+        \App\Models\Litige::create([
+            'commande_id' => $order->id,
+            'reporter_id' => $request->user()->id,
+            'reported_id' => $order->user_id,
+            'motif'       => $data['motif'],
+            'description' => $data['description'] ?: ('Colis à retourner — ' . ($labels[$data['motif']] ?? '')),
+            'statut'      => 'en_cours',
+        ]);
+
+        $order->update(['statut' => Order::STATUT_LITIGE]);
+
+        return Redirect::route('operations.stock', ['tab' => 'stock'])
+            ->with('success', "Litige signalé. La commande est transmise à l'administration Karnou pour retour.");
+    }
+
+    /**
      * Page de détails du colis.
      */
     public function show(Request $request, Order $order)
