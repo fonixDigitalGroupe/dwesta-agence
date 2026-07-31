@@ -36,7 +36,7 @@ class ColisController extends Controller
         // Count totals for badges
         $counts = [
             'incoming' => Order::where('destination_point_relais_id', $agence->id)->whereIn('statut', [Order::STATUT_EN_ATTENTE, Order::STATUT_PAYE, Order::STATUT_PRET, Order::STATUT_EN_ROUTE])->count(),
-            'stock' => Order::where('destination_point_relais_id', $agence->id)->where('statut', Order::STATUT_DISPONIBLE)->count(),
+            'stock' => Order::where('destination_point_relais_id', $agence->id)->whereIn('statut', [Order::STATUT_DISPONIBLE, Order::STATUT_LITIGE])->count(),
             'history' => Order::where('destination_point_relais_id', $agence->id)->whereIn('statut', [Order::STATUT_LIVRE, Order::STATUT_ANNULE])->count(),
         ];
 
@@ -47,7 +47,7 @@ class ColisController extends Controller
             $query->whereIn('statut', [Order::STATUT_LIVRE, Order::STATUT_ANNULE]);
         } else {
             // Default to 'stock' (Disponible)
-            $query->where('statut', Order::STATUT_DISPONIBLE);
+            $query->whereIn('statut', [Order::STATUT_DISPONIBLE, Order::STATUT_LITIGE]);
         }
 
         // Recherche par référence uniquement
@@ -129,6 +129,10 @@ class ColisController extends Controller
             'description' => $data['description'] ?: ('Colis à retourner — ' . ($labels[$data['motif']] ?? '')),
             'statut'      => 'en_cours',
         ]);
+
+        // La commande passe en litige → visible dans l'admin Karnou (orders?status=litige),
+        // tout en restant affichée dans le stock de l'agence (marquée, non livrable).
+        $order->update(['statut' => Order::STATUT_LITIGE]);
 
         return Redirect::route('operations.stock', ['tab' => 'stock'])
             ->with('success', "Litige signalé. La commande est transmise à l'administration Karnou pour retour.");
