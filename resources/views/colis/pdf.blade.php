@@ -73,8 +73,7 @@
         <table class="head">
             <tr>
                 <td>
-                    @if($logoData)<img src="{{ $logoData }}" style="height:32px; margin-bottom:6px;"><br>@endif
-                    <div class="brand">{{ $karnouName }}</div>
+                    @if($logoData)<img src="{{ $logoData }}" style="height:40px; margin-bottom:6px;"><br>@endif
                     <div class="brand-sub">{{ $karnouAddress }}@if($karnouPhone) · {{ $karnouPhone }}@endif</div>
                 </td>
                 <td class="doc">
