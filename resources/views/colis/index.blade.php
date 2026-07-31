@@ -196,7 +196,7 @@
                         <th>client</th>
                         <th>vendeur</th>
                         <th style="width: 120px; text-align: center;">statut</th>
-                        <th style="width: 180px;">mis à jour</th>
+                        <th style="width: 180px;">date de commande</th>
                         <th style="width: 100px; text-align: right;">actions</th>
                     </tr>
                 </thead>
@@ -208,19 +208,21 @@
                                 <a href="#" class="item-main">
                                     {{ $order->buyer->prenom ?? '' }} {{ $order->buyer->nom ?? $order->buyer->name ?? 'Inconnu' }}
                                 </a>
-                                <div class="item-sub">{{ $order->buyer->email ?? '' }}</div>
+                                <div class="item-sub">{{ $order->buyer->telephone ?? '' }}</div>
                             </td>
                             <td>
                                 @php
-                                    $sellerName = 'Vendeur Inconnu';
-                                    if ($order->seller) {
-                                        $sellerName = $order->seller->identite ?? ($order->seller->user ? $order->seller->user->prenom . ' ' . $order->seller->user->nom : 'Inconnu');
-                                    }
+                                    $sellerUser = ($order->seller && $order->seller->user) ? $order->seller->user : null;
+                                    $sellerName = $sellerUser
+                                        ? trim(($sellerUser->prenom ?? '') . ' ' . ($sellerUser->nom ?? ''))
+                                        : ($order->seller->identite ?? 'Vendeur Inconnu');
+                                    $sellerPhone = $sellerUser->telephone ?? '';
                                 @endphp
-                                <span class="item-main" style="color: #333; font-weight: 500;">{{ $sellerName }}</span>
+                                <span class="item-main" style="color: #333; font-weight: 500;">{{ $sellerName ?: 'Vendeur Inconnu' }}</span>
                                 @if($order->seller && $order->seller->type === 'professionnel')
                                     <span style="font-size: 0.65rem; background: #eee; padding: 1px 4px; border-radius: 3px; font-weight: bold; color: #666;">PRO</span>
                                 @endif
+                                <div class="item-sub">{{ $sellerPhone }}</div>
                             </td>
                             <td style="text-align: center;">
                                 @php
@@ -237,11 +239,11 @@
                                         default => $order->statut_label
                                     };
                                 @endphp
-                                <span style="font-size: 0.75rem; font-weight: 600; color: {{ $pillColor }};">{{ $label }}</span>
+                                <span style="display:inline-block; padding:3px 11px; border-radius:999px; font-size:0.7rem; font-weight:600; color:#fff; background:{{ $pillColor }};">{{ $label }}</span>
                             </td>
                             <td style="color: #666;">
-                                <div style="font-weight: 500;">{{ $order->updated_at->format('d/m/Y') }}</div>
-                                <div style="font-size: 0.72rem; color: #999; margin-top: 2px;">à {{ $order->updated_at->format('H:i') }}</div>
+                                <div style="font-weight: 500;">{{ $order->created_at->format('d/m/Y') }}</div>
+                                <div style="font-size: 0.72rem; color: #999; margin-top: 2px;">à {{ $order->created_at->format('H:i') }}</div>
                             </td>
                             <td style="text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                                 <a href="#" onclick="alert('Fonctionnalité Détails en cours de développement.'); return false;" class="mirror-link" style="color: #666;">Détails</a>
