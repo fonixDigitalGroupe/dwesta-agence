@@ -198,19 +198,19 @@
             </div>
 
             @if(session('status') === 'user-added')
-                <div style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;">
+                <div style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;" class="auto-hide-msg">
                     <i class="fas fa-check-circle"></i> Utilisateur ajouté avec succès.
                 </div>
             @endif
 
             @if(session('status') === 'user-updated')
-                <div style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;">
+                <div style="background: #f2fdf2; border: 1px solid #d5f9d5; color: #287a28; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;" class="auto-hide-msg">
                     <i class="fas fa-check-circle"></i> Utilisateur mis à jour avec succès.
                 </div>
             @endif
 
             @if(session('status') === 'user-deleted')
-                <div style="background: #fff8f8; border: 1px solid #fecaca; color: #b91c1c; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;">
+                <div style="background: #fff8f8; border: 1px solid #fecaca; color: #b91c1c; padding: 12px; font-size: 0.82rem; margin-bottom: 16px;" class="auto-hide-msg">
                     <i class="fas fa-trash-alt"></i> Utilisateur supprimé avec succès.
                 </div>
             @endif
@@ -350,10 +350,23 @@
                         <label for="new_email" class="form-label">Adresse e-mail</label>
                         <input id="new_email" name="email" type="email" class="form-input" required>
                     </div>
+                    <div style="margin-bottom: 16px;">
+                        <label for="new_password" class="form-label">Mot de passe</label>
+                        <div style="position:relative;">
+                            <input id="new_password" name="password" type="password" class="form-input" style="padding-right:40px;" required minlength="8">
+                            <button type="button" onclick="togglePw('new_password', this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#666;cursor:pointer;padding:4px;" aria-label="Afficher/masquer">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
                     <div style="margin-bottom: 20px;">
-                        <label for="new_password" class="form-label">Mot de passe provisoire</label>
-                        <input id="new_password" name="password" type="text" class="form-input" required value="{{ \Illuminate\Support\Str::random(10) }}">
-                        <p style="font-size: 0.75rem; color: #666; margin-top: 4px;">Sera utilisé pour la première connexion.</p>
+                        <label for="new_password_confirmation" class="form-label">Confirmer le mot de passe</label>
+                        <div style="position:relative;">
+                            <input id="new_password_confirmation" name="password_confirmation" type="password" class="form-input" style="padding-right:40px;" required minlength="8">
+                            <button type="button" onclick="togglePw('new_password_confirmation', this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#666;cursor:pointer;padding:4px;" aria-label="Afficher/masquer">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div style="display:flex; gap:8px; justify-content:flex-end; border-top: 1px solid #e7e7e7; padding-top: 16px;">
                         <button type="button" class="btn-amazon-secondary" onclick="document.getElementById('addUserModal').style.display='none'">
@@ -386,9 +399,27 @@
                             <input id="edit_nom" name="nom" type="text" class="form-input" required>
                         </div>
                     </div>
-                    <div style="margin-bottom: 20px;">
+                    <div style="margin-bottom: 16px;">
                         <label for="edit_email" class="form-label">Adresse e-mail</label>
                         <input id="edit_email" name="email" type="email" class="form-input" required>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label for="edit_password" class="form-label">Nouveau mot de passe <span style="font-weight:400;color:#888;">(laisser vide pour ne pas changer)</span></label>
+                        <div style="position:relative;">
+                            <input id="edit_password" name="password" type="password" class="form-input" style="padding-right:40px;" minlength="8" autocomplete="new-password">
+                            <button type="button" onclick="togglePw('edit_password', this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#666;cursor:pointer;padding:4px;" aria-label="Afficher/masquer">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="edit_password_confirmation" class="form-label">Confirmer le mot de passe</label>
+                        <div style="position:relative;">
+                            <input id="edit_password_confirmation" name="password_confirmation" type="password" class="form-input" style="padding-right:40px;" minlength="8" autocomplete="new-password">
+                            <button type="button" onclick="togglePw('edit_password_confirmation', this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#666;cursor:pointer;padding:4px;" aria-label="Afficher/masquer">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div style="display:flex; gap:8px; justify-content:flex-end; border-top: 1px solid #e7e7e7; padding-top: 16px;">
                         <button type="button" class="btn-amazon-secondary" onclick="document.getElementById('editUserModal').style.display='none'">
@@ -403,6 +434,24 @@
         </div>
 
         <script>
+            function togglePw(id, btn) {
+                const inp = document.getElementById(id);
+                const icon = btn.querySelector('i');
+                if (inp.type === 'password') { inp.type = 'text'; icon.className = 'fas fa-eye-slash'; }
+                else { inp.type = 'password'; icon.className = 'fas fa-eye'; }
+            }
+
+            // Faire disparaître les messages de succès après quelques secondes
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.auto-hide-msg').forEach(function (el) {
+                    setTimeout(function () {
+                        el.style.transition = 'opacity 0.5s';
+                        el.style.opacity = '0';
+                        setTimeout(function () { el.style.display = 'none'; }, 500);
+                    }, 4000);
+                });
+            });
+
             function openEditUserModal(id, prenom, nom, email) {
                 const modal = document.getElementById('editUserModal');
                 const form = document.getElementById('editUserForm');

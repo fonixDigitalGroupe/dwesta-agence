@@ -125,7 +125,7 @@ class ProfileController extends Controller
             'prenom'   => 'required|string|max:255',
             'nom'      => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = \App\Models\User::create([
@@ -149,14 +149,19 @@ class ProfileController extends Controller
             'prenom' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user->update([
+        $data = [
             'name' => $validated['prenom'] . ' ' . $validated['nom'],
             'prenom' => $validated['prenom'],
             'nom' => $validated['nom'],
             'email' => $validated['email'],
-        ]);
+        ];
+        if (!empty($validated['password'])) {
+            $data['password'] = \Illuminate\Support\Facades\Hash::make($validated['password']);
+        }
+        $user->update($data);
 
         return Redirect::route('profile.edit', ['tab' => 'utilisateur'])->with('status', 'user-updated');
     }
