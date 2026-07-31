@@ -21,6 +21,11 @@ class Order extends Model
         'qr_code_token',
         'qr_code_path',
         'notes_vendeur',
+        'received_at',
+    ];
+
+    protected $casts = [
+        'received_at' => 'datetime',
     ];
 
     // Constantes de statut Logistique

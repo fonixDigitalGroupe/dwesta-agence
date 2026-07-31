@@ -77,7 +77,7 @@ class ColisController extends Controller
             return Redirect::back()->with('error', 'Action non autorisée.');
         }
 
-        $order->update(['statut' => Order::STATUT_DISPONIBLE]);
+        $order->update(['statut' => Order::STATUT_DISPONIBLE, 'received_at' => now()]);
 
         return Redirect::route('operations.stock', ['tab' => 'stock'])->with('status', 'colis-reçu');
     }
@@ -136,7 +136,7 @@ class ColisController extends Controller
         $action = "";
 
         if (in_array($oldStatut, [Order::STATUT_EN_ATTENTE, Order::STATUT_PAYE, Order::STATUT_PRET, Order::STATUT_EN_ROUTE])) {
-            $order->update(['statut' => Order::STATUT_DISPONIBLE]);
+            $order->update(['statut' => Order::STATUT_DISPONIBLE, 'received_at' => now()]);
             $message = "Colis {$order->reference} réceptionné avec succès.";
             $action = "received";
         } elseif ($oldStatut === Order::STATUT_DISPONIBLE) {
