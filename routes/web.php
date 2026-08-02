@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/litiges', [OperationController::class, 'litiges'])->name('operations.litiges');
     Route::get('/journal', [OperationController::class, 'journal'])->name('operations.journal');
     Route::get('/statistiques', [OperationController::class, 'statistiques'])->name('operations.stats');
+    Route::get('/statistiques/pdf', [OperationController::class, 'statistiquesPdf'])->name('operations.stats.pdf');
 
     // Finances
     Route::get('/commissions', [FinanceController::class, 'commissions'])->name('finances.commissions');

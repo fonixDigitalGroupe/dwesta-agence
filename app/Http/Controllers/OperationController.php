@@ -24,7 +24,7 @@ class OperationController extends Controller
         return view('operations.journal');
     }
 
-    public function statistiques(Request $request)
+    private function statsContext(Request $request): array
     {
         $agence = Auth::user()->pointRelais()->first();
 
@@ -36,11 +36,11 @@ class OperationController extends Controller
         $approche = [Order::STATUT_EN_ATTENTE, Order::STATUT_PAYE, Order::STATUT_PRET, Order::STATUT_EN_ROUTE];
 
         if (! $agence) {
-            return view('operations.stats', [
-                'agence' => null, 'orders' => null, 'agents' => collect(),
+            return [
+                'agence' => null, 'agents' => collect(), 'query' => null,
                 'counts' => ['approche' => 0, 'stock' => 0, 'livre' => 0, 'litige' => 0],
                 'start'  => $start, 'end' => $end, 'statut' => $statut, 'userId' => $userId,
-            ]);
+            ];
         }
 
         $agents = $agence->users()->orderBy('prenom')->get();
@@ -48,7 +48,6 @@ class OperationController extends Controller
         $base = Order::where('destination_point_relais_id', $agence->id)
             ->whereBetween('created_at', [Carbon::parse($start)->startOfDay(), Carbon::parse($end)->endOfDay()]);
 
-        // Filtre par utilisateur ayant traité (réception / remise / signalement)
         if ($userId) {
             $base->where(function ($q) use ($userId) {
                 $q->where('received_by', $userId)
@@ -73,9 +72,31 @@ class OperationController extends Controller
             default    => $query,
         };
 
-        $orders = $query->with(['buyer', 'receivedBy', 'deliveredBy', 'litiges.reporter'])
-            ->latest()->paginate(20)->withQueryString();
+        return compact('agence', 'agents', 'counts', 'start', 'end', 'statut', 'userId', 'query');
+    }
 
-        return view('operations.stats', compact('agence', 'orders', 'counts', 'start', 'end', 'statut', 'agents', 'userId'));
+    public function statistiques(Request $request)
+    {
+        $ctx = $this->statsContext($request);
+        $orders = $ctx['query']
+            ? $ctx['query']->with(['buyer', 'receivedBy', 'deliveredBy', 'litiges.reporter'])->latest()->paginate(20)->withQueryString()
+            : null;
+
+        return view('operations.stats', array_merge($ctx, ['orders' => $orders]));
+    }
+
+    public function statistiquesPdf(Request $request)
+    {
+        $ctx = $this->statsContext($request);
+        if (! $ctx['agence']) {
+            abort(403);
+        }
+
+        $orders = $ctx['query']->with(['buyer', 'receivedBy', 'deliveredBy', 'litiges.reporter'])->latest()->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('operations.stats-pdf', array_merge($ctx, ['orders' => $orders]))
+            ->setPaper('a4');
+
+        return $pdf->stream('statistiques.pdf');
     }
 }

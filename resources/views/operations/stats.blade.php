@@ -1,7 +1,13 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto">
 
-        <h1 class="text-xl font-bold text-slate-900 mb-5">Statistiques</h1>
+        <div class="flex items-center justify-between gap-3 mb-5">
+            <h1 class="text-xl font-bold text-slate-900">Statistiques</h1>
+            <a href="{{ route('operations.stats.pdf', request()->query()) }}" target="_blank"
+               class="inline-flex items-center gap-2 rounded-lg bg-slate-900 text-white text-sm font-semibold px-4 py-2 hover:bg-black">
+                <i class="fas fa-file-pdf"></i> Imprimer en PDF
+            </a>
+        </div>
 
         {{-- Filtres (automatiques) --}}
         <form method="GET" class="bg-white border border-slate-200 rounded-xl p-4 mb-6">
