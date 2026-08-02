@@ -23,37 +23,37 @@
             {{-- Cartes KPI --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 {{-- Colis attendus --}}
-                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-5 shadow-sm">
                     <div class="flex items-start justify-between">
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Colis attendus</p>
-                            <p class="mt-2 text-3xl font-black text-slate-900">{{ $nExpected }}</p>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Colis attendus</p>
+                            <p class="mt-2 text-3xl font-black text-[#004aad]">{{ $nExpected }}</p>
                         </div>
-                        <div class="w-12 h-12 rounded-lg bg-blue-50 text-[#004aad] flex items-center justify-center text-xl"><i class="fas fa-truck"></i></div>
+                        <div class="w-12 h-12 rounded-lg bg-white text-[#004aad] flex items-center justify-center text-xl shadow-sm"><i class="fas fa-truck"></i></div>
                     </div>
                     <a href="{{ route('operations.stock', ['tab' => 'incoming']) }}" class="mt-3 inline-block text-xs font-semibold text-[#004aad]">Voir les arrivées →</a>
                 </div>
 
                 {{-- En stock --}}
-                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                <div class="bg-orange-50 border border-orange-100 rounded-xl p-5 shadow-sm">
                     <div class="flex items-start justify-between">
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Colis en stock</p>
-                            <p class="mt-2 text-3xl font-black text-slate-900">{{ $nStock }}</p>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Colis en stock</p>
+                            <p class="mt-2 text-3xl font-black text-[#FF6B00]">{{ $nStock }}</p>
                         </div>
-                        <div class="w-12 h-12 rounded-lg bg-orange-50 text-[#FF6B00] flex items-center justify-center text-xl"><i class="fas fa-boxes-stacked"></i></div>
+                        <div class="w-12 h-12 rounded-lg bg-white text-[#FF6B00] flex items-center justify-center text-xl shadow-sm"><i class="fas fa-boxes-stacked"></i></div>
                     </div>
                     <a href="{{ route('operations.stock', ['tab' => 'stock']) }}" class="mt-3 inline-block text-xs font-semibold text-[#FF6B00]">Voir le stock →</a>
                 </div>
 
                 {{-- Total à traiter --}}
-                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                <div class="bg-slate-100 border border-slate-200 rounded-xl p-5 shadow-sm">
                     <div class="flex items-start justify-between">
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">À traiter</p>
-                            <p class="mt-2 text-3xl font-black text-slate-900">{{ $nTotal }}</p>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">À traiter</p>
+                            <p class="mt-2 text-3xl font-black text-slate-800">{{ $nTotal }}</p>
                         </div>
-                        <div class="w-12 h-12 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center text-xl"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="w-12 h-12 rounded-lg bg-white text-slate-700 flex items-center justify-center text-xl shadow-sm"><i class="fas fa-clipboard-list"></i></div>
                     </div>
                     <p class="mt-3 text-xs text-slate-400">Attendus + en stock</p>
                 </div>
