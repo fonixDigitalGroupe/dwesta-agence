@@ -163,7 +163,7 @@ class ColisController extends Controller
             abort(403);
         }
 
-        $order->load(['buyer', 'seller.user', 'items.annonce.medias']);
+        $order->load(['buyer', 'seller.user', 'items.annonce.medias', 'items.variante']);
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('colis.pdf', [
             'order'  => $order,
