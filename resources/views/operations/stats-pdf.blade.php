@@ -4,28 +4,35 @@
     <meta charset="utf-8">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: DejaVu Sans, sans-serif; color: #222; font-size: 12px; line-height: 1.5; }
-        .page { padding: 34px 40px; }
-        .head { border-bottom: 2px solid #222; padding-bottom: 14px; margin-bottom: 18px; }
-        .head td { vertical-align: top; }
-        .brand { font-size: 18px; font-weight: bold; color: #111; }
-        .brand-sub { font-size: 10px; color: #777; margin-top: 3px; }
-        .doc { text-align: right; }
-        .doc .title { font-size: 14px; font-weight: bold; letter-spacing: 2px; color: #111; }
-        .doc .meta { font-size: 10px; color: #555; margin-top: 4px; }
+        @page { margin: 0; }
+        body { font-family: DejaVu Sans, sans-serif; color: #2b2f36; font-size: 11.5px; line-height: 1.5; }
+        .page { padding: 46px 48px; }
 
-        .recap { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
-        .recap td { width: 25%; border: 1px solid #e5e5e5; padding: 10px 12px; }
-        .recap .lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #888; }
-        .recap .val { font-size: 20px; font-weight: bold; color: #111; margin-top: 3px; }
+        /* En-tête */
+        .head { width: 100%; }
+        .head td { vertical-align: bottom; }
+        .brand { font-size: 19px; font-weight: bold; color: #14181f; letter-spacing: .2px; }
+        .brand-sub { font-size: 9.5px; color: #8a90a0; margin-top: 4px; }
+        .report-title { text-align: right; font-size: 13px; font-weight: bold; letter-spacing: 3px; color: #14181f; }
+        .report-kicker { text-align: right; font-size: 9px; letter-spacing: 2px; color: #9aa0ac; text-transform: uppercase; margin-bottom: 3px; }
+        .rule { height: 2px; background: #14181f; margin: 14px 0 0; }
 
+        /* Bandeau d'informations */
+        .meta { width: 100%; border-collapse: collapse; margin: 18px 0 22px; }
+        .meta td { border: 1px solid #e6e8ec; padding: 9px 12px; width: 25%; }
+        .meta .lbl { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #9aa0ac; }
+        .meta .val { font-size: 12px; font-weight: bold; color: #14181f; margin-top: 2px; }
+
+        /* Tableau */
         table.list { width: 100%; border-collapse: collapse; }
-        table.list th { background: #222; color: #fff; font-size: 9px; letter-spacing: .5px; text-transform: uppercase; text-align: left; padding: 9px 10px; }
-        table.list td { padding: 9px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
-        table.list tr:nth-child(even) td { background: #fafafa; }
-        table.list td:first-child { font-weight: bold; color: #111; }
-        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: bold; }
-        .foot { margin-top: 24px; border-top: 1px solid #ddd; padding-top: 8px; color: #999; font-size: 9.5px; text-align: center; }
+        table.list th { background: #14181f; color: #fff; font-size: 8.5px; letter-spacing: .6px; text-transform: uppercase; text-align: left; padding: 9px 12px; }
+        table.list td { padding: 9px 12px; border-bottom: 1px solid #edeff2; font-size: 11px; color: #3a3f47; }
+        table.list tr:nth-child(even) td { background: #fafbfc; }
+        table.list td.ref { font-weight: bold; color: #14181f; }
+        .badge { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 8.5px; font-weight: bold; letter-spacing: .3px; }
+
+        .foot { margin-top: 26px; padding-top: 9px; border-top: 1px solid #e6e8ec; color: #9aa0ac; font-size: 9px; }
+        .foot td { color: #9aa0ac; font-size: 9px; }
     </style>
 </head>
 <body>
@@ -34,18 +41,28 @@
 @endphp
     <div class="page">
 
+        {{-- En-tête --}}
         <table class="head">
             <tr>
                 <td>
+                    <div class="report-kicker">Point relais · Réseau Karnou</div>
                     <div class="brand">{{ $agence->nom ?? 'Point Relais' }}</div>
-                    <div class="brand-sub">{{ $agence->adresse ?? '' }}@if($agence->telephone ?? false) · {{ $agence->telephone }}@endif</div>
+                    <div class="brand-sub">{{ $agence->adresse ?? '' }}</div>
                 </td>
-                <td class="doc">
-                    <div class="title">STATISTIQUES</div>
-                    <div class="meta">Période : <b>{{ \Carbon\Carbon::parse($start)->format('d/m/Y') }}</b> — <b>{{ \Carbon\Carbon::parse($end)->format('d/m/Y') }}</b></div>
-                    <div class="meta">Statut : <b>{{ $statutLabels[$statut] ?? 'Tous' }}</b></div>
-                    <div class="meta">Éditée le {{ now()->format('d/m/Y à H:i') }}</div>
+                <td>
+                    <div class="report-title">RAPPORT DE STATISTIQUES</div>
                 </td>
+            </tr>
+        </table>
+        <div class="rule"></div>
+
+        {{-- Bandeau informations --}}
+        <table class="meta">
+            <tr>
+                <td><div class="lbl">Période du</div><div class="val">{{ \Carbon\Carbon::parse($start)->format('d/m/Y') }}</div></td>
+                <td><div class="lbl">au</div><div class="val">{{ \Carbon\Carbon::parse($end)->format('d/m/Y') }}</div></td>
+                <td><div class="lbl">Statut</div><div class="val">{{ $statutLabels[$statut] ?? 'Tous' }}</div></td>
+                <td><div class="lbl">Total colis</div><div class="val">{{ $orders->count() }}</div></td>
             </tr>
         </table>
 
@@ -55,9 +72,9 @@
                 <tr>
                     <th style="width:130px;">Référence</th>
                     <th>Client</th>
-                    <th style="width:90px;">Statut</th>
+                    <th style="width:92px;">Statut</th>
                     <th style="width:120px;">Traité par</th>
-                    <th style="width:70px;">Date</th>
+                    <th style="width:72px;">Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,19 +101,25 @@
                         $agentName = $agentUser ? (trim(($agentUser->prenom ?? '').' '.($agentUser->nom ?? $agentUser->name ?? '')) ?: '—') : '—';
                     @endphp
                     <tr>
-                        <td>{{ $order->reference }}</td>
+                        <td class="ref">{{ $order->reference }}</td>
                         <td>{{ trim(($order->buyer->prenom ?? '').' '.($order->buyer->nom ?? $order->buyer->name ?? '')) ?: '—' }}</td>
                         <td><span class="badge" style="background:{{ $bBg }};color:{{ $bTxt }};">{{ $bLabel }}</span></td>
                         <td>{{ $agentName }}</td>
                         <td>{{ $order->created_at->format('d/m/Y') }}</td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" style="text-align:center;color:#999;padding:20px;">Aucun colis sur cette période.</td></tr>
+                    <tr><td colspan="5" style="text-align:center;color:#9aa0ac;padding:26px;">Aucun colis sur cette période.</td></tr>
                 @endforelse
             </tbody>
         </table>
 
-        <div class="foot">{{ $agence->nom ?? 'Point Relais' }} · Réseau Karnou · {{ $orders->count() }} colis</div>
+        {{-- Pied de page --}}
+        <table class="foot">
+            <tr>
+                <td style="text-align:left;">{{ $agence->nom ?? 'Point Relais' }} — Réseau Karnou</td>
+                <td style="text-align:right;">Édité le {{ now()->format('d/m/Y à H:i') }}</td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>
