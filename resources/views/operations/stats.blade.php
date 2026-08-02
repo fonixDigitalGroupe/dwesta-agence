@@ -44,7 +44,7 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">En approche</p>
-                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['approche'] }}</p>
+                        <p class="mt-2 text-3xl font-black text-[#004aad]">{{ $counts['approche'] }}</p>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-blue-50 text-[#004aad] flex items-center justify-center text-xl"><i class="fas fa-truck"></i></div>
                 </div>
@@ -53,7 +53,7 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">En stock</p>
-                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['stock'] }}</p>
+                        <p class="mt-2 text-3xl font-black text-[#FF6B00]">{{ $counts['stock'] }}</p>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-orange-50 text-[#FF6B00] flex items-center justify-center text-xl"><i class="fas fa-boxes-stacked"></i></div>
                 </div>
@@ -62,7 +62,7 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Livrés</p>
-                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['livre'] }}</p>
+                        <p class="mt-2 text-3xl font-black text-green-600">{{ $counts['livre'] }}</p>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-green-50 text-green-600 flex items-center justify-center text-xl"><i class="fas fa-circle-check"></i></div>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="flex items-start justify-between">
                     <div>
                         <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Signalés</p>
-                        <p class="mt-2 text-3xl font-black text-slate-900">{{ $counts['litige'] }}</p>
+                        <p class="mt-2 text-3xl font-black text-red-600">{{ $counts['litige'] }}</p>
                     </div>
                     <div class="w-12 h-12 rounded-lg bg-red-50 text-red-600 flex items-center justify-center text-xl"><i class="fas fa-triangle-exclamation"></i></div>
                 </div>
