@@ -5,7 +5,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         @page { margin: 0; }
-        body { font-family: DejaVu Sans, sans-serif; color: #222; font-size: 11px; line-height: 1.45; }
+        body { font-family: Helvetica, Arial, sans-serif; color: #111; font-size: 11px; line-height: 1.45; }
         .page { padding: 34px 40px; }
 
         .logo { height: 34px; }
@@ -64,15 +64,15 @@
             <tr>
                 <td>
                     <span class="k">Point relais :</span> {{ $agence->nom ?? '' }}<br>
-                    <span class="k">Adresse :</span> {{ $agence->adresse ?? '—' }}
+                    <span class="k">Adresse :</span> {{ $agence->adresse ?? '-' }}
                 </td>
                 <td>
                     <span class="k">Vendeur :</span> {{ $sellerName }}{{ ($order->seller && $order->seller->type === 'professionnel') ? ' (PRO)' : '' }}<br>
-                    <span class="k">Tél. vendeur :</span> {{ $sellerUser->telephone ?? '—' }}
+                    <span class="k">Tél. vendeur :</span> {{ $sellerUser->telephone ?? '-' }}
                 </td>
                 <td>
                     <span class="k">Date :</span> {{ $order->created_at->format('d M Y') }}<br>
-                    <span class="k">Réception :</span> {{ $recDate ? $recDate->format('d/m/Y') : '—' }}
+                    <span class="k">Réception :</span> {{ $recDate ? $recDate->format('d/m/Y') : '-' }}
                 </td>
             </tr>
         </table>
@@ -95,36 +95,29 @@
             <tr><td class="k">Type de paiement</td><td class="v">{{ $paiement }}</td></tr>
             <tr><td class="k">Montant</td><td class="v">{{ $money($order->total_final) }} FCFA</td></tr>
             <tr><td class="k">Frais de livraison</td><td class="v">{{ $money($order->frais_port) }} FCFA</td></tr>
-            <tr><td class="k">Nom du client</td><td class="v">{{ trim(($order->buyer->prenom ?? '').' '.($order->buyer->nom ?? $order->buyer->name ?? '')) ?: '—' }}</td></tr>
+            <tr><td class="k">Nom du client</td><td class="v">{{ trim(($order->buyer->prenom ?? '').' '.($order->buyer->nom ?? $order->buyer->name ?? '')) ?: '-' }}</td></tr>
         </table>
 
         {{-- Détails du produit --}}
         <table class="prod">
             <tr><td class="section" colspan="6">Détails du produit</td></tr>
             <tr>
-                <th style="width:44px;"></th>
                 <th class="name" style="text-align:left;">Nom du produit</th>
-                <th style="width:70px;">Variation</th>
-                <th style="width:50px;">Qté</th>
-                <th style="width:90px;">Prix Unitaire</th>
-                <th style="width:95px;">Total</th>
+                <th style="width:64px;">Variation</th>
+                <th style="width:66px;">Nombre de produits</th>
+                <th style="width:78px;">Remise/Code Promo</th>
+                <th style="width:80px;">Prix Unitaire</th>
+                <th style="width:86px;">Total</th>
             </tr>
             @forelse($order->items as $item)
                 @php
-                    $annonce = $item->annonce;
-                    $media = $annonce ? $annonce->medias->first() : null;
-                    $imgData = null;
-                    if ($media && $media->chemin) {
-                        $bin = @file_get_contents($mediaBase . ltrim($media->chemin, '/'));
-                        if ($bin !== false) { $imgData = 'data:' . ($media->mime_type ?: 'image/jpeg') . ';base64,' . base64_encode($bin); }
-                    }
-                    $variation = optional($item->variante)->nom ?? optional($item->variante)->valeur ?? optional($item->variante)->libelle ?? '—';
+                    $variation = optional($item->variante)->nom ?? optional($item->variante)->valeur ?? optional($item->variante)->libelle ?? '-';
                 @endphp
                 <tr>
-                    <td class="center" style="text-align:center;">@if($imgData)<img src="{{ $imgData }}" class="pimg">@endif</td>
-                    <td class="name">{{ $annonce->titre ?? 'Produit' }}</td>
+                    <td class="name">{{ $item->annonce->titre ?? 'Produit' }}</td>
                     <td style="text-align:center;">{{ $variation }}</td>
                     <td style="text-align:center;">{{ $item->quantite }}</td>
+                    <td style="text-align:right;">0,00</td>
                     <td style="text-align:right;">{{ $money($item->prix_unitaire) }}</td>
                     <td style="text-align:right;">{{ $money($item->prix_unitaire * $item->quantite) }}</td>
                 </tr>
