@@ -5,7 +5,7 @@
 
         {{-- Filtres (automatiques) --}}
         <form method="GET" class="bg-white border border-slate-200 rounded-xl p-4 mb-6">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Date de début</label>
                     <input type="date" name="date_debut" value="{{ $start }}" onchange="this.form.submit()" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
@@ -22,6 +22,17 @@
                         <option value="stock" {{ $statut == 'stock' ? 'selected' : '' }}>En stock</option>
                         <option value="livre" {{ $statut == 'livre' ? 'selected' : '' }}>Livrés</option>
                         <option value="litige" {{ $statut == 'litige' ? 'selected' : '' }}>Signalés</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Utilisateur</label>
+                    <select name="user" onchange="this.form.submit()" class="w-full rounded-lg border-slate-300 text-sm focus:border-slate-400 focus:ring-0">
+                        <option value="">Tous</option>
+                        @foreach($agents as $agent)
+                            <option value="{{ $agent->id }}" {{ (string) $userId === (string) $agent->id ? 'selected' : '' }}>
+                                {{ trim(($agent->prenom ?? '').' '.($agent->nom ?? $agent->name ?? '')) ?: $agent->email }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
             </div>

@@ -31,19 +31,31 @@ class OperationController extends Controller
         $start  = $request->input('date_debut') ?: now()->startOfMonth()->toDateString();
         $end    = $request->input('date_fin') ?: now()->endOfMonth()->toDateString();
         $statut = $request->input('statut', 'tous');
+        $userId = $request->input('user');
 
         $approche = [Order::STATUT_EN_ATTENTE, Order::STATUT_PAYE, Order::STATUT_PRET, Order::STATUT_EN_ROUTE];
 
         if (! $agence) {
             return view('operations.stats', [
-                'agence' => null, 'orders' => null,
+                'agence' => null, 'orders' => null, 'agents' => collect(),
                 'counts' => ['approche' => 0, 'stock' => 0, 'livre' => 0, 'litige' => 0],
-                'start'  => $start, 'end' => $end, 'statut' => $statut,
+                'start'  => $start, 'end' => $end, 'statut' => $statut, 'userId' => $userId,
             ]);
         }
 
+        $agents = $agence->users()->orderBy('prenom')->get();
+
         $base = Order::where('destination_point_relais_id', $agence->id)
             ->whereBetween('created_at', [Carbon::parse($start)->startOfDay(), Carbon::parse($end)->endOfDay()]);
+
+        // Filtre par utilisateur ayant traité (réception / remise / signalement)
+        if ($userId) {
+            $base->where(function ($q) use ($userId) {
+                $q->where('received_by', $userId)
+                  ->orWhere('delivered_by', $userId)
+                  ->orWhereHas('litiges', fn ($lq) => $lq->where('reporter_id', $userId));
+            });
+        }
 
         $counts = [
             'approche' => (clone $base)->whereIn('statut', $approche)->count(),
@@ -64,6 +76,6 @@ class OperationController extends Controller
         $orders = $query->with(['buyer', 'receivedBy', 'deliveredBy', 'litiges.reporter'])
             ->latest()->paginate(20)->withQueryString();
 
-        return view('operations.stats', compact('agence', 'orders', 'counts', 'start', 'end', 'statut'));
+        return view('operations.stats', compact('agence', 'orders', 'counts', 'start', 'end', 'statut', 'agents', 'userId'));
     }
 }
