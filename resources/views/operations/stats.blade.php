@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between gap-3 mb-5">
             <h1 class="text-xl font-bold text-slate-900">Statistiques</h1>
             <a href="{{ route('operations.stats.pdf', request()->query()) }}" target="_blank"
-               class="inline-flex items-center gap-2 rounded-lg bg-slate-900 text-white text-sm font-semibold px-4 py-2 hover:bg-black">
+               class="inline-flex items-center gap-2 rounded-lg bg-[#004aad] text-white text-sm font-semibold px-5 py-2.5 shadow-sm ring-1 ring-[#004aad]/20 transition hover:bg-[#003a8a] hover:shadow-md">
                 <i class="fas fa-file-pdf"></i> Imprimer en PDF
             </a>
         </div>
