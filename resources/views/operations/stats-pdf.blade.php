@@ -20,18 +20,16 @@
         .recap .val { font-size: 20px; font-weight: bold; color: #111; margin-top: 3px; }
 
         table.list { width: 100%; border-collapse: collapse; }
-        table.list th { background: #f4f4f4; color: #333; font-size: 9.5px; text-transform: uppercase; text-align: left; padding: 8px 10px; border-bottom: 1px solid #ccc; }
-        table.list td { padding: 8px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
+        table.list th { background: #222; color: #fff; font-size: 9px; letter-spacing: .5px; text-transform: uppercase; text-align: left; padding: 9px 10px; }
+        table.list td { padding: 9px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
+        table.list tr:nth-child(even) td { background: #fafafa; }
+        table.list td:first-child { font-weight: bold; color: #111; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: bold; }
         .foot { margin-top: 24px; border-top: 1px solid #ddd; padding-top: 8px; color: #999; font-size: 9.5px; text-align: center; }
     </style>
 </head>
 <body>
 @php
-    $mediaBase = rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/';
-    $logoRel = \App\Models\Setting::get('logo');
-    $logoData = null;
-    if ($logoRel) { $lb = @file_get_contents($mediaBase . ltrim($logoRel, '/')); if ($lb !== false) { $logoData = 'data:image/png;base64,' . base64_encode($lb); } }
     $statutLabels = ['tous' => 'Tous', 'approche' => 'En approche', 'stock' => 'En stock', 'livre' => 'Livrés', 'litige' => 'Signalés'];
 @endphp
     <div class="page">
@@ -39,9 +37,8 @@
         <table class="head">
             <tr>
                 <td>
-                    @if($logoData)<img src="{{ $logoData }}" style="height:34px; margin-bottom:5px;"><br>@endif
                     <div class="brand">{{ $agence->nom ?? 'Point Relais' }}</div>
-                    <div class="brand-sub">{{ $agence->adresse ?? '' }}</div>
+                    <div class="brand-sub">{{ $agence->adresse ?? '' }}@if($agence->telephone ?? false) · {{ $agence->telephone }}@endif</div>
                 </td>
                 <td class="doc">
                     <div class="title">STATISTIQUES</div>
@@ -49,16 +46,6 @@
                     <div class="meta">Statut : <b>{{ $statutLabels[$statut] ?? 'Tous' }}</b></div>
                     <div class="meta">Éditée le {{ now()->format('d/m/Y à H:i') }}</div>
                 </td>
-            </tr>
-        </table>
-
-        {{-- Récap --}}
-        <table class="recap">
-            <tr>
-                <td><div class="lbl">En approche</div><div class="val">{{ $counts['approche'] }}</div></td>
-                <td><div class="lbl">En stock</div><div class="val">{{ $counts['stock'] }}</div></td>
-                <td><div class="lbl">Livrés</div><div class="val">{{ $counts['livre'] }}</div></td>
-                <td><div class="lbl">Signalés</div><div class="val">{{ $counts['litige'] }}</div></td>
             </tr>
         </table>
 
