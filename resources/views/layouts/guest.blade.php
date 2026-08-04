@@ -86,10 +86,10 @@
             </nav>
         </header>
 
-        <div class="grid lg:grid-cols-2" style="min-height: calc(100vh - 58px);">
+        <div class="grid gap-4 bg-gray-100 p-4 lg:grid-cols-2" style="min-height: calc(100vh - 58px);">
 
             {{-- Image à gauche + texte (masquée sur mobile) --}}
-            <div class="relative hidden lg:block">
+            <div class="relative hidden overflow-hidden rounded-xl lg:block">
                 <div class="absolute inset-0 bg-cover bg-center"
                      style="background-image:url('{{ asset('images/login-bg.jpg') }}');"></div>
                 {{-- Voile sombre pour la lisibilité du texte --}}
