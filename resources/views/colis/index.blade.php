@@ -292,7 +292,7 @@
                                         <span style="color:#c0392b; font-weight:600; font-size:0.82rem;" title="Remise impossible : litige signalé">Litige signalé</span>
                                     @else
                                         <span class="mirror-sep">|</span>
-                                        <button type="button" onclick="confirmDeliver('{{ $order->id }}', '{{ $order->reference }}')" class="mirror-link" style="background: none; border: none; font-weight: bold; color: #569b00;">Remettre au client</button>
+                                        <button type="button" onclick="remettre('{{ $order->id }}', '{{ $order->reference }}', {{ (($order->gestion_paiement ?? 'commande') !== 'commande') ? 'true' : 'false' }}, '{{ number_format($order->total_final, 0, ',', ' ') }}')" class="mirror-link" style="background: none; border: none; font-weight: bold; color: #569b00;">Remettre au client</button>
                                         <form id="deliver-form-{{ $order->id }}" action="{{ route('colis.deliver', $order->id) }}" method="POST" style="display: none;">
                                             @csrf
                                         </form>
@@ -441,6 +441,54 @@
                 cancelButtonText: 'Annuler'
             }).then((result) => { if (result.isConfirmed) document.getElementById('receive-form-' + id).submit(); });
         }
+        function remettre(id, ref, isCod, montant) {
+            if (!isCod) {
+                Swal.fire({
+                    title: 'Remettre au client ?',
+                    html: 'Colis <b>' + ref + '</b> (payé en ligne).',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirmer la remise',
+                    confirmButtonColor: '#569b00',
+                    cancelButtonText: 'Annuler'
+                }).then(function (r) {
+                    if (r.isConfirmed) document.getElementById('deliver-form-' + id).submit();
+                });
+                return;
+            }
+            Swal.fire({
+                title: 'Encaissement',
+                html: '<p style="font-size:0.86rem;color:#555;margin:0 0 12px;">Colis <b>' + ref + '</b><br>Montant à encaisser : <b>' + montant + ' FCFA</b></p>'
+                    + '<select id="enc-methode" class="litige-select">'
+                    + '<option value="espece">Espèces</option>'
+                    + '<option value="mobile">Mobile Money</option>'
+                    + '<option value="carte">Carte</option>'
+                    + '</select>'
+                    + '<input id="enc-ref" class="swal2-input" placeholder="Référence (Mobile Money / Carte)" style="margin-top:4px;">',
+                showCancelButton: true,
+                confirmButtonText: 'Encaisser & remettre',
+                confirmButtonColor: '#569b00',
+                cancelButtonText: 'Annuler',
+                preConfirm: function () {
+                    return {
+                        methode: document.getElementById('enc-methode').value,
+                        reference: document.getElementById('enc-ref').value
+                    };
+                }
+            }).then(function (r) {
+                if (!r.isConfirmed) return;
+                var f = document.getElementById('deliver-form-' + id);
+                var setHidden = function (name, val) {
+                    var el = f.querySelector('[name="' + name + '"]');
+                    if (!el) { el = document.createElement('input'); el.type = 'hidden'; el.name = name; f.appendChild(el); }
+                    el.value = val || '';
+                };
+                setHidden('paiement_methode', r.value.methode);
+                setHidden('paiement_reference', r.value.reference);
+                f.submit();
+            });
+        }
+
         function confirmDeliver(id, ref) {
             Swal.fire({
                 title: 'Remettre au client ?',

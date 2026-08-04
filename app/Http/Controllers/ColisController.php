@@ -95,7 +95,23 @@ class ColisController extends Controller
             return Redirect::back()->with('error', 'Remise impossible : un litige a été signalé sur cette commande.');
         }
 
-        $order->update(['statut' => Order::STATUT_LIVRE, 'delivered_by' => $request->user()->id]);
+        $data = $request->validate([
+            'paiement_methode'   => 'nullable|in:espece,mobile,carte',
+            'paiement_reference' => 'nullable|string|max:100',
+        ]);
+
+        // Paiement à la livraison : le mode d'encaissement est obligatoire.
+        $isCod = ($order->gestion_paiement ?? 'commande') !== 'commande';
+        if ($isCod && empty($data['paiement_methode'])) {
+            return Redirect::back()->with('error', "Veuillez indiquer le mode de paiement encaissé (espèces / mobile money / carte).");
+        }
+
+        $order->update([
+            'statut'             => Order::STATUT_LIVRE,
+            'delivered_by'       => $request->user()->id,
+            'paiement_methode'   => $data['paiement_methode'] ?? null,
+            'paiement_reference' => $data['paiement_reference'] ?? null,
+        ]);
 
         return Redirect::route('operations.stock', ['tab' => 'history'])->with('status', 'colis-livré');
     }

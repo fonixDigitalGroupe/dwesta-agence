@@ -73,6 +73,10 @@
                 <div class="info-row"><span class="info-label">Mode d'expédition</span><span class="info-value">{{ $order->mode_livraison ? ucfirst(str_replace('_',' ',$order->mode_livraison)) : '—' }}</span></div>
                 <div class="info-row"><span class="info-label">Réception</span><span class="info-value">{{ $recDate ? $recDate->format('d/m/Y') : '—' }}</span></div>
                 <div class="info-row"><span class="info-label">Échéance</span><span class="info-value" style="color: {{ ($echeance && now()->greaterThan($echeance)) ? '#c0392b' : '#3f7d18' }};">{{ $echeance ? $echeance->format('d/m/Y') : '—' }}</span></div>
+                @if($order->paiement_methode)
+                    @php $mLabel = ['espece' => 'Espèces', 'mobile' => 'Mobile Money', 'carte' => 'Carte'][$order->paiement_methode] ?? $order->paiement_methode; @endphp
+                    <div class="info-row"><span class="info-label">Encaissement</span><span class="info-value">{{ $mLabel }}@if($order->paiement_reference) · réf. {{ $order->paiement_reference }}@endif</span></div>
+                @endif
             </div>
 
             <div class="amazon-card" style="margin-bottom:0;">

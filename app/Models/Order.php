@@ -24,6 +24,8 @@ class Order extends Model
         'received_at',
         'received_by',
         'delivered_by',
+        'paiement_methode',
+        'paiement_reference',
     ];
 
     protected $casts = [
