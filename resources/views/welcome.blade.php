@@ -15,7 +15,7 @@
             html { scroll-behavior: smooth; }
             body {
                 font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-                background: #ffffff; color: #12141a; overflow-x: hidden;
+                background: #f2f3f5; color: #12141a; overflow-x: hidden;
             }
             .wrap { max-width: 1260px; margin: 0 auto; padding: 0 2rem; }
 
@@ -44,7 +44,7 @@
             .btn-ghost:hover { border-color: #004aad; color: #004aad; }
 
             /* ——— BANNIÈRE (grande carte claire arrondie — style Kobo) ——— */
-            .hero { padding: 46px 0 72px; background: #fff; }
+            .hero { padding: 46px 0 72px; background: #f2f3f5; }
             .hero-banner {
                 border-radius: 28px; background: linear-gradient(120deg, #e9f1fc 0%, #f4f8ff 55%, #fff5ec 100%);
                 padding: clamp(40px, 5vw, 72px); display: grid; grid-template-columns: 1.05fr .95fr; gap: 52px;
@@ -56,7 +56,7 @@
             .hero-banner .lead { font-size: 1.12rem; color: #4c5462; line-height: 1.65; margin-bottom: 34px; max-width: 500px; }
             .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
             .hero-visual { position: relative; }
-            .hero-visual .shot { border-radius: 20px; overflow: hidden; min-height: 420px; background: url('{{ asset('images/login-bg.jpg') }}') center/cover no-repeat; box-shadow: 0 30px 60px -28px rgba(0,49,122,.4); }
+            .hero-visual .shot { border-radius: 20px; overflow: hidden; min-height: 300px; background: url('{{ asset('images/login-bg.jpg') }}') center/cover no-repeat; box-shadow: 0 30px 60px -28px rgba(0,49,122,.4); }
 
             /* Bande de valeurs */
             .trust { background: #fff; padding: 30px 0 6px; }
@@ -108,7 +108,7 @@
             }
             @media (max-width: 560px) {
                 .header-right .nav-link { display: none; }
-                .hero-visual .shot { min-height: 300px; }
+                .hero-visual .shot { min-height: 220px; }
             }
         </style>
     </head>
