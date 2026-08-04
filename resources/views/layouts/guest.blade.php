@@ -5,7 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Karnou Agence') }}</title>
+
+        @php
+            $faviconLogo = \App\Models\Setting::get('logo');
+            $faviconUrl = $faviconLogo
+                ? rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/' . ltrim($faviconLogo, '/')
+                : asset('images/logo.png');
+        @endphp
+        <link rel="icon" href="{{ $faviconUrl }}">
+        <link rel="shortcut icon" href="{{ $faviconUrl }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -92,7 +101,7 @@
                 <nav class="mb-6 flex items-center gap-2 text-base font-bold text-gray-600">
                     <a href="/" class="transition hover:text-[#FF6B00]">Accueil</a>
                     <span class="text-gray-300">&rsaquo;</span>
-                    <span class="text-gray-800">Identification</span>
+                    <span class="text-gray-800">{{ $attributes->get('breadcrumb', 'Identification') }}</span>
                 </nav>
                 <div class="flex flex-1 items-center justify-center">
                     <div class="w-full max-w-md">
