@@ -291,11 +291,16 @@
                                         <span class="mirror-sep">|</span>
                                         <span style="color:#c0392b; font-weight:600; font-size:0.82rem;" title="Remise impossible : litige signalé">Litige signalé</span>
                                     @else
+                                        @php $isPaid = ($order->gestion_paiement ?? 'commande') === 'commande'; @endphp
                                         <span class="mirror-sep">|</span>
-                                        <button type="button" onclick="remettre('{{ $order->id }}', '{{ $order->reference }}', {{ (($order->gestion_paiement ?? 'commande') !== 'commande') ? 'true' : 'false' }}, '{{ number_format($order->total_final, 0, ',', ' ') }}')" class="mirror-link" style="background: none; border: none; font-weight: bold; color: #569b00;">Remettre au client</button>
-                                        <form id="deliver-form-{{ $order->id }}" action="{{ route('colis.deliver', $order->id) }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
+                                        @if($isPaid)
+                                            <button type="button" onclick="remettre('{{ $order->id }}', '{{ $order->reference }}', false, '{{ number_format($order->total_final, 0, ',', ' ') }}')" class="mirror-link" style="background: none; border: none; font-weight: bold; color: #569b00;">Remettre au client</button>
+                                            <form id="deliver-form-{{ $order->id }}" action="{{ route('colis.deliver', $order->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+                                        @else
+                                            <span class="mirror-link" style="color:#b0b0b0; cursor:not-allowed; font-weight:bold;" title="Le client doit d'abord régler la commande en ligne depuis son compte Karnou.">Remettre au client</span>
+                                        @endif
                                         <span class="mirror-sep">|</span>
                                         <button type="button" onclick="signalLitige('{{ $order->id }}', '{{ $order->reference }}')" class="mirror-link-red" style="background: none; border: none; font-weight: bold;">Signaler un litige</button>
                                     @endif

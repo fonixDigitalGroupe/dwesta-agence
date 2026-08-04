@@ -95,22 +95,17 @@ class ColisController extends Controller
             return Redirect::back()->with('error', 'Remise impossible : un litige a été signalé sur cette commande.');
         }
 
-        $data = $request->validate([
-            'paiement_methode'   => 'nullable|in:espece,mobile,carte',
-            'paiement_reference' => 'nullable|string|max:100',
-        ]);
-
-        // Paiement à la livraison : le mode d'encaissement est obligatoire.
-        $isCod = ($order->gestion_paiement ?? 'commande') !== 'commande';
-        if ($isCod && empty($data['paiement_methode'])) {
-            return Redirect::back()->with('error', "Veuillez indiquer le mode de paiement encaissé (espèces / mobile money / carte).");
+        // La remise n'est possible que si la commande est payée.
+        // Le paiement se fait en ligne (Stripe) par le client depuis son compte Karnou :
+        // une fois réglée, gestion_paiement bascule sur 'commande'.
+        $isPaid = ($order->gestion_paiement ?? 'commande') === 'commande';
+        if (! $isPaid) {
+            return Redirect::back()->with('error', "Remise impossible : la commande n'est pas encore payée. Le client doit la régler en ligne depuis son compte Karnou.");
         }
 
         $order->update([
-            'statut'             => Order::STATUT_LIVRE,
-            'delivered_by'       => $request->user()->id,
-            'paiement_methode'   => $data['paiement_methode'] ?? null,
-            'paiement_reference' => $data['paiement_reference'] ?? null,
+            'statut'       => Order::STATUT_LIVRE,
+            'delivered_by' => $request->user()->id,
         ]);
 
         return Redirect::route('operations.stock', ['tab' => 'history'])->with('status', 'colis-livré');
