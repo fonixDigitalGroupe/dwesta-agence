@@ -9,7 +9,7 @@
                     <p class="text-sm text-slate-500 mt-1">{{ $currentAgency->nom ?? 'Votre agence' }}</p>
                 </div>
                 <a href="{{ route('operations.stock') }}"
-                   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#004aad] text-white text-sm font-semibold hover:bg-[#003a8a] transition">
+                   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#FF6B00] text-white text-sm font-semibold hover:bg-[#e65f00] transition">
                     <i class="fas fa-warehouse"></i> Gérer le stock
                 </a>
             </div>
