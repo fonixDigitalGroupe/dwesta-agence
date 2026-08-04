@@ -25,9 +25,18 @@
         <header class="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3">
             <a href="/"><img src="{{ $karnouLogoUrl }}" alt="Karnou" class="h-8 w-auto"></a>
             <nav class="hidden items-center gap-7 sm:flex">
-                <a href="https://www.karnou.com" target="_blank" rel="noopener" class="text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">Marketplace Karnou</a>
-                <a href="https://www.karnou.com/contact" target="_blank" rel="noopener" class="text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">Contact</a>
-                <a href="https://www.karnou.com/faq" target="_blank" rel="noopener" class="text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">Aide</a>
+                <a href="https://www.karnou.com" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    Marketplace Karnou
+                </a>
+                <a href="https://www.karnou.com/contact" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+                    Contact
+                </a>
+                <a href="https://www.karnou.com/faq" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Aide
+                </a>
             </nav>
         </header>
 
