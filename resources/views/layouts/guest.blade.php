@@ -64,13 +64,6 @@
             </nav>
         </header>
 
-        {{-- Fil d'Ariane sous le header, aligné à gauche --}}
-        <nav class="flex items-center gap-1.5 border-b border-gray-100 bg-gray-100 px-6 py-2.5 text-xs text-gray-500">
-            <a href="/" class="transition hover:text-[#FF6B00]">Accueil</a>
-            <span class="text-gray-300">&rsaquo;</span>
-            <span class="font-medium text-gray-700">Identification</span>
-        </nav>
-
         <div class="grid lg:grid-cols-2" style="min-height: calc(100vh - 58px);">
 
             {{-- Image à gauche + texte (masquée sur mobile) --}}
@@ -94,10 +87,18 @@
             </div>
 
             {{-- Formulaire à droite --}}
-            <div class="flex items-center justify-center bg-gray-100 px-6 py-12">
-                <div class="w-full max-w-md">
-                    <div class="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200 sm:p-10">
-                        {{ $slot }}
+            <div class="flex flex-col bg-gray-100 px-6 py-6">
+                {{-- Fil d'Ariane : sous le header, à droite de l'image, aligné à gauche --}}
+                <nav class="mb-6 flex items-center gap-1.5 text-xs text-gray-500">
+                    <a href="/" class="transition hover:text-[#FF6B00]">Accueil</a>
+                    <span class="text-gray-300">&rsaquo;</span>
+                    <span class="font-medium text-gray-700">Identification</span>
+                </nav>
+                <div class="flex flex-1 items-center justify-center">
+                    <div class="w-full max-w-md">
+                        <div class="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200 sm:p-10">
+                            {{ $slot }}
+                        </div>
                     </div>
                 </div>
             </div>
