@@ -89,6 +89,12 @@
             {{-- Formulaire à droite --}}
             <div class="flex items-center justify-center bg-gray-100 px-6 py-12">
                 <div class="w-full max-w-md">
+                    {{-- Fil d'Ariane (hors carte) --}}
+                    <nav class="mb-3 flex items-center gap-1.5 text-xs text-gray-500">
+                        <a href="/" class="transition hover:text-[#FF6B00]">Accueil</a>
+                        <span class="text-gray-300">&rsaquo;</span>
+                        <span class="font-medium text-gray-700">Identification</span>
+                    </nav>
                     <div class="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200 sm:p-10">
                         {{ $slot }}
                     </div>
