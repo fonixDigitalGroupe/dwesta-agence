@@ -22,7 +22,7 @@
                 ? rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/' . ltrim($karnouLogo, '/')
                 : asset('images/logo.png');
         @endphp
-        <header class="flex items-center border-b border-gray-200 bg-gray-100 px-6 py-3">
+        <header class="flex items-center border-b border-gray-200 bg-white px-6 py-3">
             <a href="/"><img src="{{ $karnouLogoUrl }}" alt="Karnou" class="h-8 w-auto"></a>
         </header>
 
@@ -49,7 +49,7 @@
             </div>
 
             {{-- Formulaire à droite --}}
-            <div class="flex items-center justify-center bg-white px-6 py-12">
+            <div class="flex items-center justify-center bg-gray-100 px-6 py-12">
                 <div class="w-full max-w-md">
                     <div class="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-200 sm:p-10">
                         {{ $slot }}
