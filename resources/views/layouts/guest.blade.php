@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Karnou Agence') }}</title>
+        <title>Karnou Agence — Portail Agence &amp; Points Relais</title>
 
         @php
             $faviconLogo = \App\Models\Setting::get('logo');
@@ -15,6 +15,19 @@
         @endphp
         <link rel="icon" href="{{ $faviconUrl }}">
         <link rel="shortcut icon" href="{{ $faviconUrl }}">
+
+        {{-- Aperçu de partage (Open Graph / Twitter) --}}
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Karnou Agence">
+        <meta property="og:title" content="Karnou Agence — Portail Agence & Points Relais">
+        <meta property="og:description" content="Réception, suivi et remise de vos colis, paiements sécurisés, tout au même endroit.">
+        <meta property="og:image" content="{{ $faviconUrl }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="Karnou Agence — Portail Agence & Points Relais">
+        <meta name="twitter:description" content="Réception, suivi et remise de vos colis, paiements sécurisés, tout au même endroit.">
+        <meta name="twitter:image" content="{{ $faviconUrl }}">
+        <meta name="description" content="Réception, suivi et remise de vos colis, paiements sécurisés, tout au même endroit.">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
