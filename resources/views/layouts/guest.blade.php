@@ -15,7 +15,12 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="grid min-h-screen lg:grid-cols-2">
+        {{-- Header avec logo Karnou --}}
+        <header class="flex items-center border-b border-gray-200 bg-white px-6 py-3">
+            <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Karnou" class="h-8 w-auto"></a>
+        </header>
+
+        <div class="grid lg:grid-cols-2" style="min-height: calc(100vh - 58px);">
 
             {{-- Image à gauche + texte (masquée sur mobile) --}}
             <div class="relative hidden lg:block">
