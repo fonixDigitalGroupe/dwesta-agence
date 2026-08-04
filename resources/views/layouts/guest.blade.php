@@ -22,8 +22,13 @@
                 ? rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/' . ltrim($karnouLogo, '/')
                 : asset('images/logo.png');
         @endphp
-        <header class="flex items-center border-b border-gray-200 bg-white px-6 py-3">
+        <header class="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3">
             <a href="/"><img src="{{ $karnouLogoUrl }}" alt="Karnou" class="h-8 w-auto"></a>
+            <nav class="hidden items-center gap-7 sm:flex">
+                <a href="https://www.karnou.com" target="_blank" rel="noopener" class="text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">Marketplace Karnou</a>
+                <a href="https://www.karnou.com/contact" target="_blank" rel="noopener" class="text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">Contact</a>
+                <a href="https://www.karnou.com/faq" target="_blank" rel="noopener" class="text-sm font-medium text-gray-600 transition hover:text-[#FF6B00]">Aide</a>
+            </nav>
         </header>
 
         <div class="grid lg:grid-cols-2" style="min-height: calc(100vh - 58px);">
