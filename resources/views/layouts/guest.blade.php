@@ -16,7 +16,7 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         {{-- Header avec logo Karnou --}}
-        <header class="flex items-center border-b border-gray-200 bg-white px-6 py-3">
+        <header class="flex items-center border-b border-gray-200 bg-gray-100 px-6 py-3">
             <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Karnou" class="h-8 w-auto"></a>
         </header>
 
