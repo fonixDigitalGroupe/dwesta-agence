@@ -139,6 +139,16 @@
             outline: none;
         }
 
+        /* --- Responsive mobile : recherche + pagination --- */
+        @media (max-width: 640px) {
+            .filter-form { flex-direction: column; align-items: stretch !important; gap: 12px !important; }
+            .filter-search { flex-direction: column; align-items: stretch !important; gap: 4px !important; }
+            .filter-input { width: 100% !important; box-sizing: border-box; }
+            .pagination-bar { flex-direction: column; gap: 12px; align-items: stretch !important; }
+            .pagination-info { text-align: center; }
+            .pagination-nav { flex-wrap: wrap; justify-content: center; }
+        }
+
         /* Sélecteur de motif du litige (centré + chevron) */
         .litige-select {
             display: block;
@@ -174,7 +184,7 @@
 
             <!-- Barre de filtres (1:1 with Categories) -->
             <div class="filter-container">
-                <form action="{{ route('operations.stock') }}" method="GET" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <form action="{{ route('operations.stock') }}" method="GET" class="filter-form" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                     <input type="hidden" name="tab" value="{{ $activeTab }}">
                     
                     <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
@@ -189,7 +199,7 @@
                         <span>résultats</span>
                     </div>
 
-                    <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="filter-search" style="display: flex; gap: 8px; align-items: center;">
                         <span style="font-size: 0.8rem; color: #555; font-weight: 500;">Rechercher :</span>
                         <input type="text" name="search" value="{{ $search }}"
                                placeholder="Référence..."
@@ -316,11 +326,11 @@
             </table>
 
             @if($orders->total() > 0)
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #ffffff; border: 1px solid #e7e7e7; border-top: none; margin-top: -20px;">
-                    <div style="font-size: 0.85rem; color: #555; font-weight: 500;">
+                <div class="pagination-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #ffffff; border: 1px solid #e7e7e7; border-top: none; margin-top: -20px;">
+                    <div class="pagination-info" style="font-size: 0.85rem; color: #555; font-weight: 500;">
                         Affichage de {{ $orders->firstItem() }} à {{ $orders->lastItem() }} sur {{ $orders->total() }} résultats
                     </div>
-                    <div style="display: flex; border: 1px solid #adb1b8; border-radius: 4px; overflow: hidden;">
+                    <div class="pagination-nav" style="display: flex; border: 1px solid #adb1b8; border-radius: 4px; overflow: hidden;">
                         @if($orders->onFirstPage())
                             <span style="padding: 7px 14px; background: #fdfdfd; color: #aaa; font-size: 0.85rem; border-right: 1px solid #adb1b8;">Précédent</span>
                         @else

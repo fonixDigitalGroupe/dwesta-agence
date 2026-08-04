@@ -7,6 +7,15 @@
 
     <title>{{ config('app.name', 'Karnou Agence') }}</title>
 
+    @php
+        $karnouLogo = \App\Models\Setting::get('logo');
+        $karnouLogoUrl = $karnouLogo
+            ? rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/').'/'.ltrim($karnouLogo, '/')
+            : asset('images/logo.png');
+    @endphp
+    <link rel="icon" href="{{ $karnouLogoUrl }}">
+    <link rel="shortcut icon" href="{{ $karnouLogoUrl }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -440,7 +449,7 @@
         {{-- Brand --}}
         <div class="sidebar-brand">
             <a href="{{ route('dashboard') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Karnou Logo">
+                <img src="{{ $karnouLogoUrl }}" alt="Karnou Logo">
             </a>
         </div>
 
@@ -513,7 +522,7 @@
 
             {{-- Logo (mobile) --}}
             <a href="{{ route('dashboard') }}" class="header-logo-mobile">
-                <img src="{{ asset('images/logo.png') }}" alt="Karnou">
+                <img src="{{ $karnouLogoUrl }}" alt="Karnou">
             </a>
 
             {{-- Search Bar --}}
