@@ -15,9 +15,15 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        {{-- Header avec logo Karnou --}}
+        {{-- Header avec le logo Karnou (même que l'admin) --}}
+        @php
+            $karnouLogo = \App\Models\Setting::get('logo');
+            $karnouLogoUrl = $karnouLogo
+                ? rtrim(config('services.karnou_media_url', 'https://www.karnou.com/storage'), '/') . '/' . ltrim($karnouLogo, '/')
+                : asset('images/logo.png');
+        @endphp
         <header class="flex items-center border-b border-gray-200 bg-gray-100 px-6 py-3">
-            <a href="/"><img src="{{ asset('images/logo.png') }}" alt="Karnou" class="h-8 w-auto"></a>
+            <a href="/"><img src="{{ $karnouLogoUrl }}" alt="Karnou" class="h-8 w-auto"></a>
         </header>
 
         <div class="grid lg:grid-cols-2" style="min-height: calc(100vh - 58px);">
