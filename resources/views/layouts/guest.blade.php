@@ -89,10 +89,10 @@
             {{-- Formulaire à droite --}}
             <div class="flex flex-col bg-gray-100 px-6 py-6">
                 {{-- Fil d'Ariane : sous le header, à droite de l'image, aligné à gauche --}}
-                <nav class="mb-6 flex items-center gap-1.5 text-xs text-gray-500">
+                <nav class="mb-6 flex items-center gap-2 text-base font-bold text-gray-600">
                     <a href="/" class="transition hover:text-[#FF6B00]">Accueil</a>
                     <span class="text-gray-300">&rsaquo;</span>
-                    <span class="font-medium text-gray-700">Identification</span>
+                    <span class="text-gray-800">Identification</span>
                 </nav>
                 <div class="flex flex-1 items-center justify-center">
                     <div class="w-full max-w-md">
