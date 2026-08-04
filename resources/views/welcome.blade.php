@@ -46,7 +46,7 @@
             /* ——— BANNIÈRE (grande carte claire arrondie — style Kobo) ——— */
             .hero { padding: 46px 0 72px; background: #f2f3f5; }
             .hero-banner {
-                border-radius: 28px; background: linear-gradient(120deg, #e9f1fc 0%, #f4f8ff 55%, #fff5ec 100%);
+                border-radius: 28px; background: #eceef1;
                 padding: clamp(40px, 5vw, 72px); display: grid; grid-template-columns: 1.05fr .95fr; gap: 52px;
                 align-items: center; overflow: hidden; position: relative;
             }
@@ -56,7 +56,7 @@
             .hero-banner .lead { font-size: 1.12rem; color: #4c5462; line-height: 1.65; margin-bottom: 34px; max-width: 500px; }
             .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
             .hero-visual { position: relative; }
-            .hero-visual .shot { border-radius: 20px; overflow: hidden; min-height: 300px; background: url('{{ asset('images/login-bg.jpg') }}') center/cover no-repeat; box-shadow: 0 30px 60px -28px rgba(0,49,122,.4); }
+            .hero-visual .shot { border-radius: 20px; overflow: hidden; height: 220px; background: url('{{ asset('images/login-bg.jpg') }}') center/cover no-repeat; box-shadow: 0 24px 50px -30px rgba(0,0,0,.35); }
 
             /* Bande de valeurs */
             .trust { background: #fff; padding: 30px 0 6px; }
