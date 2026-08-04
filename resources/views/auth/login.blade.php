@@ -1,4 +1,11 @@
 <x-guest-layout>
+    {{-- Fil d'Ariane --}}
+    <nav class="mb-3 flex items-center gap-1.5 text-xs text-gray-500">
+        <a href="/" class="transition hover:text-[#FF6B00]">Accueil</a>
+        <span class="text-gray-300">&rsaquo;</span>
+        <span class="font-medium text-gray-700">Identification</span>
+    </nav>
+
     {{-- Titre de section (style Karnou : titre + filet sous le texte) --}}
     <h2 class="mb-6 border-b border-gray-100 pb-3 text-lg font-bold text-gray-900">Identification</h2>
 

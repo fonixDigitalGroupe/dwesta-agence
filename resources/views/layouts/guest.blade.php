@@ -24,7 +24,7 @@
                 : asset('images/logo.png');
         @endphp
         <header x-data="{ open: false }" class="relative flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3">
-            <a href="/"><img src="{{ $karnouLogoUrl }}" alt="Karnou" class="h-8 w-auto"></a>
+            <a href="/"><img src="{{ $karnouLogoUrl }}" alt="Karnou" class="h-6 w-auto"></a>
 
             {{-- Bouton hamburger (mobile uniquement) --}}
             <button type="button" @click="open = !open" class="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-[#FF6B00] sm:hidden" aria-label="Menu">
