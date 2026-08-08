@@ -57,13 +57,15 @@ class ColisController extends Controller
 
         $orders = $query->with(['buyer', 'seller.user', 'seller.pagePro', 'litiges'])->latest()->paginate($perPage)->withQueryString();
 
-        // Code de validation à 4 chiffres pour les colis en approche
-        // (remis par l'agence au transporteur pour confirmer la livraison).
+        // Code de validation à 4 chiffres pour les colis en approche : remis par
+        // l'agence au transporteur pour confirmer le dépôt. On s'aligne sur le
+        // champ `code_point_relais` de la marketplace Karnou (source unique validée
+        // côté transporteur). Pour les anciennes commandes sans code, on en génère un.
         if ($activeTab === 'incoming') {
             foreach ($orders as $order) {
-                if (empty($order->validation_code)) {
+                if (empty($order->code_point_relais)) {
                     $order->forceFill([
-                        'validation_code' => str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT),
+                        'code_point_relais' => str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT),
                     ])->save();
                 }
             }

@@ -27,6 +27,7 @@ class Order extends Model
         'paiement_methode',
         'paiement_reference',
         'validation_code',
+        'code_point_relais',
     ];
 
     protected $casts = [

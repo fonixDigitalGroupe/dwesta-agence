@@ -258,7 +258,7 @@
                             @endif
                             @if($activeTab == 'incoming')
                                 <td>
-                                    <span title="Code à communiquer au transporteur pour confirmer la livraison" style="display:inline-block; font-family: 'Courier New', monospace; font-weight:700; font-size:0.95rem; letter-spacing:3px; color:#004aad; background:#eaf1fb; border:1px solid #cddcf3; padding:4px 10px; border-radius:6px;">{{ $order->validation_code }}</span>
+                                    <span title="Code à communiquer au transporteur pour confirmer la livraison" style="display:inline-block; font-family: 'Courier New', monospace; font-weight:700; font-size:0.95rem; letter-spacing:3px; color:#004aad; background:#eaf1fb; border:1px solid #cddcf3; padding:4px 10px; border-radius:6px;">{{ $order->code_point_relais ?? $order->validation_code }}</span>
                                 </td>
                             @endif
                             @php
