@@ -217,6 +217,9 @@
                             <th>client</th>
                             <th>vendeur</th>
                         @endif
+                        @if($activeTab == 'incoming')
+                            <th style="width: 110px;">code</th>
+                        @endif
                         @if($activeTab == 'stock')
                             <th style="width: 120px;">réception</th>
                             <th style="width: 140px;">échéance</th>
@@ -251,6 +254,11 @@
                                         @endif
                                         <span>{{ $sellerPhone }}</span>
                                     </div>
+                                </td>
+                            @endif
+                            @if($activeTab == 'incoming')
+                                <td>
+                                    <span title="Code à communiquer au transporteur pour confirmer la livraison" style="display:inline-block; font-family: 'Courier New', monospace; font-weight:700; font-size:0.95rem; letter-spacing:3px; color:#004aad; background:#eaf1fb; border:1px solid #cddcf3; padding:4px 10px; border-radius:6px;">{{ $order->validation_code }}</span>
                                 </td>
                             @endif
                             @php
@@ -319,7 +327,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $activeTab == 'stock' ? 5 : 4 }}" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
+                            <td colspan="{{ $activeTab == 'incoming' ? 5 : ($activeTab == 'stock' ? 5 : 4) }}" style="padding: 50px; text-align: center; color: #999;">Aucun résultat trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>

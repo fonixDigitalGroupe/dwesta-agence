@@ -26,6 +26,7 @@ class Order extends Model
         'delivered_by',
         'paiement_methode',
         'paiement_reference',
+        'validation_code',
     ];
 
     protected $casts = [

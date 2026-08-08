@@ -57,6 +57,18 @@ class ColisController extends Controller
 
         $orders = $query->with(['buyer', 'seller.user', 'seller.pagePro', 'litiges'])->latest()->paginate($perPage)->withQueryString();
 
+        // Code de validation à 4 chiffres pour les colis en approche
+        // (remis par l'agence au transporteur pour confirmer la livraison).
+        if ($activeTab === 'incoming') {
+            foreach ($orders as $order) {
+                if (empty($order->validation_code)) {
+                    $order->forceFill([
+                        'validation_code' => str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT),
+                    ])->save();
+                }
+            }
+        }
+
         return view('colis.index', compact('agence', 'orders', 'counts', 'activeTab', 'search', 'perPage'));
     }
 
